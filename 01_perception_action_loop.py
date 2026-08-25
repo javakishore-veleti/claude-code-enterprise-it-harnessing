@@ -1,1 +1,0 @@
-# The minimal while loop — core agent pattern
