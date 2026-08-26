@@ -30,3 +30,33 @@ import glob as _glob  # Unix style pathname pattern expansion
 from pathlib import Path  # Object-oriented filesystem paths
 from typing import Dict, List, Tuple, Optional, Any  # Type hinting support
 
+# === Optional Dependencies for Enhanced User Experience ===
+
+# Attempt to configure 'readline' for better CLI input handling on Unix-based systems
+try:
+    import readline  # Provides line editing and history features
+    # Disable special character binding that can interfere with terminal output
+    readline.parse_and_bind("set bind-tty-special-chars off")
+    # Enable handling of 8-bit input characters
+    readline.parse_and_bind("set input-meta on")
+    # Enable output of 8-bit characters
+    readline.parse_and_bind("set output-meta on")
+    # Prevent conversion of 8-bit characters to ASCII sequences
+    readline.parse_and_bind("set convert-meta off")
+except ImportError:
+    # Fail silently if readline is unavailable (e.g., on standard Windows installations)
+    pass
+
+# Attempt to initialize 'colorama' for cross-platform colored terminal support
+try:
+    from colorama import init as _colorama_init  # Import the initialization function
+    _colorama_init()  # Execute initialization to wrap stdout/stderr
+except ImportError:
+    # Fail silently if colorama is not installed in the environment
+    pass
+
+
+# Import third-party libraries
+import yaml  # YAML parser and emitter for configuration files
+from anthropic import Anthropic  # Official Anthropic API Python SDK
+from dotenv import load_dotenv  # Loads variables from .env into environment

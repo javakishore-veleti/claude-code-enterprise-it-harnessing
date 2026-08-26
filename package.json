@@ -1,0 +1,7 @@
+{
+  "name": "claude-code-from-scratch",
+  "private": true,
+  "scripts": {
+    "s01": "./run.sh s01_perception_action_loop.py"
+  }
+}
