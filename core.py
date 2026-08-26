@@ -619,6 +619,7 @@ def stream_loop(
         messages.append({"role": "assistant", "content": response.content})
         
         # Break the loop if the model stopped for any reason other than calling tools
+        print(f"Stop reason: {response.stop_reason}")
         if response.stop_reason != "tool_use":
             return response
             
