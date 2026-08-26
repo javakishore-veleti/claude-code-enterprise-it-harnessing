@@ -2,6 +2,7 @@
   "name": "claude-code-from-scratch",
   "private": true,
   "scripts": {
-    "s01": "./run.sh s01_perception_action_loop.py"
+    "s01": "./run.sh s01_perception_action_loop.py",
+    "s02": "./run.sh s02_tool_use.py"
   }
 }
