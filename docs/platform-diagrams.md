@@ -40,7 +40,7 @@ flowchart TB
 
   subgraph Platform["Enterprise IT Harnessing Platform"]
     Model["One Claude decision loop"]
-    Catalog["Named catalog ~100 microservices<br/>fx-matching-engine · orders-api · shopify-webhook-ingress"]
+    Catalog["Production names from the live estate<br/>fx-matching-engine · orders-api · shopify-webhook-ingress"]
     Profiles["Six operator surfaces<br/>SRE · Event Bus · Search · Kubernetes · Redis · DB"]
     Gov["Governance: permissions.yaml · isolation leases · audit events"]
   end
@@ -244,7 +244,7 @@ Each role keeps the same loop and the same catalog. The **smallest** tool set th
 flowchart TB
   subgraph Shared["Every role"]
     Loop["Claude loop"]
-    Cat["Named catalog · 10 BUs"]
+    Cat["Production names · 10 BUs"]
     Id["cloud_identity"]
     Pol["permissions.yaml"]
     Ls["Isolation lease on mutations"]

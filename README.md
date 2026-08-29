@@ -18,6 +18,7 @@
 
 - [Introduction](#introduction)
   - [Enterprise context](#enterprise-context)
+  - [Current Enterprise IT State](#current-enterprise-it-state)
 - [Purpose, objective, value, and business impact](#purpose-objective-value-and-business-impact)
 - [Strategic diagram](#strategic-diagram-svp-of-engineering)
 - [Enterprise architecture](#enterprise-architecture--domains-summing-to-100-microservices)
@@ -42,9 +43,11 @@ This repository is an **Enterprise IT Harnessing Platform**. One decision loop. 
 
 ### Enterprise context
 
-The Enterprise IT team is in the business of supporting the domains that are deployed and managed on those six surfaces — SRE, Event Bus, Search, Kubernetes, Redis, and DB. FOREX matching and settlement, e-commerce checkout and fulfillment, and Shopify headless integration do not share a single admin shell, but they share one operational problem: dedicated cloud accounts, many stacks, and production changes that must stay inside a role. Such an Enterprise IT organization needs **unified IT harnessing** — one loop, one catalog, one permission engine, six role-scoped surfaces. This repository is a foundation and a reference implementation for that need.
+The Enterprise IT team is in the business of supporting the domains that are deployed and managed on those six surfaces — SRE, Event Bus, Search, Kubernetes, Redis, and DB. FOREX matching and settlement, e-commerce checkout and fulfillment, and Shopify headless integration do not share a single admin shell, but they share one operational problem: dedicated cloud accounts, many stacks, and production changes that must stay inside a role. Such an Enterprise IT organization needs **unified IT harnessing** — one loop, one permission engine, six role-scoped surfaces. This repository is a foundation and a reference implementation for that need.
 
-A named catalog of about **100 microservices** across **10 business units** that run FOREX bank middleware, e-commerce middleware, and Shopify headless merchant integration.
+### Current Enterprise IT State
+
+This repository does **not** contain 100 microservice codebases. Those applications already run in production. The current Enterprise IT estate this harness is built against is **10 business units** on dedicated cloud accounts, operating FOREX bank middleware, e-commerce middleware, and Shopify headless merchant integration — on the order of **100 microservices** deployed outside this repo. Operators resolve production names such as `fx-matching-engine`, `orders-api`, and `shopify-webhook-ingress` so the model works the estate the company already runs, not a fictional `service-1`.
 
 The model never hard-codes “this is an EKS outage” or “this is a stuck checkout saga.” It only sees tools and a system prompt. Each profile swaps the **tool list**, **skill files**, **permission rules**, and **named resources**. Cloud (AWS, Azure, GCP) only changes identity and CLI argv. An AWS Kafka admin and a GCP Cloud SQL admin share the loop and the permission engine; they do not share the same tool list.
 
@@ -62,7 +65,7 @@ Enterprise IT Harnessing is the control plane around the model, not another chat
 
 | | What it means for this estate |
 | --- | --- |
-| **Purpose** | Give each operator role a **named, permissioned surface** over the same 100+ microservices — FOREX matching / FIX / CLS, checkout and fulfillment, Shopify HMAC and legacy bridge — without handing anyone a generic `bash` on production. |
+| **Purpose** | Give each operator role a **permissioned surface** over the production estate they already run — FOREX matching / FIX / CLS, checkout and fulfillment, Shopify HMAC and legacy bridge — without handing anyone a generic `bash` on production. |
 | **Objective** | One loop, six profiles (SRE, Event Bus, Search, Kubernetes, Redis, DB), a catalog that resolves real names, and a guard that **denies**, **allows**, or **asks** before every tool. Cloud identity is argv. Mutations take an isolation lease. |
 | **Value** | Operators work the way they already think: `./harness-sre.sh observe-fx-matching`, not “ask the model to kubectl.” Skills load on demand. Catalog dumps do not spend tokens. Playbooks do. The same harness runs on AWS, Azure, and GCP. |
 | **Business impact** | Faster, **repeatable MTTR** on named SLOs. Dual-control for rollback, failover, silence, and ACL change. Irreversible wipes (`FLUSHALL`, `DROP DATABASE`, namespace delete) cannot be “reasoned through.” Two agents cannot mutate the same cluster, topic, or cache at once. Blast radius stays inside the business unit that owns the account. |
@@ -96,7 +99,7 @@ flowchart TB
 
   subgraph Platform["Enterprise IT Harnessing Platform"]
     Model["One Claude decision loop"]
-    Catalog["Named catalog ~100 microservices<br/>fx-matching-engine · orders-api · shopify-webhook-ingress"]
+    Catalog["Production names from the live estate<br/>fx-matching-engine · orders-api · shopify-webhook-ingress"]
     Profiles["Six operator surfaces<br/>SRE · Event Bus · Search · Kubernetes · Redis · DB"]
     Gov["Governance: permissions.yaml · isolation leases · audit events"]
   end
@@ -181,7 +184,7 @@ Call `list_business_units`, `list_services`, or `resolve_service` before guessin
 
 ## Platform capabilities
 
-- **Named estate catalog** — 10 BUs, ~100 services, dedicated accounts and clusters. Tools resolve real names, not placeholders.
+- **Production name directory** — tools resolve the live estate (`fx-matching-engine`, not `service-1`). This repo maps those names; it does not host the 100 application repos.
 - **Declarative permissions** — `always_deny` / `always_allow` / `ask_user` in each profile’s `permissions.yaml`. Safety is a pre-execution layer, not a model instruction.
 - **Isolation leases** — mutating tools take an exclusive lease on the target (cluster, instance, topic, cache). Dirty or already-leased targets fail closed. Leases live under `.harness_isolation/`.
 - **Cloud identity** — AWS, Azure, or GCP is resolved once (`CLOUD_PROVIDER` or auto-detect). The same tool list runs against `aws` / `az` / `gcloud` argv.
@@ -235,7 +238,7 @@ The platform is a harness, not an agent framework. Adding a capability means reg
 
 ### Enterprise architecture — platforms under the 100+ services
 
-Every business unit owns a dedicated account and a full stack. The 100 microservices are the application plane. The harness profiles sit on top of that plane; they do not invent a parallel estate.
+Every business unit owns a dedicated account and a full stack. The ~100 microservices already running in that estate are the application plane. This repo is the harness on top of that plane; it does not host those application repos.
 
 ```mermaid
 flowchart TB
