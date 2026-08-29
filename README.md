@@ -303,7 +303,9 @@ Each role keeps the catalog and the guard. The **smallest** tool set that role n
 
 ## How to launch from the repository root
 
-All six operator launchers live at the **root of this repo**. Each `./harness-*.sh` forwards into that profile’s `package.json` (25+ named commands). You do not `cd` into `enterprise_it_harnessing/` to run them.
+All six operator launchers live at the **root of this repo**. Each `./harness-*.sh` forwards into that profile’s `package.json` (25+ named commands). The second token (`observe-fx-matching`, `describe-fx-trades`, …) is the playbook name in that file — not a second executable. You do not `cd` into `enterprise_it_harnessing/` to run them.
+
+To add a tool, permission, skill, playbook, or a new role, see [How to extend a profile](enterprise_it_harnessing/README.md#how-to-extend-a-profile).
 
 ```bash
 # from the repository root

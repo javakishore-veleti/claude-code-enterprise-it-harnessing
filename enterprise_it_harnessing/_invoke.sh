@@ -34,4 +34,5 @@ if [[ $# -eq 0 ]]; then
   exit 0
 fi
 
-exec npm --prefix "$PKG" run -- "$@"
+# -s hides npm's "> script-name" / "> ../../run.sh ..." banner.
+exec npm --prefix "$PKG" run -s -- "$@"

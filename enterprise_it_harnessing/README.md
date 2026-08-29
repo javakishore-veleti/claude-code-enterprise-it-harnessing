@@ -85,3 +85,17 @@ npm run elk -- repl
 | ELK + Grafana | [`elk_harnessing/`](elk_harnessing/) | [`../harness-elk.sh`](../harness-elk.sh) | [elk.md](elk.md) |
 
 Leases live under `.harness_isolation/` (gitignored). Mutations on a dirty or already-leased target fail closed.
+
+## How to extend a profile
+
+`./harness-sre.sh observe-fx-matching` means: run the **npm script** named `observe-fx-matching` in `sre_harnessing/package.json`. The same pattern applies to db, k8s, redis, kafka, and elk. That script name is not a second command — it is the playbook. Root launchers already forward; you do not add another `.sh` per playbook.
+
+To add a capability to an existing role (example: SRE):
+
+1. **Tool** — implement a function in `sre_harnessing/tools.py`, add its schema to `TOOLS` and the function to `DISPATCH`. If it mutates, add the name to `MUTATING`.
+2. **Policy** — add a deny / allow / ask pattern in `sre_harnessing/permissions.yaml`. Do not put deny rules in the system prompt.
+3. **Skill** (optional) — add `sre_harnessing/skills/<name>/SKILL.md` if the model needs a runbook.
+4. **Playbook** — add a script in `sre_harnessing/package.json` that calls `../../run.sh enterprise_it_harnessing/sre_harnessing/harness.py` with `--tool` (no model) or `--once` (model). Then `./harness-sre.sh your-script` works from the repo root.
+5. **Catalog** — if the target is a new production name, add it in `catalog.py` (`_SERVICES`, or databases / topics / caches). Tools should resolve that name, not `service-1`.
+
+To add a **new role**, copy a profile folder (tools, permissions, skills, `package.json`, `harness.py`), register it in `_invoke.sh`’s profile list, and add a root `harness-<role>.sh` that calls `_invoke.sh <folder>`. Cloud identity stays in `shared/`; only argv changes for AWS / Azure / GCP.
