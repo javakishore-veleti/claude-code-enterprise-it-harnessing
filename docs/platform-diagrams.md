@@ -5,6 +5,7 @@ Audience-specific views of the same platform. The model does not change. What ch
 | Audience | Diagram | Question it answers |
 | --- | --- | --- |
 | SVP of Engineering | [Strategic](#strategic-diagram-svp-of-engineering) | What do we operate, who is accountable, and how is blast radius bounded? |
+| SVP / Chief Architect | [Enterprise architecture](#enterprise-architecture-100-microservices) | How do FOREX, e-commerce, and Shopify roll up to 100+ microservices? |
 | Engineering Manager & Chief Architect | [Architecture](#architecture-engineering-manager--chief-architect) | How do launchers, profiles, the shared kernel, and cloud identity compose? |
 | SRE, DBA, Kubernetes, Redis, Kafka, ELK | [Role-specific](#role-specific-diagrams) | What can this role observe, mutate, and never do? |
 
@@ -70,9 +71,89 @@ flowchart LR
 
 ---
 
+## Enterprise architecture (100+ microservices)
+
+The catalog in `enterprise_it_harnessing/catalog.py` is ten services per business unit. Domains roll up as **20 + 70 + 10 = 100**. Each unit also owns a dedicated Kubernetes cluster, bus, Redis, database, and ELK/Grafana stack — that data plane is why the estate is described as **100+**.
+
+```mermaid
+flowchart TB
+  ENT["Enterprise estate · 100+ microservices"]
+
+  subgraph FOREX["FOREX bank middleware · 20"]
+    FM["forex-markets · 10 · AWS EKS<br/>price · match · FIX · STP · RFQ · audit"]
+    FS["forex-settlement · 10 · AWS EKS<br/>risk · netting · CLS · PnL · MiFID / EMIR"]
+  end
+
+  subgraph ECOM["E-commerce middleware · 70"]
+    ER["ecommerce-retail · 10 · Azure AKS<br/>catalog · cart · checkout · orders · payments"]
+    EQ["ecommerce-quote · 10 · Azure AKS<br/>B2B quote · contract · RFQ · margin"]
+    FF["fulfillment · 10 · GCP GKE<br/>WMS · pick-pack · ship · track · returns"]
+    CP["customer-profile · 10 · AWS EKS<br/>identity · consent · loyalty · KYC"]
+    CS["customer-support · 10 · Azure AKS<br/>tickets · chat · SLA · voice"]
+    CA["customer-advisor · 10 · Azure AKS<br/>NBA · workspace · compliance"]
+    PR["product-research · 10 · GCP GKE<br/>assortment · trends · launch calendar"]
+  end
+
+  subgraph SHOP["Shopify headless merchants · 10"]
+    SM["shopify-merchants · 10 · AWS EKS<br/>HMAC ingress · product/order/customer sync<br/>idempotency · SOAP / AS400 bridge"]
+  end
+
+  ENT --> FOREX
+  ENT --> ECOM
+  ENT --> SHOP
+  SM -->|"catalog / orders / profile"| ER
+  SM --> CP
+  ER -->|"allocation / ship"| FF
+  FM -->|"fills / SSI"| FS
+```
+
+| Domain | Business units | Services | Sum |
+| --- | --- | --- | --- |
+| FOREX bank middleware | `forex-markets`, `forex-settlement` | 10 + 10 | **20** |
+| E-commerce middleware | retail, quote, fulfillment, profile, support, advisor, research | 10 × 7 | **70** |
+| Shopify headless merchants | `shopify-merchants` | 10 | **10** |
+| **Enterprise** | **10 BUs** | | **100+** |
+
+### Platform plane under those 100 services
+
+```mermaid
+flowchart TB
+  subgraph App["Application plane · 100 microservices"]
+    FX20["FOREX · 20"]
+    EC70["E-commerce · 70"]
+    SH10["Shopify · 10"]
+  end
+
+  subgraph Plane["Per-BU platform plane · dedicated, not shared"]
+    K8["Kubernetes · EKS / AKS / GKE"]
+    BUS["Event bus · MSK / Event Hubs / Pub/Sub"]
+    CACHE["Redis · ElastiCache / Azure Cache / Memorystore"]
+    DB["Databases · RDS / Azure SQL / Cloud SQL"]
+    OBS["ELK + Grafana"]
+  end
+
+  subgraph Harness["Root launchers overlay the same names"]
+    H["./harness-sre.sh · ./harness-db.sh · ./harness-k8s.sh<br/>./harness-redis.sh · ./harness-kafka.sh · ./harness-elk.sh"]
+  end
+
+  FX20 --> K8
+  EC70 --> K8
+  SH10 --> K8
+  K8 --- BUS
+  BUS --- CACHE
+  CACHE --- DB
+  DB --- OBS
+  H --> App
+  H --> Plane
+```
+
+Dump the rollup from the repo root (no model): `./harness-sre.sh list-units`.
+
+---
+
 ## Architecture (Engineering Manager & Chief Architect)
 
-The platform is a **harness**, not an agent framework. The model decides. The harness executes, constrains, and names the world.
+The platform is a **harness**, not an agent framework. The model decides. The harness executes, constrains, and names the world. The [enterprise architecture](#enterprise-architecture-100-microservices) above is the estate those tools resolve — FOREX (20) + e-commerce (70) + Shopify (10) = **100+** named microservices on dedicated per-BU platforms.
 
 ```mermaid
 flowchart TB

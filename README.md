@@ -17,13 +17,14 @@
 ## Table of Contents
 
 - [Strategic diagram](#strategic-diagram-svp-of-engineering)
+- [Enterprise architecture](#enterprise-architecture--domains-summing-to-100-microservices)
 - [Introduction](#introduction)
 - [The estate](#the-estate)
 - [Operator profiles](#operator-profiles)
 - [Platform capabilities](#platform-capabilities)
 - [Architecture for Engineering Managers and Chief Architects](#architecture-for-engineering-managers-and-chief-architects)
 - [Role-specific diagrams](#role-specific-diagrams)
-- [How to launch](#how-to-launch)
+- [How to launch from the repository root](#how-to-launch-from-the-repository-root)
 - [What is Harness Engineering?](#what-is-harness-engineering)
 - [How Claude Code Uses Harness Engineering?](#how-claude-code-uses-harness-engineering)
   - [Phase 1: The Core Agent Loop](#phase-1-the-core-agent-loop)
@@ -75,6 +76,49 @@ flowchart TB
   Gov --> Outcomes
 ```
 
+### Enterprise architecture — domains summing to 100+ microservices
+
+Three product domains. Ten dedicated business units. Ten named services per unit. **100 microservices**, plus the per-BU data plane (cluster, bus, cache, database, ELK) that those services sit on.
+
+```mermaid
+flowchart TB
+  ENT["Enterprise estate · 100+ microservices"]
+
+  subgraph FOREX["FOREX bank middleware · 20"]
+    FM["forex-markets · 10 · AWS EKS<br/>price · match · FIX · STP · RFQ · audit"]
+    FS["forex-settlement · 10 · AWS EKS<br/>risk · netting · CLS · PnL · MiFID / EMIR"]
+  end
+
+  subgraph ECOM["E-commerce middleware · 70"]
+    ER["ecommerce-retail · 10 · Azure AKS<br/>catalog · cart · checkout · orders · payments"]
+    EQ["ecommerce-quote · 10 · Azure AKS<br/>B2B quote · contract · RFQ · margin"]
+    FF["fulfillment · 10 · GCP GKE<br/>WMS · pick-pack · ship · track · returns"]
+    CP["customer-profile · 10 · AWS EKS<br/>identity · consent · loyalty · KYC"]
+    CS["customer-support · 10 · Azure AKS<br/>tickets · chat · SLA · voice"]
+    CA["customer-advisor · 10 · Azure AKS<br/>NBA · workspace · compliance"]
+    PR["product-research · 10 · GCP GKE<br/>assortment · trends · launch calendar"]
+  end
+
+  subgraph SHOP["Shopify headless merchants · 10"]
+    SM["shopify-merchants · 10 · AWS EKS<br/>HMAC ingress · product/order/customer sync<br/>idempotency · SOAP / AS400 bridge"]
+  end
+
+  ENT --> FOREX
+  ENT --> ECOM
+  ENT --> SHOP
+  SM -->|"catalog / orders / profile"| ER
+  SM --> CP
+  ER -->|"allocation / ship"| FF
+  FM -->|"fills / SSI"| FS
+```
+
+| Domain | Business units | Services | Sum |
+| --- | --- | --- | --- |
+| FOREX bank middleware | `forex-markets`, `forex-settlement` | 10 + 10 | **20** |
+| E-commerce middleware | retail, quote, fulfillment, profile, support, advisor, research | 10 × 7 | **70** |
+| Shopify headless merchants | `shopify-merchants` | 10 | **10** |
+| **Enterprise** | **10 BUs** | | **100+** |
+
 **[Architecture (EM / Chief Architect)](#architecture-for-engineering-managers-and-chief-architects)** · **[Role diagrams](#role-specific-diagrams)** · **[Full diagram set](docs/platform-diagrams.md)**
 
 ## Introduction
@@ -85,7 +129,7 @@ The model never hard-codes “this is an EKS outage” or “this is a stuck che
 
 Operators do not get a generic `bash` session against production. They resolve `fx-matching-engine`, `shopify-webhook-ingress`, `rds-fx-trades-prod`, and `elasticache-shopify-idempotency` — not `service-1`. Mutations that are customer-facing require an operator. Irreversible wipes are denied. Two agents cannot mutate the same cluster, topic, or cache at once.
 
-The learning sessions later in this README reconstruct the Claude Code primitives underneath. The product you run day to day is [`enterprise_it_harnessing/`](enterprise_it_harnessing/README.md).
+The learning sessions later in this README reconstruct the Claude Code primitives underneath. The product you run day to day is [`enterprise_it_harnessing/`](enterprise_it_harnessing/README.md). From the **repository root**, every operator profile is a `./harness-*.sh` launcher — see [How to launch](#how-to-launch-from-the-repository-root).
 
 ## The estate
 
@@ -164,6 +208,43 @@ flowchart TB
 
 The platform is a harness, not an agent framework. Adding a capability means registering one typed tool and, if it mutates, a deny/ask rule and a lease. It does not mean a new orchestration graph.
 
+### Enterprise architecture — platforms under the 100+ services
+
+Every business unit owns a dedicated account and a full stack. The 100 microservices are the application plane. The harness profiles sit on top of that plane; they do not invent a parallel estate.
+
+```mermaid
+flowchart TB
+  subgraph App["Application plane · 100 microservices"]
+    FX20["FOREX · 20<br/>matching · FIX · CLS · regulatory"]
+    EC70["E-commerce · 70<br/>catalog · quote · orders · fulfill · customer · research"]
+    SH10["Shopify · 10<br/>HMAC · sync · legacy bridge"]
+  end
+
+  subgraph Plane["Per-BU platform plane · dedicated, not shared"]
+    K8["Kubernetes<br/>eks-*-prod · aks-*-prod · gke-*-prod"]
+    BUS["Event bus<br/>MSK · Event Hubs · Pub/Sub"]
+    CACHE["Redis<br/>ElastiCache · Azure Cache · Memorystore"]
+    DB["Databases<br/>RDS · Azure SQL · Cloud SQL"]
+    OBS["ELK + Grafana<br/>es-*-prod · grafana-*-prod"]
+  end
+
+  subgraph Harness["Harness overlay — same 100 names"]
+    H["./harness-sre.sh · ./harness-db.sh · ./harness-k8s.sh<br/>./harness-redis.sh · ./harness-kafka.sh · ./harness-elk.sh"]
+  end
+
+  FX20 --> K8
+  EC70 --> K8
+  SH10 --> K8
+  K8 --- BUS
+  BUS --- CACHE
+  CACHE --- DB
+  DB --- OBS
+  H --> App
+  H --> Plane
+```
+
+Cross-domain flows the catalog already names: Shopify HMAC ingress writes into `catalog-api` / `orders-api` / `profile-api`; retail checkout allocates through fulfillment; FOREX matching hands fills to settlement / CLS. Operators resolve those names — they do not guess hostnames.
+
 ## Role-specific diagrams
 
 [Per-role allow / ask / deny diagrams](docs/platform-diagrams.md#role-specific-diagrams)
@@ -182,30 +263,78 @@ flowchart LR
 
 Each role keeps the catalog and the guard. The **smallest** tool set that role needs is what gets registered.
 
-## How to launch
+## How to launch from the repository root
+
+All six operator launchers live at the **root of this repo**. Each `./harness-*.sh` forwards into that profile’s `package.json` (25+ named commands). You do not `cd` into `enterprise_it_harnessing/` to run them.
 
 ```bash
-export ANTHROPIC_API_KEY=...
-# optional: pin identity; otherwise auto-detect
-export CLOUD_PROVIDER=aws   # or azure or gcp
-
-./harness-sre.sh                 # list SRE commands
-./harness-sre.sh repl            # interactive SRE session
-./harness-sre.sh observe-fx-matching
-
-./harness-db.sh describe-fx-trades
-./harness-k8s.sh pods-shopify-merchants
-./harness-kafka.sh lag-shopify-orders
-./harness-redis.sh info-shopify-idemp
-./harness-elk.sh search-shopify-webhooks
+# from the repository root
+export ANTHROPIC_API_KEY=...          # required for playbooks / repl
+export CLOUD_PROVIDER=aws             # optional: aws | azure | gcp (else auto-detect)
 ```
 
-Same thing via npm at the repo root:
+| Root launcher | Role | No-model catalog dump | Playbook that calls the model |
+| --- | --- | --- | --- |
+| [`./harness-sre.sh`](harness-sre.sh) | SRE | `./harness-sre.sh list-units` | `./harness-sre.sh observe-fx-matching` |
+| [`./harness-db.sh`](harness-db.sh) | DBA | `./harness-db.sh list-databases` | `./harness-db.sh describe-fx-trades` |
+| [`./harness-k8s.sh`](harness-k8s.sh) | Kubernetes | `./harness-k8s.sh list-units` | `./harness-k8s.sh pods-shopify-merchants` |
+| [`./harness-redis.sh`](harness-redis.sh) | Redis | `./harness-redis.sh list-caches` | `./harness-redis.sh info-shopify-idemp` |
+| [`./harness-kafka.sh`](harness-kafka.sh) | Kafka / bus | `./harness-kafka.sh list-topics` | `./harness-kafka.sh lag-shopify-orders` |
+| [`./harness-elk.sh`](harness-elk.sh) | ELK / Grafana | `./harness-elk.sh list-units` | `./harness-elk.sh search-shopify-webhooks` |
 
 ```bash
+# 1) Discover what a launcher can do (prints the npm script list)
+./harness-sre.sh
+./harness-db.sh
+./harness-k8s.sh
+./harness-redis.sh
+./harness-kafka.sh
+./harness-elk.sh
+
+# 2) Catalog dumps — --tool path, no model, no API key required
+./harness-sre.sh list-units
+./harness-sre.sh list-forex-markets
+./harness-sre.sh resolve-fx-matching
+./harness-db.sh list-databases
+./harness-kafka.sh topics-shopify-merchants
+./harness-redis.sh caches-shopify
+
+# 3) Interactive session for one role
+./harness-sre.sh repl
+./harness-db.sh repl
+./harness-k8s.sh repl
+./harness-redis.sh repl
+./harness-kafka.sh repl
+./harness-elk.sh repl
+
+# 4) Named playbooks across the 100+ service estate
+./harness-sre.sh observe-fx-matching
+./harness-sre.sh incident-shopify-hmac
+./harness-db.sh describe-fx-trades
+./harness-db.sh failover-shopify-sync
+./harness-k8s.sh pods-shopify-merchants
+./harness-k8s.sh describe-fx-matching
+./harness-redis.sh info-shopify-idemp
+./harness-redis.sh memory-ecom-cart
+./harness-kafka.sh lag-shopify-orders
+./harness-kafka.sh describe-checkout-saga
+./harness-elk.sh search-shopify-webhooks
+./harness-elk.sh search-forex-trades
+```
+
+Same launchers via npm, still from the repository root:
+
+```bash
+npm run harness:sre -- list-units
 npm run harness:sre -- observe-fx-matching
+npm run harness:db -- describe-fx-trades
+npm run harness:k8s -- pods-shopify-merchants
+npm run harness:redis -- info-shopify-idemp
+npm run harness:kafka -- lag-shopify-orders
 npm run harness:elk -- search-forex-trades
 ```
+
+Full command tables: [sre.md](enterprise_it_harnessing/sre.md) · [db.md](enterprise_it_harnessing/db.md) · [k8s.md](enterprise_it_harnessing/k8s.md) · [redis.md](enterprise_it_harnessing/redis.md) · [kafka.md](enterprise_it_harnessing/kafka.md) · [elk.md](enterprise_it_harnessing/elk.md)
 
 ## What is Harness Engineering?
 Harness engineering is the discipline of building the environment that surrounds an AI model, not the model itself. The model reasons and decides. The harness executes, constrains, and connects. A well-designed harness gives the model precisely the tools it needs, nothing more, and governs exactly what it is allowed to do with them.

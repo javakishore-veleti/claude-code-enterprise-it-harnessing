@@ -1,6 +1,8 @@
 # Enterprise IT harnessing
 
-Audience diagrams: [SVP strategic](../docs/platform-diagrams.md#strategic-diagram-svp-of-engineering) · [EM / Chief Architect](../docs/platform-diagrams.md#architecture-engineering-manager--chief-architect) · [role-specific](../docs/platform-diagrams.md#role-specific-diagrams)
+Audience diagrams: [SVP strategic](../docs/platform-diagrams.md#strategic-diagram-svp-of-engineering) · [enterprise architecture 100+](../docs/platform-diagrams.md#enterprise-architecture-100-microservices) · [EM / Chief Architect](../docs/platform-diagrams.md#architecture-engineering-manager--chief-architect) · [role-specific](../docs/platform-diagrams.md#role-specific-diagrams)
+
+From the **repository root**: `./harness-sre.sh`, `./harness-db.sh`, `./harness-k8s.sh`, `./harness-redis.sh`, `./harness-kafka.sh`, `./harness-elk.sh`. Examples: `./harness-sre.sh list-units`, `./harness-sre.sh observe-fx-matching`. Full run book: [root README — How to launch](../README.md#how-to-launch-from-the-repository-root).
 
 This package is the operator surface for a **single enterprise** that runs about **100 microservices** across **10 business units**. Each unit owns a dedicated cloud account and its own Kubernetes, Kafka/Event Hubs/Pub/Sub, Redis, Elasticsearch, and Grafana stack.
 
