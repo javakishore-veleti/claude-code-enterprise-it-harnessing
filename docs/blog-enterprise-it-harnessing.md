@@ -6,7 +6,7 @@ This blog is about **Enterprise IT Harnessing** capabilities.
 
 <h3 style="color:#2563eb;font-weight:600;margin:1em 0 0.35em">My GitHub repository</h3>
 
-This post discusses [claude-code-enterprise-it-harnessing](https://github.com/javakishore-veleti/claude-code-enterprise-it-harnessing) that implements those capabilities.
+This post discusses my GitHub repo [claude-code-enterprise-it-harnessing](https://github.com/javakishore-veleti/claude-code-enterprise-it-harnessing) that implements those capabilities.
 
 This blog post considers an Enterprise IT team that supports FOREX back-office trade processing, e-commerce business middleware (quote through order, shipment, and fulfillment), and Shopify as a SaaS integration — on a mixed stack of Kubernetes, buses, Redis, databases, and search — and still needs **one unified harness** for observe, diagnose, fail over, roll back, search, and silence.
 
