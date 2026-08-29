@@ -44,7 +44,7 @@ This repository is an **Enterprise IT Harnessing Platform**. One decision loop. 
 
 ### Enterprise context
 
-The Enterprise IT team is in the business of supporting the domains that are deployed and managed on those six surfaces — SRE, Event Bus, Search, Kubernetes, Redis, and DB. FOREX matching and settlement, e-commerce checkout and fulfillment, and Shopify headless integration do not share a single admin shell, but they share one operational problem: dedicated cloud accounts, many stacks, and production changes that must stay inside a role. Such an Enterprise IT organization needs **unified IT harnessing** — one loop, one permission engine, six role-scoped surfaces. This repository is a foundation and a reference implementation for that need.
+The Enterprise IT team is in the business of supporting the domains — FOREX bank middleware, e-commerce microservices (full tech stack and SRE practices), Shopify headless merchant integration, and the customer / fulfillment / research units around them — that are deployed and managed on those six surfaces (SRE, Event Bus, Search, Kubernetes, Redis, and DB). Those domains do not share a single admin shell, but they share one operational problem: dedicated cloud accounts, many stacks, and production changes that must stay inside a role. Such an Enterprise IT organization needs **unified IT harnessing** — one loop, one permission engine, six role-scoped surfaces. This repository is a foundation and a reference implementation for that need.
 
 ### Current Enterprise IT State
 
