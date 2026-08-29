@@ -14,6 +14,15 @@
 [![PyYAML](https://img.shields.io/badge/PyYAML-6.0+-cb171e.svg)](https://pyyaml.org/)
 [![npm scripts](https://img.shields.io/badge/npm-s01--s23-cb3837.svg)](package.json)
 
+## Table of Contents
+
+- [What is Harness Engineering?](#what-is-harness-engineering)
+- [How Claude Code Uses Harness Engineering?](#how-claude-code-uses-harness-engineering)
+  - [Phase 1: The Core Agent Loop](#phase-1-the-core-agent-loop)
+  - [Phase 2: Knowledge & Context Management](#phase-2-knowledge--context-management)
+  - [Phase 3: Async Execution & Multi-Agent Teams](#phase-3-async-execution--multi-agent-teams)
+- [Session guide](#session-guide)
+
 ## What is Harness Engineering?
 Harness engineering is the discipline of building the environment that surrounds an AI model, not the model itself. The model reasons and decides. The harness executes, constrains, and connects. A well-designed harness gives the model precisely the tools it needs, nothing more, and governs exactly what it is allowed to do with them.
 
@@ -162,3 +171,35 @@ This is where Claude Code’s parallel subagent spawning, background execution q
 In Claude Code’s internal architecture, the h2A async queue is one of its most practical performance mechanisms. When Claude runs a test suite, compiles a project, or performs a long database migration, it does not sit idle waiting for the result.
 
 It pushes the operation into the background, continues planning the next steps, and receives a notification when the operation completes. The main reasoning loop never blocks on I/O.
+
+## Session guide
+
+Copy `.env.example` to `.env`, set `ANTHROPIC_API_KEY`, then run a session with the matching `package.json` script. Prompts below assume you are a full-stack engineer working across Django, Spring Boot, .NET, TypeScript, and SRE.
+
+| Session | Run | Example prompt |
+| --- | --- | --- |
+| s01 perception-action | `npm run s01` | `What is in this repo? Use bash to list the top-level files and tell me if this looks like a Django, Spring Boot, or .NET service.` |
+| s02 tool dispatch | `npm run s02` | `Grep this repo for stream_loop and read the first match. Summarize how the harness dispatches tools the way a TypeScript BFF would route to Django or Spring Boot.` |
+| s03 todo plan | `npm run s03` | `Plan then implement a health-check story: Django /healthz, Spring Boot Actuator /health, and a .NET /health endpoint. Use todo_write first.` |
+| s04 subagent | `npm run s04` | `Spawn a subagent to explore this repo and return a one-page map of sessions vs a typical SRE runbook: detect, triage, mitigate, review.` |
+| s05 skill loading | `npm run s05` | `List skills, load code-review, then review s07_task_system.py as if it were a PR from a Django + TypeScript fullstack teammate.` |
+| s06 context compact | `npm run s06` | `Walk me session by session through this harness and compare each idea to Django middleware, Spring interceptors, and .NET middleware until context compacting kicks in.` |
+| s07 task graph | `npm run s07` | `Build a persisted task graph for a checkout feature: Spring Boot orders API, Django inventory, .NET billing worker, TypeScript BFF. Respect dependencies.` |
+| s08 background tasks | `npm run s08` | `Start a long pytest or npm test in the background like a CI job, and while it runs plan the SRE rollback steps for a bad Spring Boot deploy.` |
+| s09 agent teams | `npm run s09` | `Stand up a team: Django API owner, .NET worker owner, TypeScript BFF owner, and an SRE reviewer. Have them split an outage playbook.` |
+| s10 team protocols | `npm run s10` | `Have teammates negotiate a JSON contract between a TypeScript BFF and a Spring Boot service using the shared communication protocol.` |
+| s11 autonomous agents | `npm run s11` | `Put dual-write migration tasks for Django and .NET on the board and let workers claim them themselves. I will only set the goal.` |
+| s12 worktree isolation | `npm run s12` | `Isolate two fixes in separate worktrees: a Django settings leak and a Spring Boot Actuator exposure. Do not edit the same tree.` |
+| s13 streaming | `npm run s13` | `Stream a comparison of this agent loop to an SRE incident loop and a .NET hosted-service background worker.` |
+| s14 reversible tools | `npm run s14` | `Write a small change to a file, show the snapshot, then revert it the way I would roll back a bad web.config or Django settings change.` |
+| s15 permissions | `npm run s15` | `Try a dangerous shell command and a safe grep. I want to see permissions.yaml block the first like a production admission controller.` |
+| s16 event bus | `npm run s16` | `Run a few tools so hooks fire. Treat events like CI/CD listeners I would attach to GitHub Actions or a Spring ApplicationEvent.` |
+| s17 sessions | `npm run s17` | `Start a session titled Django auth review, save it, list sessions, then tell me how I would resume after a laptop restart.` |
+| s18 parallel tools | `npm run s18` | `In one turn, glob all s*.py files and grep for spawn_subagent. Do not do those lookups sequentially.` |
+| s19 interrupts | `npm run s19` | `Start a long exploration of this repo. I will Ctrl+C mid-task and redirect you to a TypeScript BFF question instead.` |
+| s20 prompt cache | `npm run s20` | `Ask the same architecture question three times: how would this harness sit in front of Django, Spring Boot, and .NET? Watch cache HIT vs MISS.` |
+| s21 MCP runtime | `npm run s21` | `Connect the MCP servers from config and list the tools they expose. Tell me which ones an SRE would use vs a TypeScript app engineer.` |
+| s22 Redis mailbox | `npm run s22` | `Spin a team that talks over Redis mailboxes the way our services use Redis pub/sub instead of shared JSONL files.` |
+| s23 advanced worktrees | `npm run s23` | `Fix Django CSRF settings \| harden Spring Boot Actuator \| add a .NET health check` |
+
+For s23, separate parallel worktree tasks with `|` as the script expects. Type `q`, `exit`, or `quit` to leave any session.
