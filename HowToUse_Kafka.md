@@ -1,40 +1,37 @@
 # How To Use — Kafka / Event Bus
 
-```bash
-./harness-kafka.sh
-./harness-kafka.sh repl --interactive
-./harness-kafka.sh identity
-./harness-kafka.sh skills
-```
+`--interactive` is optional. Omit it to print and exit.
 
-```bash
-./harness-kafka.sh list-units
-./harness-kafka.sh list-topics
-./harness-kafka.sh topics-forex-markets
-./harness-kafka.sh topics-forex-settlement
-./harness-kafka.sh topics-ecom-retail
-./harness-kafka.sh topics-ecom-quote
-./harness-kafka.sh topics-fulfillment
-./harness-kafka.sh topics-customer-profile
-./harness-kafka.sh topics-customer-support
-./harness-kafka.sh topics-customer-advisor
-./harness-kafka.sh topics-product-research
-./harness-kafka.sh topics-shopify-merchants
-```
-
-```bash
-./harness-kafka.sh describe-fx-trades --interactive
-./harness-kafka.sh describe-fx-orders --interactive
-./harness-kafka.sh describe-fx-settlement --interactive
-./harness-kafka.sh describe-checkout-saga --interactive
-./harness-kafka.sh describe-shopify-orders --interactive
-./harness-kafka.sh describe-shopify-legacy --interactive
-./harness-kafka.sh lag-fx-matching --interactive
-./harness-kafka.sh lag-fx-stp --interactive
-./harness-kafka.sh lag-orders-workflow --interactive
-./harness-kafka.sh lag-checkout --interactive
-./harness-kafka.sh lag-shopify-orders --interactive
-./harness-kafka.sh lag-shopify-products --interactive
-./harness-kafka.sh lag-legacy-bridge --interactive
-./harness-kafka.sh create-research-topic --interactive
-```
+| Command | Output | When to use |
+| --- | --- | --- |
+| `./harness-kafka.sh` | npm script list | See every Kafka command |
+| `./harness-kafka.sh repl` | Cloud identity JSON | Confirm who you are; no session |
+| `./harness-kafka.sh repl --interactive` | `kafka >>` prompt | Empty bus session |
+| `./harness-kafka.sh identity` | Cloud identity JSON | Same dump, no model |
+| `./harness-kafka.sh skills` | topic-lifecycle, consumer-lag | See bus runbooks |
+| `./harness-kafka.sh list-units` | BUs → bus names | Which MSK / Event Hubs / Pub/Sub |
+| `./harness-kafka.sh list-topics` | All named topics | Estate map |
+| `./harness-kafka.sh topics-forex-markets` | `fx.quotes.raw`, `fx.trades.captured`, … | FOREX markets topics |
+| `./harness-kafka.sh topics-forex-settlement` | Settlement + risk.breaches | FOREX settlement topics |
+| `./harness-kafka.sh topics-ecom-retail` | orders.created, checkout.saga | Retail topics |
+| `./harness-kafka.sh topics-ecom-quote` | quotes.accepted | Quote topics |
+| `./harness-kafka.sh topics-fulfillment` | shipments.scanned | Fulfillment topics |
+| `./harness-kafka.sh topics-customer-profile` | profile.changed | Profile topics |
+| `./harness-kafka.sh topics-customer-support` | tickets.opened | Support topics |
+| `./harness-kafka.sh topics-customer-advisor` | nba.emitted | Advisor topics |
+| `./harness-kafka.sh topics-product-research` | signals.ingested | Research topics |
+| `./harness-kafka.sh topics-shopify-merchants` | webhooks.orders / products / legacy | Shopify topics |
+| `./harness-kafka.sh describe-fx-trades` | Topic describe `fx.trades.captured` | Trade-capture partitions |
+| `./harness-kafka.sh describe-fx-orders` | Topic describe `fx.orders.routed` | Matching input topic |
+| `./harness-kafka.sh describe-fx-settlement` | Topic describe settlement instructions | CLS / settlement topic |
+| `./harness-kafka.sh describe-checkout-saga` | Topic describe `ecom.checkout.saga` | Checkout bus |
+| `./harness-kafka.sh describe-shopify-orders` | Topic describe `shopify.webhooks.orders` | Shopify order webhooks |
+| `./harness-kafka.sh describe-shopify-legacy` | Topic describe `shopify.legacy.outbound` | Legacy outbound |
+| `./harness-kafka.sh lag-fx-matching` | Consumer lag matching-engine | Matching behind `fx.orders.routed` |
+| `./harness-kafka.sh lag-fx-stp` | Consumer lag STP adapter | Bank STP behind trades |
+| `./harness-kafka.sh lag-orders-workflow` | Consumer lag orders-workflow | Order state machine behind |
+| `./harness-kafka.sh lag-checkout` | Consumer lag payments-adapter (do not rewind) | Checkout lag; no rewind |
+| `./harness-kafka.sh lag-shopify-orders` | Consumer lag shopify-order-sync | Shopify orders behind |
+| `./harness-kafka.sh lag-shopify-products` | Consumer lag shopify-product-sync | Shopify products behind |
+| `./harness-kafka.sh lag-legacy-bridge` | Consumer lag fulfillment-push | Legacy outbound behind |
+| `./harness-kafka.sh create-research-topic` | Topic-create proposal (asks for approval) | Research only; FOREX/Shopify denied |

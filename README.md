@@ -330,7 +330,7 @@ A playbook without flags runs one model turn and exits (`--once`). That starts a
 ./harness-elk.sh search-shopify-webhooks --interactive
 ```
 
-`repl` without `--interactive` does not open a session. `./harness-sre.sh repl --interactive` is an empty session. `--interactive` on a named playbook is the same REPL after that playbook’s first turn.
+`--interactive` is optional. Without it the command prints and exits. With it the same session stays open after that output.
 
 To add a tool, permission, skill, playbook, or a new role, see [How to extend a profile](enterprise_it_harnessing/README.md#how-to-extend-a-profile).
 
@@ -366,7 +366,7 @@ export CLOUD_PROVIDER=aws             # optional: aws | azure | gcp (else auto-d
 ./harness-kafka.sh topics-shopify-merchants
 ./harness-redis.sh caches-shopify
 
-# 3) Empty session — --interactive is required
+# 3) Empty session — --interactive is optional; without it, print identity and exit
 ./harness-sre.sh repl --interactive
 ./harness-db.sh repl --interactive
 ./harness-k8s.sh repl --interactive
