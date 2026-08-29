@@ -17,6 +17,7 @@
 ## Table of Contents
 
 - [Introduction](#introduction)
+  - [Enterprise context](#enterprise-context)
 - [Purpose, objective, value, and business impact](#purpose-objective-value-and-business-impact)
 - [Strategic diagram](#strategic-diagram-svp-of-engineering)
 - [Enterprise architecture](#enterprise-architecture--domains-summing-to-100-microservices)
@@ -37,7 +38,13 @@
 
 ## Introduction
 
-This repository is an **Enterprise IT Harnessing Platform**. One decision loop. Six operator surfaces — SRE, Event Bus (Kafka), Search (ELK), Kubernetes, Redis, and DB. A named catalog of about **100 microservices** across **10 business units** that run FOREX bank middleware, e-commerce middleware, and Shopify headless merchant integration.
+This repository is an **Enterprise IT Harnessing Platform**. One decision loop. Six operator surfaces — SRE, Event Bus (Kafka), Search (ELK), Kubernetes, Redis, and DB.
+
+### Enterprise context
+
+The Enterprise IT team is in the business of supporting the domains that are deployed and managed on those six surfaces — SRE, Event Bus, Search, Kubernetes, Redis, and DB. FOREX matching and settlement, e-commerce checkout and fulfillment, and Shopify headless integration do not share a single admin shell, but they share one operational problem: dedicated cloud accounts, many stacks, and production changes that must stay inside a role. Such an Enterprise IT organization needs **unified IT harnessing** — one loop, one catalog, one permission engine, six role-scoped surfaces. This repository is a foundation and a reference implementation for that need.
+
+A named catalog of about **100 microservices** across **10 business units** that run FOREX bank middleware, e-commerce middleware, and Shopify headless merchant integration.
 
 The model never hard-codes “this is an EKS outage” or “this is a stuck checkout saga.” It only sees tools and a system prompt. Each profile swaps the **tool list**, **skill files**, **permission rules**, and **named resources**. Cloud (AWS, Azure, GCP) only changes identity and CLI argv. An AWS Kafka admin and a GCP Cloud SQL admin share the loop and the permission engine; they do not share the same tool list.
 
