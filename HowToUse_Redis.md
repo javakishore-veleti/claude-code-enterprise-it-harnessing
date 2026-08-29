@@ -1,5 +1,7 @@
 # How To Use — Redis
 
+Catalog / playbooks: `./harness-redis.sh`. Jobs (15, skill + hooks): `./harness-redis-job.sh` — [HowToUse_Redis_Jobs.md](HowToUse_Redis_Jobs.md).
+
 `repl` opens a session. Playbooks print and exit unless you add `--interactive`.
 
 | Command | Output | When to use |

@@ -1,5 +1,7 @@
 # How To Use — Kafka / Event Bus
 
+Catalog / playbooks: `./harness-kafka.sh`. Jobs (15, skill + hooks): `./harness-kafka-job.sh` — [HowToUse_Kafka_Jobs.md](HowToUse_Kafka_Jobs.md).
+
 `repl` opens a session. Playbooks print and exit unless you add `--interactive`.
 
 | Command | Output | When to use |

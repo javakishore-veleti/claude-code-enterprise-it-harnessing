@@ -1,5 +1,7 @@
 # How To Use — DB
 
+Catalog / playbooks: `./harness-db.sh`. Jobs (15, skill + hooks): `./harness-db-job.sh` — [HowToUse_DB_Jobs.md](HowToUse_DB_Jobs.md).
+
 `repl` opens a session. Playbooks print and exit unless you add `--interactive`.
 
 | Command | Output | When to use |

@@ -1,5 +1,7 @@
 # How To Use — ELK / Search
 
+Catalog / playbooks: `./harness-elk.sh`. Jobs (15, skill + hooks): `./harness-elk-job.sh` — [HowToUse_ELK_Jobs.md](HowToUse_ELK_Jobs.md).
+
 `repl` opens a session. Playbooks print and exit unless you add `--interactive`.
 
 | Command | Output | When to use |

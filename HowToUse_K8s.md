@@ -1,5 +1,7 @@
 # How To Use — Kubernetes
 
+Catalog / playbooks: `./harness-k8s.sh`. Jobs (15, skill + hooks): `./harness-k8s-job.sh` — [HowToUse_K8s_Jobs.md](HowToUse_K8s_Jobs.md).
+
 `repl` opens a session. Playbooks print and exit unless you add `--interactive`.
 
 | Command | Output | When to use |

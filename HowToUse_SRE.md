@@ -1,5 +1,7 @@
 # How To Use — SRE
 
+Catalog / playbooks: `./harness-sre.sh`. Jobs (15, skill + hooks): `./harness-sre-job.sh` — [HowToUse_SRE_Jobs.md](HowToUse_SRE_Jobs.md).
+
 `repl` opens a session. Playbooks print and exit unless you add `--interactive`.
 
 | Command | Output | When to use |
