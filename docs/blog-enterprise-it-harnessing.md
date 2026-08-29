@@ -4,7 +4,7 @@
 
 This blog is about **Enterprise IT harnessing** capabilities.
 
-This post discusses my [GitHub repository](https://github.com/javakishore-veleti/claude-code-enterprise-it-harnessing) that implements those capabilities.
+This post discusses my GitHub repository [claude-code-enterprise-it-harnessing](https://github.com/javakishore-veleti/claude-code-enterprise-it-harnessing) that implements those capabilities.
 
 This blog post considers an Enterprise IT team that supports several product domains, SaaS services (Shopify headless merchants among them), and a mixed tech stack — Kubernetes, event buses, Redis, databases, and search — and still needs **one unified harness** for the support work those roles actually do: observe, diagnose, fail over, roll back, search, and silence.
 
