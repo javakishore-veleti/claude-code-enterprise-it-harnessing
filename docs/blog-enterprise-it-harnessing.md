@@ -56,35 +56,30 @@ From the repository root, after setting `ANTHROPIC_API_KEY` (and optionally `CLO
 
 Command tables: [sre](../enterprise_it_harnessing/sre.md) · [db](../enterprise_it_harnessing/db.md) · [k8s](../enterprise_it_harnessing/k8s.md) · [redis](../enterprise_it_harnessing/redis.md) · [kafka](../enterprise_it_harnessing/kafka.md) · [elk](../enterprise_it_harnessing/elk.md). Repo: [claude-code-enterprise-it-harnessing](https://github.com/javakishore-veleti/claude-code-enterprise-it-harnessing).
 
-## What these Enterprise IT harnessing capabilities change
+## Value of Enterprise IT harnessing
 
-### Named production estate
+This is the value of the *capability* — one loop, role-scoped surfaces, policy before execution — for an Enterprise IT team that already runs FOREX, e-commerce, and Shopify-style estates. It is not a list of features of one git repository.
 
-- Tools resolve names the company already runs (`fx-matching-engine`), not `service-1`.
-- The harness maps that estate. It does not host the application repos.
+### For the operator
 
-### Role boundaries
+- Work stays inside the role: SRE, Event Bus, Search, Kubernetes, Redis, or DB. A cache failover and a deploy rollback are not the same action.
+- Support work uses production names the team already knows, not a shared admin shell across every stack.
+- Observe, search, and inventory can stay read-only. Mutations that affect customers wait for a person.
 
-- Six surfaces, one loop: SRE, Event Bus, Search, Kubernetes, Redis, DB.
-- An SRE session cannot issue `FLUSHALL`. A Redis session cannot drain a node.
+### For the incident
 
-### Policy before execution
+- The same matching-engine or checkout-saga name is what health, logs, lag, and rollback all resolve.
+- Two people (or two agents) cannot mutate the same cluster, topic, instance, or cache at the same time.
+- Irreversible wipes are out of scope for the role. They are not something the model is asked to “be careful” about.
 
-- Irreversible wipes (`DROP DATABASE`, namespace / PV delete, `FLUSHALL`) are denied in `permissions.yaml`.
-- Customer-facing mutations (rollback, failover, ACL, silence) require an operator (`ask_user`).
-- Deny / allow / ask is evaluated before the tool runs. It is not a prompt instruction.
+### For the estate
 
-### Concurrent mutations
+- Ten business units can keep dedicated accounts and clusters. Harnessing does not flatten them into one kubeconfig.
+- FOREX, e-commerce, and Shopify stay separate product domains. The harness is shared; the blast radius is not.
+- AWS, Azure, and GCP can use the same permission model. Each role still has its own tool list.
 
-- A mutating tool takes an isolation lease on the cluster, topic, instance, or cache.
-- A second run on the same target fails closed until the lease is released or expires.
+### For the organization
 
-### When a model is called
-
-- Catalog dumps (`list-units`, `list-topics`, `resolve-*`) do not call a model.
-- Playbooks (`observe-*`, `incident-*`, `failover-*`) do.
-
-### Cloud and decision client
-
-- AWS, Azure, and GCP share the permission engine. They do not share a tool list. Only identity and CLI argv change.
-- Deny rules stay in the harness if the decision client is replaced. They do not move into prompt text.
+- Policy lives next to the tools (deny / allow / ask), not in a runbook paragraph or a system prompt.
+- The decision client can change. The surfaces, names, and deny rules do not have to.
+- MTTR is repeatable on named SLOs because the path is the same playbook, not a new shell session each time.
