@@ -1,8 +1,8 @@
-# Enterprise IT harnessing on a live FOREX, e-commerce, and Shopify estate
+# Enterprise IT Harnessing on a live FOREX, e-commerce, and Shopify estate
 
 ~2 minute read.
 
-This blog is about **Enterprise IT harnessing** capabilities.
+This blog is about **Enterprise IT Harnessing** capabilities.
 
 <h3 style="color:#2563eb;font-weight:600;margin:1em 0 0.35em">My GitHub repository</h3>
 
@@ -58,7 +58,7 @@ From the repository root, after setting `ANTHROPIC_API_KEY` (and optionally `CLO
 
 Command tables: [sre](../enterprise_it_harnessing/sre.md) · [db](../enterprise_it_harnessing/db.md) · [k8s](../enterprise_it_harnessing/k8s.md) · [redis](../enterprise_it_harnessing/redis.md) · [kafka](../enterprise_it_harnessing/kafka.md) · [elk](../enterprise_it_harnessing/elk.md). Repo: [claude-code-enterprise-it-harnessing](https://github.com/javakishore-veleti/claude-code-enterprise-it-harnessing).
 
-## Value of Enterprise IT harnessing
+## Value of Enterprise IT Harnessing
 
 This is the value of the *capability* — one loop, role-scoped surfaces, policy before execution — for an Enterprise IT team that already runs FOREX, e-commerce, and Shopify-style estates. It is not a list of features of one git repository.
 

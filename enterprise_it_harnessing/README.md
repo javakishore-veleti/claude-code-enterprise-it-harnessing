@@ -1,4 +1,4 @@
-# Enterprise IT harnessing
+# Enterprise IT Harnessing
 
 Audience diagrams: [SVP strategic](../docs/platform-diagrams.md#strategic-diagram-svp-of-engineering) · [enterprise architecture 100+](../docs/platform-diagrams.md#enterprise-architecture-100-microservices) · [EM / Chief Architect](../docs/platform-diagrams.md#architecture-engineering-manager--chief-architect) · [role-specific](../docs/platform-diagrams.md#role-specific-diagrams)
 

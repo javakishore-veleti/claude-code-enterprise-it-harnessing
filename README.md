@@ -36,7 +36,7 @@
   - [Phase 2: Knowledge & Context Management](#phase-2-knowledge--context-management)
   - [Phase 3: Async Execution & Multi-Agent Teams](#phase-3-async-execution--multi-agent-teams)
 - [Session guide](#session-guide)
-- [Enterprise IT harnessing](enterprise_it_harnessing/README.md)
+- [Enterprise IT Harnessing](enterprise_it_harnessing/README.md)
 - [Full diagram set](docs/platform-diagrams.md)
 
 ## Introduction
@@ -55,7 +55,7 @@ The Enterprise IT team is in the business of supporting the domains below. Those
 | **E-commerce microservices** | Product catalog, list / promo / contract pricing, cart, checkout saga, orders, payments, inventory reservation, B2B quote-to-order, fulfillment (WMS, pick-pack, ship, track, returns), customer profile / consent / loyalty, support tickets and SLA, advisor next-best-action, product research and assortment — full tech stack and SRE practices |
 | **Shopify headless merchants** | Merchant OAuth, HMAC-verified webhooks, product / inventory / order / customer sync into catalog and ERP, idempotency, fulfillment push-back, SOAP / AS/400 legacy bridge |
 
-FOREX matching and settlement, e-commerce checkout and fulfillment, and Shopify headless integration do not share a single admin shell, but they share one operational problem: dedicated cloud accounts, many stacks, and production changes that must stay inside a role. Such an Enterprise IT organization needs **unified IT harnessing** — one loop, one permission engine, six role-scoped surfaces. This repository is a foundation and a reference implementation for that need.
+FOREX matching and settlement, e-commerce checkout and fulfillment, and Shopify headless integration do not share a single admin shell, but they share one operational problem: dedicated cloud accounts, many stacks, and production changes that must stay inside a role. Such an Enterprise IT organization needs **unified IT Harnessing** — one loop, one permission engine, six role-scoped surfaces. This repository is a foundation and a reference implementation for that need.
 
 ### Current Enterprise IT State
 
@@ -65,7 +65,7 @@ This repository does **not** contain 100 microservice codebases. Those applicati
 
 ### What the `enterprise_it_harnessing` folder is
 
-[`enterprise_it_harnessing/`](enterprise_it_harnessing/README.md) is the **actual product of this git repository**. It is what Enterprise IT harnessing should always be: six role-scoped operator surfaces (SRE, Event Bus, Search, Kubernetes, Redis, DB) over a live production estate, with declarative permissions, isolation leases, and root launchers (`./harness-sre.sh` and the rest). The `s01`–`s23` scripts stay at the root as the teaching layer. Day-to-day operators start here — see [How to launch](#how-to-launch-from-the-repository-root).
+[`enterprise_it_harnessing/`](enterprise_it_harnessing/README.md) is the **actual product of this git repository**. It is what Enterprise IT Harnessing should always be: six role-scoped operator surfaces (SRE, Event Bus, Search, Kubernetes, Redis, DB) over a live production estate, with declarative permissions, isolation leases, and root launchers (`./harness-sre.sh` and the rest). The `s01`–`s23` scripts stay at the root as the teaching layer. Day-to-day operators start here — see [How to launch](#how-to-launch-from-the-repository-root).
 
 [Strategic diagram (SVP)](#strategic-diagram-svp-of-engineering) · [Purpose, objective, value, and business impact](#purpose-objective-value-and-business-impact) · [Full diagram set](docs/platform-diagrams.md)
 
