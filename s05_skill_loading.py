@@ -40,7 +40,7 @@ from core import (
 
 # Define the absolute path to the 'skills' repository directory.
 # This assumes the directory structure: project_root/skills/
-SKILLS_DIR: Path = Path(__file__).parent.parent / "skills"
+SKILLS_DIR: Path = Path(__file__).parent / "skills"
 
 # === Skill Discovery Logic ===
 
