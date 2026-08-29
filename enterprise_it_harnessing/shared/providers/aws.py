@@ -2,9 +2,38 @@
 
 from __future__ import annotations
 
+from datetime import datetime, timedelta, timezone
+
 
 def rds_describe(instance: str) -> list[str]:
     return ["aws", "rds", "describe-db-instances", "--db-instance-identifier", instance]
+
+
+def rds_replica_lag(instance: str) -> list[str]:
+    end = datetime.now(timezone.utc)
+    start = end - timedelta(minutes=10)
+    return [
+        "aws",
+        "cloudwatch",
+        "get-metric-statistics",
+        "--namespace",
+        "AWS/RDS",
+        "--metric-name",
+        "ReplicaLag",
+        "--dimensions",
+        f"Name=DBInstanceIdentifier,Value={instance}",
+        "--start-time",
+        start.strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "--end-time",
+        end.strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "--period",
+        "60",
+        "--statistics",
+        "Maximum",
+        "Average",
+        "--output",
+        "json",
+    ]
 
 
 def rds_snapshots(instance: str) -> list[str]:

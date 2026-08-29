@@ -9,6 +9,13 @@ export CLOUD_PROVIDER=aws   # optional: aws | azure | gcp
 
 `repl` opens a session. On a playbook, `--interactive` is optional: omit it to print and exit; add it to keep that session.
 
+Bare `./harness-*.sh` / `./harness-*-job.sh` lists **command names only**. Answers use this structure unless you ask for another format:
+
+1. **Input** — what you asked
+2. **What it is doing** — skill and tools
+3. **What it found** — measured values
+4. **Final output** — severity and next action
+
 | If you are | Catalog / playbooks | Jobs (15, skill + hooks) |
 | --- | --- | --- |
 | SRE | [HowToUse_SRE.md](HowToUse_SRE.md) · `./harness-sre.sh` | [HowToUse_SRE_Jobs.md](HowToUse_SRE_Jobs.md) · `./harness-sre-job.sh` |

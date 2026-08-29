@@ -4,4 +4,5 @@
 #        ./harness-kafka-job.sh <job>
 set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+export HARNESS_CLI="./harness-kafka-job.sh"
 exec "$ROOT/enterprise_it_harnessing/_invoke.sh" kafka_harnessing/jobs "$@"

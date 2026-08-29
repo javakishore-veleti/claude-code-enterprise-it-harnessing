@@ -7,6 +7,27 @@ def sql_show(name: str, resource_group: str) -> list[str]:
     return ["az", "sql", "server", "show", "--name", name, "--resource-group", resource_group]
 
 
+def sql_replica_lag(name: str, resource_group: str) -> list[str]:
+    return [
+        "az",
+        "monitor",
+        "metrics",
+        "list",
+        "--resource-group",
+        resource_group,
+        "--resource",
+        name,
+        "--resource-type",
+        "Microsoft.Sql/servers",
+        "--metric",
+        "replica_info",
+        "--interval",
+        "PT1M",
+        "--output",
+        "json",
+    ]
+
+
 def sql_list_backups(name: str, resource_group: str) -> list[str]:
     return ["az", "sql", "db", "lts-policy", "show", "--server", name, "--resource-group", resource_group, "--name", "master"]
 

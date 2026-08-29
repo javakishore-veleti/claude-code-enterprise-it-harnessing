@@ -91,17 +91,70 @@ def failover_instance(inp: dict[str, Any]) -> str:
     )
 
 
+_SEV2_LAG_SECONDS = 5.0
+_SEV2_LAG_INSTANCES = {"rds-fx-trades-prod", "azsql-orders-prod", "rds-shopify-sync-prod"}
+
+
+def _lag_seconds_from_probe(raw: str) -> float | None:
+    try:
+        payload = json.loads(raw)
+    except json.JSONDecodeError:
+        return None
+    stdout = payload.get("stdout") if isinstance(payload, dict) else None
+    inner: Any = payload
+    if isinstance(stdout, str) and stdout.strip().startswith(("{", "[")):
+        try:
+            inner = json.loads(stdout)
+        except json.JSONDecodeError:
+            inner = payload
+    if not isinstance(inner, dict):
+        return None
+    points = inner.get("Datapoints") or []
+    if points:
+        latest = max(points, key=lambda p: str(p.get("Timestamp", "")))
+        value = latest.get("Maximum")
+        if value is None:
+            value = latest.get("Average")
+        if value is None:
+            return None
+        return float(value)
+    for key in ("replicationLag", "replicaLag", "value"):
+        if key in inner and inner[key] is not None:
+            try:
+                return float(inner[key])
+            except (TypeError, ValueError):
+                continue
+    return None
+
+
 def replication_lag(inp: dict[str, Any]) -> str:
     rec = _resolve(inp["instance"])
     if not rec:
         return resolve_database(inp)
+    instance = rec["instance"]
+    cloud = rec["cloud"]
+    threshold = _SEV2_LAG_SECONDS if instance in _SEV2_LAG_INSTANCES else 15.0
+    if cloud == "aws":
+        raw = run_argv(aws.rds_replica_lag(instance))
+    elif cloud == "azure":
+        raw = run_argv(azure.sql_replica_lag(instance, inp.get("resource_group", rec["business_unit"])))
+    elif cloud == "gcp":
+        raw = run_argv(gcp.sql_replica_lag(instance))
+    else:
+        raw = run_argv(["echo", f"replica lag {instance}"])
+    value = _lag_seconds_from_probe(raw)
+    sev2 = None if value is None else value > threshold
     return json.dumps(
         {
             "ok": True,
             "catalog": rec,
-            "check": "replica_lag_seconds",
-            "hint": "Treat > 5s as Sev2 on fx-trades / orders / shopify-sync.",
-        }
+            "metric": "replica_lag_seconds",
+            "value_seconds": value,
+            "threshold_seconds": threshold,
+            "sev2": sev2,
+            "probe": raw,
+        },
+        default=str,
     )
 
 
@@ -144,7 +197,7 @@ TOOLS = [
     },
     {
         "name": "replication_lag",
-        "description": "Report replica lag policy for a named database.",
+        "description": "Measure replica lag seconds for a named database (CloudWatch / Azure Monitor / Cloud SQL).",
         "input_schema": {
             "type": "object",
             "properties": {"instance": {"type": "string"}},

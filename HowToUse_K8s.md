@@ -6,7 +6,7 @@ Catalog / playbooks: `./harness-k8s.sh`. Jobs (15, skill + hooks): `./harness-k8
 
 | Command | Output | When to use |
 | --- | --- | --- |
-| `./harness-k8s.sh` | npm script list | See every K8s command |
+| `./harness-k8s.sh` | Command names only | See every K8s command |
 | `./harness-k8s.sh repl` | `k8s >>` prompt | Empty cluster session |
 | `./harness-k8s.sh identity` | Cloud identity JSON | Same dump, no model |
 | `./harness-k8s.sh skills` | cluster-context, crashloop | See K8s runbooks |

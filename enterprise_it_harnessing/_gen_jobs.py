@@ -378,6 +378,7 @@ def write_role(key: str, spec: dict) -> None:
         f"`./{launcher}` is the **job** launcher. `./{launcher.replace('-job.sh', '.sh')}` stays the catalog / playbook launcher. Existing commands are unchanged.",
         "",
         "Each job injects its skill into Claude (`--with-skill`). Hooks stay in that role’s `permissions.yaml` (deny / allow / ask).",
+        "Answers use **Input / What it is doing / What it found / Final output** unless you ask for another format.",
         "",
         "| Command | Job (what Claude follows) | When to use |",
         "| --- | --- | --- |",
@@ -397,6 +398,7 @@ def write_role(key: str, spec: dict) -> None:
         f"#        ./{launcher} <job>\n"
         "set -euo pipefail\n"
         'ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"\n'
+        f'export HARNESS_CLI="./{launcher}"\n'
         f'exec "$ROOT/enterprise_it_harnessing/_invoke.sh" {profile} "$@"\n',
         encoding="utf-8",
     )

@@ -6,4 +6,5 @@
 #        ./harness-kafka.sh lag-shopify-orders --interactive
 set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+export HARNESS_CLI="./harness-kafka.sh"
 exec "$ROOT/enterprise_it_harnessing/_invoke.sh" kafka_harnessing "$@"

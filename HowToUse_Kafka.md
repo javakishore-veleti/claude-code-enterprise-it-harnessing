@@ -6,7 +6,7 @@ Catalog / playbooks: `./harness-kafka.sh`. Jobs (15, skill + hooks): `./harness-
 
 | Command | Output | When to use |
 | --- | --- | --- |
-| `./harness-kafka.sh` | npm script list | See every Kafka command |
+| `./harness-kafka.sh` | Command names only | See every Kafka command |
 | `./harness-kafka.sh repl` | `kafka >>` prompt | Empty bus session |
 | `./harness-kafka.sh identity` | Cloud identity JSON | Same dump, no model |
 | `./harness-kafka.sh skills` | topic-lifecycle, consumer-lag | See bus runbooks |

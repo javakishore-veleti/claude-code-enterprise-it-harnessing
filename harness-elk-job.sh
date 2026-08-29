@@ -4,4 +4,5 @@
 #        ./harness-elk-job.sh <job>
 set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+export HARNESS_CLI="./harness-elk-job.sh"
 exec "$ROOT/enterprise_it_harnessing/_invoke.sh" elk_harnessing/jobs "$@"

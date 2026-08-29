@@ -350,7 +350,7 @@ export CLOUD_PROVIDER=aws             # optional: aws | azure | gcp (else auto-d
 | [`./harness-elk.sh`](harness-elk.sh) | ELK / Grafana | `./harness-elk.sh list-units` | `./harness-elk.sh search-shopify-webhooks` |
 
 ```bash
-# 1) Discover what a launcher can do (prints the npm script list)
+# 1) Discover what a launcher can do (command names only)
 ./harness-sre.sh
 ./harness-db.sh
 ./harness-k8s.sh

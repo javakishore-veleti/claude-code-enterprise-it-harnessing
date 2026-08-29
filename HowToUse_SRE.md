@@ -6,7 +6,7 @@ Catalog / playbooks: `./harness-sre.sh`. Jobs (15, skill + hooks): `./harness-sr
 
 | Command | Output | When to use |
 | --- | --- | --- |
-| `./harness-sre.sh` | npm script list | See every SRE command |
+| `./harness-sre.sh` | Command names only | See every SRE command |
 | `./harness-sre.sh repl` | `sre >>` prompt | Empty SRE session |
 | `./harness-sre.sh identity` | Cloud identity JSON | Same dump, no model |
 | `./harness-sre.sh skills` | incident-response, deploy-rollback | See SRE runbooks |

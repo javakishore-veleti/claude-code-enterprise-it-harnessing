@@ -18,7 +18,7 @@ ROOT_NAME = "harness"
 def configure_logging(level: int | None = None) -> None:
     global _CONFIGURED
     if level is None:
-        level_name = os.environ.get("HARNESS_LOG_LEVEL", "INFO").upper()
+        level_name = os.environ.get("HARNESS_LOG_LEVEL", "WARNING").upper()
         level = getattr(logging, level_name, logging.INFO)
     else:
         os.environ["HARNESS_LOG_LEVEL"] = logging.getLevelName(level)

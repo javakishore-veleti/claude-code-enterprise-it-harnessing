@@ -6,4 +6,5 @@
 #        ./harness-redis.sh info-shopify-idemp --interactive
 set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+export HARNESS_CLI="./harness-redis.sh"
 exec "$ROOT/enterprise_it_harnessing/_invoke.sh" redis_harnessing "$@"

@@ -19,6 +19,18 @@ from .skills import discover_skills, index_text, load_skill
 
 log = get_logger("runner")
 
+_REPORT_FORMAT = (
+    "Default answer structure (use this unless the operator gave a different format):\n"
+    "## Input\n"
+    "What they asked — job, instance, metric. One or two lines.\n"
+    "## What it is doing\n"
+    "Skill and tools you ran. One or two lines. Do not dump argv or npm paths.\n"
+    "## What it found\n"
+    "The measured values. Lead with numbers. Do not recap policy if a number exists.\n"
+    "## Final output\n"
+    "Severity and the next action. Three lines or fewer."
+)
+
 
 def run_harness(
     *,
@@ -94,7 +106,8 @@ def run_harness(
         if args.with_skill:
             once = (
                 f"{load_skill(skills_dir, args.with_skill)}\n\n"
-                f"Follow that skill for this job:\n{once}"
+                f"Follow that skill for this job:\n{once}\n\n"
+                f"{_REPORT_FORMAT}"
             )
         history.append({"role": "user", "content": once})
         stream_loop(messages=history, tools=tools, dispatch=dispatch, system=persona)
@@ -183,7 +196,8 @@ def _system(base: str, identity: CloudIdentity, skills: dict[str, str]) -> list[
         "Call list_business_units / list_services / resolve_service before guessing a cluster or account. "
         "Prefer typed domain tools over raw bash. Load a skill before following a runbook. "
         "Mutating tools take an isolation lease; if a target is dirty or conflicted, stop and report. "
-        "Never invent cloud credentials. If a CLI is missing, return the intended argv.\n\n"
+        "Never invent cloud credentials. If a CLI is missing, return the intended argv.\n"
+        f"{_REPORT_FORMAT}\n"
         f"Available skills:\n{index_text(skills)}"
     )
     return [

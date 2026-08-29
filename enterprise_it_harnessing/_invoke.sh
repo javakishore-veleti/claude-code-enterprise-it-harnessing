@@ -24,16 +24,43 @@ fi
 
 cd "$ROOT"
 
+_cli_for_profile() {
+  case "$1" in
+    sre_harnessing) echo "./harness-sre.sh" ;;
+    sre_harnessing/jobs) echo "./harness-sre-job.sh" ;;
+    db_admin_harnessing) echo "./harness-db.sh" ;;
+    db_admin_harnessing/jobs) echo "./harness-db-job.sh" ;;
+    kubernetes_harnessing) echo "./harness-k8s.sh" ;;
+    kubernetes_harnessing/jobs) echo "./harness-k8s-job.sh" ;;
+    redis_harnessing) echo "./harness-redis.sh" ;;
+    redis_harnessing/jobs) echo "./harness-redis-job.sh" ;;
+    kafka_harnessing) echo "./harness-kafka.sh" ;;
+    kafka_harnessing/jobs) echo "./harness-kafka-job.sh" ;;
+    elk_harnessing) echo "./harness-elk.sh" ;;
+    elk_harnessing/jobs) echo "./harness-elk-job.sh" ;;
+    *) echo "./$(basename "$0")" ;;
+  esac
+}
+
+CLI="${HARNESS_CLI:-$(_cli_for_profile "$PROFILE")}"
+
 if [[ $# -eq 0 ]]; then
-  echo "Enterprise harness: $PROFILE"
-  echo "package.json: $PKG/package.json"
+  echo "$CLI"
+  python3 - "$PKG/package.json" <<'PY'
+import json
+import sys
+from pathlib import Path
+
+data = json.loads(Path(sys.argv[1]).read_text())
+for name in data.get("scripts", {}):
+    print(f"  {name}")
+PY
   echo
-  npm --prefix "$PKG" run
-  echo
-  echo "Run a script:  $(basename "$0" .sh) <script> [--interactive]"
-  echo "Example:       $0 repl --interactive"
-  echo "Keep session:  $0 <playbook> --interactive"
-  echo "Apply a skill: $0 skills <name>   or   $0 apply <name>"
+  echo "Run:  $CLI <name>"
+  if [[ "$PROFILE" != */jobs ]]; then
+    echo "Keep: $CLI <name> --interactive"
+    echo "Skill: $CLI apply <name>"
+  fi
   exit 0
 fi
 
@@ -43,7 +70,7 @@ if [[ "${1:-}" == "apply" || ( "${1:-}" == "skills" && $# -ge 2 && "${2:-}" != -
   shift
   SKILL="${1:-}"
   if [[ -z "$SKILL" || "$SKILL" == --* ]]; then
-    echo "Usage: apply <skill-name> [--interactive]" >&2
+    echo "Usage: $CLI apply <skill-name> [--interactive]" >&2
     exit 1
   fi
   shift

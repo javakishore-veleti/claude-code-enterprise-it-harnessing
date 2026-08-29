@@ -6,7 +6,7 @@ Catalog / playbooks: `./harness-redis.sh`. Jobs (15, skill + hooks): `./harness-
 
 | Command | Output | When to use |
 | --- | --- | --- |
-| `./harness-redis.sh` | npm script list | See every Redis command |
+| `./harness-redis.sh` | Command names only | See every Redis command |
 | `./harness-redis.sh repl` | `redis >>` prompt | Empty Redis session |
 | `./harness-redis.sh identity` | Cloud identity JSON | Same dump, no model |
 | `./harness-redis.sh skills` | replication, eviction | See Redis runbooks |

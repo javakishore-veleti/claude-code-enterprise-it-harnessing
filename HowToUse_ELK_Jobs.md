@@ -3,6 +3,7 @@
 `./harness-elk-job.sh` is the **job** launcher. `./harness-elk.sh` stays the catalog / playbook launcher. Existing commands are unchanged.
 
 Each job injects its skill into Claude (`--with-skill`). Hooks stay in that role’s `permissions.yaml` (deny / allow / ask).
+Answers use **Input / What it is doing / What it found / Final output** unless you ask for another format.
 
 | Command | Job (what Claude follows) | When to use |
 | --- | --- | --- |

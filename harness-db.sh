@@ -6,4 +6,5 @@
 #        ./harness-db.sh describe-fx-trades --interactive
 set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+export HARNESS_CLI="./harness-db.sh"
 exec "$ROOT/enterprise_it_harnessing/_invoke.sh" db_admin_harnessing "$@"

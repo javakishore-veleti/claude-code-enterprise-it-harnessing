@@ -6,7 +6,7 @@ Catalog / playbooks: `./harness-elk.sh`. Jobs (15, skill + hooks): `./harness-el
 
 | Command | Output | When to use |
 | --- | --- | --- |
-| `./harness-elk.sh` | npm script list | See every ELK command |
+| `./harness-elk.sh` | Command names only | See every ELK command |
 | `./harness-elk.sh repl` | `elk >>` prompt | Empty search session |
 | `./harness-elk.sh identity` | Cloud identity JSON | Same dump, no model |
 | `./harness-elk.sh skills` | elasticsearch-query, grafana-alerts | See search runbooks |

@@ -6,7 +6,7 @@ Catalog / playbooks: `./harness-db.sh`. Jobs (15, skill + hooks): `./harness-db-
 
 | Command | Output | When to use |
 | --- | --- | --- |
-| `./harness-db.sh` | npm script list | See every DBA command |
+| `./harness-db.sh` | Command names only | See every DBA command |
 | `./harness-db.sh repl` | `db >>` prompt | Empty DBA session |
 | `./harness-db.sh identity` | Cloud identity JSON | Same dump, no model |
 | `./harness-db.sh skills` | backup-restore, failover | See DBA runbooks |

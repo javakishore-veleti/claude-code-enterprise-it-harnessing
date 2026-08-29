@@ -7,6 +7,17 @@ def sql_describe(instance: str) -> list[str]:
     return ["gcloud", "sql", "instances", "describe", instance, "--format=json"]
 
 
+def sql_replica_lag(instance: str) -> list[str]:
+    return [
+        "gcloud",
+        "sql",
+        "instances",
+        "describe",
+        instance,
+        "--format=json(name,state,replicaNames,replicationLag)",
+    ]
+
+
 def sql_backups(instance: str) -> list[str]:
     return ["gcloud", "sql", "backups", "list", "--instance", instance, "--format=json"]
 

@@ -6,4 +6,5 @@
 #        ./harness-sre.sh observe-fx-matching --interactive
 set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+export HARNESS_CLI="./harness-sre.sh"
 exec "$ROOT/enterprise_it_harnessing/_invoke.sh" sre_harnessing "$@"
