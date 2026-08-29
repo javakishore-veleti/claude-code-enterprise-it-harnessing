@@ -8,11 +8,11 @@
     "redis": "../harness-redis.sh",
     "kafka": "../harness-kafka.sh",
     "elk": "../harness-elk.sh",
-    "sre:repl": "../harness-sre.sh repl",
-    "db:repl": "../harness-db.sh repl",
-    "k8s:repl": "../harness-k8s.sh repl",
-    "redis:repl": "../harness-redis.sh repl",
-    "kafka:repl": "../harness-kafka.sh repl",
-    "elk:repl": "../harness-elk.sh repl"
+    "sre:repl": "../harness-sre.sh repl --interactive",
+    "db:repl": "../harness-db.sh repl --interactive",
+    "k8s:repl": "../harness-k8s.sh repl --interactive",
+    "redis:repl": "../harness-redis.sh repl --interactive",
+    "kafka:repl": "../harness-kafka.sh repl --interactive",
+    "elk:repl": "../harness-elk.sh repl --interactive"
   }
 }

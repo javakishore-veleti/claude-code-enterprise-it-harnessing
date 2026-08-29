@@ -47,7 +47,7 @@ export ANTHROPIC_API_KEY=...
 export CLOUD_PROVIDER=aws   # or azure or gcp
 
 ./harness-sre.sh                 # list SRE commands
-./harness-sre.sh repl            # empty interactive SRE session
+./harness-sre.sh repl --interactive
 ./harness-sre.sh observe-fx-matching
 ./harness-sre.sh observe-fx-matching --interactive   # playbook, then same session
 
@@ -71,7 +71,7 @@ Or from this folder:
 
 ```bash
 npm run sre -- list-units
-npm run elk -- repl
+npm run elk -- repl --interactive
 ```
 
 ## Profile docs (command tables)

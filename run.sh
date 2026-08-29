@@ -41,7 +41,7 @@ if [[ ! -x "$VENV/bin/python" ]]; then
   uv venv "$VENV"
 fi
 
-uv sync
+uv sync -q
 
 # Use the venv interpreter by path. `exec python` fails when `python` is not
 # on PATH (common on macOS; interactive shells often only alias python=python3).

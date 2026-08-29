@@ -10,7 +10,7 @@ FOREX and Shopify **topic creates are denied** in this profile. Topic **delete**
 | Command | What it does | Topic / group |
 | --- | --- | --- |
 | `./harness-kafka.sh` | List every Kafka npm script | — |
-| `./harness-kafka.sh repl` | Interactive streaming-admin session | all buses |
+| `./harness-kafka.sh repl --interactive` | Empty streaming-admin session | all buses |
 | `./harness-kafka.sh identity` | Cloud principal (`--tool`) | — |
 | `./harness-kafka.sh skills` | topic-lifecycle, consumer-lag | — |
 | `./harness-kafka.sh list-units` | BUs → Kafka cluster names | catalog |

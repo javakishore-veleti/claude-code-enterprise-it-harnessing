@@ -2,7 +2,7 @@
 
 ```bash
 ./harness-kafka.sh
-./harness-kafka.sh repl
+./harness-kafka.sh repl --interactive
 ./harness-kafka.sh identity
 ./harness-kafka.sh skills
 ```

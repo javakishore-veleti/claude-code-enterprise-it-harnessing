@@ -10,7 +10,7 @@ Ten BUs, dedicated accounts. Always `list-units` or `resolve-*` before paging or
 | Command | What it does | Typical BU / service |
 | --- | --- | --- |
 | `./harness-sre.sh` | List every SRE npm script | — |
-| `./harness-sre.sh repl` | Interactive SRE session | all 10 BUs |
+| `./harness-sre.sh repl --interactive` | Empty SRE session | all 10 BUs |
 | `./harness-sre.sh identity` | Show cloud principal (`--tool`, no model) | current `CLOUD_PROVIDER` |
 | `./harness-sre.sh skills` | List SRE runbooks | incident-response, deploy-rollback |
 | `./harness-sre.sh list-units` | Dump the 10 BUs and accounts | estate catalog |

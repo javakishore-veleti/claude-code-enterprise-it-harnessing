@@ -27,7 +27,7 @@ Set `ELASTICSEARCH_URL` and `GRAFANA_URL` when talking to a real stack. `--tool`
 | Command | What it does |
 | --- | --- |
 | `./harness-elk.sh` | List every ELK/Grafana npm script |
-| `./harness-elk.sh repl` | Interactive observability session |
+| `./harness-elk.sh repl --interactive` | Empty observability session |
 | `./harness-elk.sh identity` | Cloud principal (`--tool`) |
 | `./harness-elk.sh skills` | elasticsearch-query, grafana-alerts |
 | `./harness-elk.sh list-units` | BUs → ES / Grafana names |

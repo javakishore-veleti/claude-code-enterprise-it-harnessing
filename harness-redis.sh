@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Redis enterprise harness — forwards to enterprise_it_harnessing/redis_harnessing/package.json
 # Usage: ./harness-redis.sh            # list 25+ Redis commands
-#        ./harness-redis.sh repl
+#        ./harness-redis.sh repl --interactive
 #        ./harness-redis.sh info-shopify-idemp
 #        ./harness-redis.sh info-shopify-idemp --interactive
 set -euo pipefail

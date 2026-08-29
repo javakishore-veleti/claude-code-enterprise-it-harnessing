@@ -8,7 +8,7 @@ Launcher: `./harness-k8s.sh <command>` from the repo root. Append `--interactive
 | Command | What it does | Cluster / namespace |
 | --- | --- | --- |
 | `./harness-k8s.sh` | List every K8s npm script | — |
-| `./harness-k8s.sh repl` | Interactive cluster-admin session | all 10 clusters |
+| `./harness-k8s.sh repl --interactive` | Empty cluster-admin session | all 10 clusters |
 | `./harness-k8s.sh identity` | Cloud principal (`--tool`) | current provider |
 | `./harness-k8s.sh skills` | cluster-context, crashloop | — |
 | `./harness-k8s.sh list-units` | BUs → cluster names | catalog |

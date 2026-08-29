@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Kubernetes enterprise harness — forwards to enterprise_it_harnessing/kubernetes_harnessing/package.json
 # Usage: ./harness-k8s.sh              # list 25+ K8s commands
-#        ./harness-k8s.sh repl
+#        ./harness-k8s.sh repl --interactive
 #        ./harness-k8s.sh pods-forex-markets
 #        ./harness-k8s.sh pods-forex-markets --interactive
 set -euo pipefail

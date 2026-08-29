@@ -2,7 +2,7 @@
 
 ```bash
 ./harness-db.sh
-./harness-db.sh repl
+./harness-db.sh repl --interactive
 ./harness-db.sh identity
 ./harness-db.sh skills
 ```

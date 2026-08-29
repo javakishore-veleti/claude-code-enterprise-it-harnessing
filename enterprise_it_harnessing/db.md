@@ -21,7 +21,7 @@ Launcher: `./harness-db.sh <command>` from the repo root. Append `--interactive`
 | Command | What it does |
 | --- | --- |
 | `./harness-db.sh` | List every DBA npm script |
-| `./harness-db.sh repl` | Interactive DBA session |
+| `./harness-db.sh repl --interactive` | Empty DBA session |
 | `./harness-db.sh identity` | Cloud principal (`--tool`) |
 | `./harness-db.sh skills` | backup-restore, failover |
 | `./harness-db.sh list-units` | 10 BUs and accounts |

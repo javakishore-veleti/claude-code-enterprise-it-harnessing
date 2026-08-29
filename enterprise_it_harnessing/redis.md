@@ -21,7 +21,7 @@ Launcher: `./harness-redis.sh <command>` from the repo root. Append `--interacti
 | Command | What it does |
 | --- | --- |
 | `./harness-redis.sh` | List every Redis npm script |
-| `./harness-redis.sh repl` | Interactive Redis-admin session |
+| `./harness-redis.sh repl --interactive` | Empty Redis-admin session |
 | `./harness-redis.sh identity` | Cloud principal (`--tool`) |
 | `./harness-redis.sh skills` | replication, eviction |
 | `./harness-redis.sh list-units` | BUs → cache names |

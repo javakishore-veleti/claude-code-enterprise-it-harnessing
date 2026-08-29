@@ -2,7 +2,7 @@
 
 ```bash
 ./harness-elk.sh
-./harness-elk.sh repl
+./harness-elk.sh repl --interactive
 ./harness-elk.sh identity
 ./harness-elk.sh skills
 ```

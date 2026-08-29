@@ -2,7 +2,7 @@
 
 ```bash
 ./harness-k8s.sh
-./harness-k8s.sh repl
+./harness-k8s.sh repl --interactive
 ./harness-k8s.sh identity
 ./harness-k8s.sh skills
 ```

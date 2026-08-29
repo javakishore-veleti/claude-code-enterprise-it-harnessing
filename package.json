@@ -25,11 +25,11 @@
     "s21": "./run.sh s21_mcp_runtime.py",
     "s22": "./run.sh s22_production_mailbox.py",
     "s23": "./run.sh s23_worktree_advanced.py",
-    "harness:sre": "./harness-sre.sh repl",
-    "harness:db": "./harness-db.sh repl",
-    "harness:k8s": "./harness-k8s.sh repl",
-    "harness:redis": "./harness-redis.sh repl",
-    "harness:kafka": "./harness-kafka.sh repl",
-    "harness:elk": "./harness-elk.sh repl"
+    "harness:sre": "./harness-sre.sh repl --interactive",
+    "harness:db": "./harness-db.sh repl --interactive",
+    "harness:k8s": "./harness-k8s.sh repl --interactive",
+    "harness:redis": "./harness-redis.sh repl --interactive",
+    "harness:kafka": "./harness-kafka.sh repl --interactive",
+    "harness:elk": "./harness-elk.sh repl --interactive"
   }
 }

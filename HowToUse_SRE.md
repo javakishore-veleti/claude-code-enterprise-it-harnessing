@@ -2,7 +2,7 @@
 
 ```bash
 ./harness-sre.sh
-./harness-sre.sh repl
+./harness-sre.sh repl --interactive
 ./harness-sre.sh identity
 ./harness-sre.sh skills
 ```

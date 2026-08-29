@@ -330,7 +330,7 @@ A playbook without flags runs one model turn and exits (`--once`). That starts a
 ./harness-elk.sh search-shopify-webhooks --interactive
 ```
 
-`./harness-sre.sh repl` is an empty interactive session. `--interactive` on a named playbook is the same REPL **after** that playbook’s first turn, so follow-ups do not open another session.
+`repl` without `--interactive` does not open a session. `./harness-sre.sh repl --interactive` is an empty session. `--interactive` on a named playbook is the same REPL after that playbook’s first turn.
 
 To add a tool, permission, skill, playbook, or a new role, see [How to extend a profile](enterprise_it_harnessing/README.md#how-to-extend-a-profile).
 
@@ -366,13 +366,13 @@ export CLOUD_PROVIDER=aws             # optional: aws | azure | gcp (else auto-d
 ./harness-kafka.sh topics-shopify-merchants
 ./harness-redis.sh caches-shopify
 
-# 3) Interactive session for one role (empty — no playbook seed)
-./harness-sre.sh repl
-./harness-db.sh repl
-./harness-k8s.sh repl
-./harness-redis.sh repl
-./harness-kafka.sh repl
-./harness-elk.sh repl
+# 3) Empty session — --interactive is required
+./harness-sre.sh repl --interactive
+./harness-db.sh repl --interactive
+./harness-k8s.sh repl --interactive
+./harness-redis.sh repl --interactive
+./harness-kafka.sh repl --interactive
+./harness-elk.sh repl --interactive
 
 # 4) Named playbooks — one turn then exit (new session each run)
 ./harness-sre.sh observe-fx-matching

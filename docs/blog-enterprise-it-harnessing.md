@@ -50,7 +50,7 @@ From the repository root, after setting `ANTHROPIC_API_KEY` (and optionally `CLO
 
 - Print the command list for a role: `./harness-sre.sh`, `./harness-db.sh`, and the other four launchers.
 - Dump the live estate without calling a model: `list-units`, `list-databases`, `list-topics`, `list-caches`, `resolve-*`.
-- Open an interactive session for one role: `./harness-sre.sh repl` (same pattern for db, k8s, redis, kafka, elk).
+- Open an interactive session for one role: `./harness-sre.sh repl --interactive` (same pattern for db, k8s, redis, kafka, elk).
 - Run a named playbook against a production name: `observe-fx-matching`, `describe-fx-trades`, `pods-shopify-merchants`, `lag-shopify-orders`, `info-shopify-idemp`, `search-shopify-webhooks`.
 - Read that role’s `permissions.yaml` to see what is denied, allowed, or asked before a tool runs.
 - Pin AWS, Azure, or GCP; identity and CLI argv change, the tool list does not.

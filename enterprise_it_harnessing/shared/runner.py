@@ -37,6 +37,12 @@ def run_harness(
     args = _parse_args(name)
     if args.debug:
         enable_debug()
+
+    once = args.once or (" ".join(args.prompt) if args.prompt else "")
+    if not args.tool and not once and not args.interactive:
+        sys.stderr.write("Pass --interactive to open a session.\n")
+        sys.exit(2)
+
     identity = resolve_identity()
     skills_dir = domain_dir / "skills"
     skills = discover_skills(skills_dir)
@@ -79,7 +85,6 @@ def run_harness(
     persona = _system(system, identity, skills)
     log.info("%s provider=%s principal=%s", name, identity.provider, identity.principal or "n/a")
 
-    once = args.once or (" ".join(args.prompt) if args.prompt else "")
     history: list[dict[str, Any]] = []
     if once:
         history.append({"role": "user", "content": once})
@@ -99,7 +104,7 @@ def _parse_args(name: str) -> argparse.Namespace:
         "--interactive",
         "-i",
         action="store_true",
-        help="After a playbook (--once) turn, keep this session open as a REPL",
+        help="Open a session. Required for repl. On a playbook, keep the session after the first turn.",
     )
     parser.add_argument("--tool", help="Run a typed tool without the model (catalog dumps, identity)")
     parser.add_argument("--json", help="JSON object passed to --tool (optional; prefer --bu/--service flags)")
