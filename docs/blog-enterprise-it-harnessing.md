@@ -56,13 +56,35 @@ From the repository root, after setting `ANTHROPIC_API_KEY` (and optionally `CLO
 
 Command tables: [sre](../enterprise_it_harnessing/sre.md) · [db](../enterprise_it_harnessing/db.md) · [k8s](../enterprise_it_harnessing/k8s.md) · [redis](../enterprise_it_harnessing/redis.md) · [kafka](../enterprise_it_harnessing/kafka.md) · [elk](../enterprise_it_harnessing/elk.md). Repo: [claude-code-enterprise-it-harnessing](https://github.com/javakishore-veleti/claude-code-enterprise-it-harnessing).
 
-## Value of such Enterprise IT harnessing capabilities
+## What these Enterprise IT harnessing capabilities change
 
-- Production names (`fx-matching-engine`) instead of `service-1`. The harness maps an estate that already exists; it does not invent one.
-- Six surfaces, one loop. An SRE session cannot issue `FLUSHALL`. A Redis session cannot drain a node.
-- Irreversible wipes (`DROP DATABASE`, namespace / PV delete, `FLUSHALL`) are denied in configuration, not left to the model.
-- Customer-facing mutations (rollback, failover, ACL, silence) require an operator.
-- Two mutating runs cannot take the same cluster, topic, instance, or cache while a lease is held.
-- Catalog dumps do not call a model. Playbooks do.
-- AWS, Azure, and GCP share the permission engine. They do not share a tool list.
+### Named production estate
+
+- Tools resolve names the company already runs (`fx-matching-engine`), not `service-1`.
+- The harness maps that estate. It does not host the application repos.
+
+### Role boundaries
+
+- Six surfaces, one loop: SRE, Event Bus, Search, Kubernetes, Redis, DB.
+- An SRE session cannot issue `FLUSHALL`. A Redis session cannot drain a node.
+
+### Policy before execution
+
+- Irreversible wipes (`DROP DATABASE`, namespace / PV delete, `FLUSHALL`) are denied in `permissions.yaml`.
+- Customer-facing mutations (rollback, failover, ACL, silence) require an operator (`ask_user`).
+- Deny / allow / ask is evaluated before the tool runs. It is not a prompt instruction.
+
+### Concurrent mutations
+
+- A mutating tool takes an isolation lease on the cluster, topic, instance, or cache.
+- A second run on the same target fails closed until the lease is released or expires.
+
+### When a model is called
+
+- Catalog dumps (`list-units`, `list-topics`, `resolve-*`) do not call a model.
+- Playbooks (`observe-*`, `incident-*`, `failover-*`) do.
+
+### Cloud and decision client
+
+- AWS, Azure, and GCP share the permission engine. They do not share a tool list. Only identity and CLI argv change.
 - Deny rules stay in the harness if the decision client is replaced. They do not move into prompt text.
