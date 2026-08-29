@@ -16,12 +16,29 @@
 
 ## Table of Contents
 
+- [Introduction](#introduction)
 - [What is Harness Engineering?](#what-is-harness-engineering)
 - [How Claude Code Uses Harness Engineering?](#how-claude-code-uses-harness-engineering)
   - [Phase 1: The Core Agent Loop](#phase-1-the-core-agent-loop)
   - [Phase 2: Knowledge & Context Management](#phase-2-knowledge--context-management)
   - [Phase 3: Async Execution & Multi-Agent Teams](#phase-3-async-execution--multi-agent-teams)
 - [Session guide](#session-guide)
+
+## Introduction
+
+This repository is intentionally generic. It reconstructs a Claude Code-style **coding** harness: one loop, typed tools, permissions, skills, context compression, and optional teams. That generality is the point. The model never hard-codes “this is a Django bug” or “this is an EKS outage.” It only sees tools and a system prompt. Swap the tools, the skill files, and the permission rules, and the same foundation becomes a specialist harness for the people who actually run production.
+
+An SRE, a database administrator, a Kafka admin, a Kubernetes cluster admin, or a Redis admin does not need a different agent framework. They need a different **tool surface** on top of this one. The sessions in this repo already give you the primitives: bash and file tools (s01–s02), planning (s03, s07), isolated exploration (s04, s12, s23), on-demand runbooks as skills (s05), durable context (s06, s17), background jobs (s08), teams and protocols (s09–s11, s22), governance (s15–s16), and MCP so real cloud CLIs and servers can plug in (s21).
+
+| Role | What you keep from this repo | What you add as your harness |
+| --- | --- | --- |
+| **SRE** | Perception-action loop, todo/task graph, interrupts, event bus, sessions | Tools for paging, metrics, logs, and deploy rollback; skills that encode incident runbooks; permissions that allow `kubectl get` / `aws cloudwatch` but require approval for `kubectl delete` or production scale-down |
+| **DB admin (AWS, Azure, GCP)** | Dispatch map, reversible writes, permissions, MCP | Tools wrapped around RDS, Aurora, DynamoDB, Azure SQL, Cosmos DB, Cloud SQL, Spanner, and AlloyDB: snapshot, failover, parameter-group change, slow-query explain. Skills for backup/restore and engine-specific runbooks. Never expose raw `DROP` without a deny rule |
+| **Kafka / MSK admin** | Background tasks for long rebalances, team protocols for dual-control | Tools for topics, ACLs, consumer groups, and MSK/Event Hubs/Pub/Sub equivalents; skills for partition reassignment and poison-pill consumer recovery |
+| **Kubernetes admin (on-prem, EKS, AKS, GKE)** | Worktree isolation as a metaphor for cluster/context isolation; subagents for noisy `kubectl` output | Tools scoped to a kubeconfig/context: `get`, `describe`, drain, rollout. Separate permission profiles per cluster (dev vs prod, on-prem vs EKS vs AKS vs GKE). Skills for node-not-ready, CrashLoopBackOff, and certificate rotation |
+| **Redis admin (self-hosted, ElastiCache, Azure Cache, Memorystore)** | Redis mailbox session (s22) as a starting client; compact context for large `INFO` dumps | Tools for `INFO`, slowlog, replica lag, failover, and ACL. Skills for eviction storms, hot keys, and cluster slot migration. Permissions that block `FLUSHALL` in production |
+
+The model stays the decision-maker. Your harness decides what it is allowed to touch. An AWS Kafka admin and a GCP Cloud SQL admin can share this loop and this permission engine; they should not share the same tool list. Start here, then replace `bash`/`read`/`write` with the smallest set of cloud-native operations that role actually needs.
 
 ## What is Harness Engineering?
 Harness engineering is the discipline of building the environment that surrounds an AI model, not the model itself. The model reasons and decides. The harness executes, constrains, and connects. A well-designed harness gives the model precisely the tools it needs, nothing more, and governs exactly what it is allowed to do with them.
