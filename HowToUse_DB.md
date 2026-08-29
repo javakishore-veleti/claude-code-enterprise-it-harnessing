@@ -1,12 +1,11 @@
 # How To Use — DB
 
-`--interactive` is optional. Omit it to print and exit.
+`repl` opens a session. Playbooks print and exit unless you add `--interactive`.
 
 | Command | Output | When to use |
 | --- | --- | --- |
 | `./harness-db.sh` | npm script list | See every DBA command |
-| `./harness-db.sh repl` | Cloud identity JSON | Confirm who you are; no session |
-| `./harness-db.sh repl --interactive` | `db >>` prompt | Empty DBA session |
+| `./harness-db.sh repl` | `db >>` prompt | Empty DBA session |
 | `./harness-db.sh identity` | Cloud identity JSON | Same dump, no model |
 | `./harness-db.sh skills` | backup-restore, failover | See DBA runbooks |
 | `./harness-db.sh list-units` | 10 BUs and accounts | Estate map |

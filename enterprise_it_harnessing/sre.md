@@ -13,7 +13,7 @@ Ten BUs, dedicated accounts. Always `list-units` or `resolve-*` before paging or
 | `./harness-sre.sh repl --interactive` | Empty SRE session | all 10 BUs |
 | `./harness-sre.sh identity` | Show cloud principal (`--tool`, no model) | current `CLOUD_PROVIDER` |
 | `./harness-sre.sh skills` | List SRE runbooks | incident-response, deploy-rollback |
-| `./harness-sre.sh list-units` | Dump the 10 BUs and accounts | estate catalog |
+| `./harness-sre.sh list-units` | Sev2 names, pager, SLO, next observe/incident, blast radius | first page of an incident |
 | `./harness-sre.sh list-forex-markets` | 10 FOREX markets services | `eks-forex-markets-prod` |
 | `./harness-sre.sh list-forex-settlement` | Risk, CLS, regulatory | `eks-forex-settlement-prod` |
 | `./harness-sre.sh list-ecommerce-retail` | Catalog, cart, orders, checkout | `aks-ecom-retail-prod` |

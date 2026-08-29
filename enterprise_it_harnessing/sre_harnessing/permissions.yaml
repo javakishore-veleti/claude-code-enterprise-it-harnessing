@@ -7,7 +7,7 @@ always_deny:
     reason: "Irreversible wipe commands are denied"
 
 always_allow:
-  - pattern: "observe_health|fetch_logs|cloud_identity|list_skills|load_skill|list_business_units|list_services|resolve_service"
+  - pattern: "observe_health|fetch_logs|cloud_identity|list_skills|load_skill|list_sre_units|list_business_units|list_services|resolve_service"
     reason: "Read-only observation is always allowed"
   - pattern: "^kubectl (get|describe|logs|top) "
     reason: "Read-only Kubernetes inspection is allowed"

@@ -75,27 +75,35 @@ def run_harness(
             log.error("unknown tool: %s", args.tool)
             log.error("available: %s", ", ".join(sorted(dispatch)))
             sys.exit(2)
-        sys.stdout.write(dispatch[args.tool](payload) + "\n")
+        result = dispatch[args.tool](payload)
+        sys.stdout.write(result + "\n")
+        if not args.interactive:
+            return
+        persona = _system(system, identity, skills)
+        history: list[dict[str, Any]] = []
+        if args.tool == "load_skill":
+            history.append({"role": "user", "content": "Follow this skill:\n\n" + result})
+        _repl(prompt, history, tools, dispatch, persona)
         return
 
     persona = _system(system, identity, skills)
-    log.info("%s provider=%s principal=%s", name, identity.provider, identity.principal or "n/a")
+    log.debug("%s provider=%s principal=%s", name, identity.provider, identity.principal or "n/a")
 
     history: list[dict[str, Any]] = []
     if once:
+        if args.with_skill:
+            once = (
+                f"{load_skill(skills_dir, args.with_skill)}\n\n"
+                f"Follow that skill for this job:\n{once}"
+            )
         history.append({"role": "user", "content": once})
         stream_loop(messages=history, tools=tools, dispatch=dispatch, system=persona)
         if not args.interactive:
             return
-        log.info("Session kept open. Follow up on this playbook, or q to quit.")
         _repl(prompt, history, tools, dispatch, persona)
         return
 
-    if args.interactive:
-        _repl(prompt, history, tools, dispatch, persona)
-        return
-
-    sys.stdout.write(identity.as_json() + "\n")
+    _repl(prompt, history, tools, dispatch, persona)
 
 
 def _parse_args(name: str) -> argparse.Namespace:
@@ -116,6 +124,12 @@ def _parse_args(name: str) -> argparse.Namespace:
     parser.add_argument("--target", help="cache/target for --tool")
     parser.add_argument("--topic", help="kafka topic for --tool")
     parser.add_argument("--domain", help="domain filter for --tool")
+    parser.add_argument("--skill", dest="skill_name", help="skill name for --tool load_skill")
+    parser.add_argument(
+        "--with-skill",
+        dest="with_skill",
+        help="Inject a skill runbook into a --once job so Claude follows it",
+    )
     parser.add_argument("--debug", action="store_true", help="Log tool calls, audit events, and stop reasons")
     return parser.parse_args()
 
@@ -152,6 +166,8 @@ def _tool_payload(args: argparse.Namespace) -> dict[str, Any]:
         val = getattr(args, key, None)
         if val:
             payload[key] = val
+    if getattr(args, "skill_name", None):
+        payload["name"] = args.skill_name
     return payload
 
 

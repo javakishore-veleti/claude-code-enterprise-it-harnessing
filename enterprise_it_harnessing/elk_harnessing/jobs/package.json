@@ -1,0 +1,21 @@
+{
+  "name": "enterprise-elk-jobs",
+  "private": true,
+  "scripts": {
+    "search-matching-rejects": "../../../run.sh enterprise_it_harnessing/elk_harnessing/harness.py --with-skill search-matching-rejects --once \"es_search_index service=fx-matching-engine query=reject size=20.\"",
+    "search-fix-disconnect": "../../../run.sh enterprise_it_harnessing/elk_harnessing/harness.py --with-skill search-fix-disconnect --once \"es_search_index alias=forex-fix query=disconnect size=20.\"",
+    "search-hmac-failed": "../../../run.sh enterprise_it_harnessing/elk_harnessing/harness.py --with-skill search-hmac-failed --once \"es_search_index alias=shopify-webhooks query=hmac_failed size=20.\"",
+    "search-saga-failed": "../../../run.sh enterprise_it_harnessing/elk_harnessing/harness.py --with-skill search-saga-failed --once \"es_search_index alias=orders query=saga_failed size=20.\"",
+    "search-as400": "../../../run.sh enterprise_it_harnessing/elk_harnessing/harness.py --with-skill search-as400 --once \"es_search_index alias=shopify-legacy query=as400 OR soap size=20.\"",
+    "search-sla-breach": "../../../run.sh enterprise_it_harnessing/elk_harnessing/harness.py --with-skill search-sla-breach --once \"es_search_index alias=support query=sla_breach size=20.\"",
+    "search-carrier-timeout": "../../../run.sh enterprise_it_harnessing/elk_harnessing/harness.py --with-skill search-carrier-timeout --once \"es_search_index alias=shipping query=carrier_timeout size=20.\"",
+    "es-health-forex": "../../../run.sh enterprise_it_harnessing/elk_harnessing/harness.py --with-skill es-health-forex --once \"es_cluster_health business_unit=forex-markets (es-forex-prod).\"",
+    "es-health-shopify": "../../../run.sh enterprise_it_harnessing/elk_harnessing/harness.py --with-skill es-health-shopify --once \"es_cluster_health business_unit=shopify-merchants (es-shopify-prod).\"",
+    "alerts-forex": "../../../run.sh enterprise_it_harnessing/elk_harnessing/harness.py --with-skill alerts-forex --once \"grafana_list_alerts business_unit=forex-markets.\"",
+    "alerts-hmac-keep-firing": "../../../run.sh enterprise_it_harnessing/elk_harnessing/harness.py --with-skill alerts-hmac-keep-firing --once \"grafana_list_alerts shopify-merchants. HMAC rules must stay firing.\"",
+    "silence-orders-only": "../../../run.sh enterprise_it_harnessing/elk_harnessing/harness.py --with-skill silence-orders-only --once \"Propose grafana_silence_alert for a noisy orders-api warning. Never silence matching-engine or HMAC. Approval required.\"",
+    "pipeline-forex": "../../../run.sh enterprise_it_harnessing/elk_harnessing/harness.py --with-skill pipeline-forex --once \"Check fx-trade-capture pipeline into es-forex-prod. Alias forex-trades.\"",
+    "pipeline-shopify": "../../../run.sh enterprise_it_harnessing/elk_harnessing/harness.py --with-skill pipeline-shopify --once \"Check shopify-webhook-ingress reaching es-shopify-prod. hmac_failed and ingest_lag.\"",
+    "dashboards-forex": "../../../run.sh enterprise_it_harnessing/elk_harnessing/harness.py --with-skill dashboards-forex --once \"grafana_list_dashboards business_unit=forex-markets (grafana-forex-prod).\""
+  }
+}

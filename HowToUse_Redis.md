@@ -1,12 +1,11 @@
 # How To Use — Redis
 
-`--interactive` is optional. Omit it to print and exit.
+`repl` opens a session. Playbooks print and exit unless you add `--interactive`.
 
 | Command | Output | When to use |
 | --- | --- | --- |
 | `./harness-redis.sh` | npm script list | See every Redis command |
-| `./harness-redis.sh repl` | Cloud identity JSON | Confirm who you are; no session |
-| `./harness-redis.sh repl --interactive` | `redis >>` prompt | Empty Redis session |
+| `./harness-redis.sh repl` | `redis >>` prompt | Empty Redis session |
 | `./harness-redis.sh identity` | Cloud identity JSON | Same dump, no model |
 | `./harness-redis.sh skills` | replication, eviction | See Redis runbooks |
 | `./harness-redis.sh list-units` | BUs → cache names | Which cache |

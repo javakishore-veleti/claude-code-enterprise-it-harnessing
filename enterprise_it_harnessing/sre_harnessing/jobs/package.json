@@ -1,0 +1,21 @@
+{
+  "name": "enterprise-sre-jobs",
+  "private": true,
+  "scripts": {
+    "matching-reject-spike": "../../../run.sh enterprise_it_harnessing/sre_harnessing/harness.py --with-skill matching-reject-spike --once \"Sev2 matching-engine reject spike. resolve_service fx-matching-engine, observe_health, fetch_logs. Contain. Do not rollback yet.\"",
+    "fix-session-drop": "../../../run.sh enterprise_it_harnessing/sre_harnessing/harness.py --with-skill fix-session-drop --once \"FIX session drops on fx-fix-gateway. resolve + observe_health. Report session resets. Do not restart matching at peak.\"",
+    "cls-halt": "../../../run.sh enterprise_it_harnessing/sre_harnessing/harness.py --with-skill cls-halt --once \"FOREX settlement / CLS at risk. Observe fx-cls-adapter and fx-risk-limits. Pause CLS before any failover. Do not touch matching-engine.\"",
+    "checkout-saga-stuck": "../../../run.sh enterprise_it_harnessing/sre_harnessing/harness.py --with-skill checkout-saga-stuck --once \"Checkout saga stuck after payments-adapter. Observe checkout-orchestrator and orders-api. Do not rewind the saga.\"",
+    "payments-decline-storm": "../../../run.sh enterprise_it_harnessing/sre_harnessing/harness.py --with-skill payments-decline-storm --once \"payments-adapter decline storm. Observe checkout-orchestrator. Do not rewind ecom.checkout.saga. Bound to ecommerce-retail.\"",
+    "hmac-failure-storm": "../../../run.sh enterprise_it_harnessing/sre_harnessing/harness.py --with-skill hmac-failure-storm --once \"Shopify HMAC failures Sev2. resolve shopify-webhook-ingress. Bound blast to shopify-merchants. Do not silence HMAC alerts.\"",
+    "legacy-as400-timeout": "../../../run.sh enterprise_it_harnessing/sre_harnessing/harness.py --with-skill legacy-as400-timeout --once \"shopify-legacy-bridge SOAP/AS400 timeouts. Observe bridge. Bound to shopify-merchants. Do not restart matching.\"",
+    "ticket-sla-breach": "../../../run.sh enterprise_it_harnessing/sre_harnessing/harness.py --with-skill ticket-sla-breach --once \"ticket-api SLA breach. Observe ticket-api. Bound to customer-support. Not a FOREX Sev2 unless matching is also down.\"",
+    "quote-to-order-break": "../../../run.sh enterprise_it_harnessing/sre_harnessing/harness.py --with-skill quote-to-order-break --once \"quote-to-order broken. Observe quote-api and quote-to-order. Bound to ecommerce-quote.\"",
+    "fulfillment-allocation-stall": "../../../run.sh enterprise_it_harnessing/sre_harnessing/harness.py --with-skill fulfillment-allocation-stall --once \"allocation-engine stall on gke-fulfillment-prod. Observe allocation-engine and tracking-api. Bound to fulfillment.\"",
+    "consent-write-fail": "../../../run.sh enterprise_it_harnessing/sre_harnessing/harness.py --with-skill consent-write-fail --once \"consent-ledger write failures. Observe identity-service and consent-ledger. Bound to customer-profile.\"",
+    "matching-rollback": "../../../run.sh enterprise_it_harnessing/sre_harnessing/harness.py --with-skill matching-rollback --once \"Propose rollback_deploy of fx-matching-engine on eks-forex-markets-prod. Wait for approval. Re-observe after.\"",
+    "page-forex-oncall": "../../../run.sh enterprise_it_harnessing/sre_harnessing/harness.py --with-skill page-forex-oncall --once \"Page forex-markets-sre for fx-matching-engine. page_oncall needs approval. Do not page shopify-merchants-sre.\"",
+    "bound-shopify-blast": "../../../run.sh enterprise_it_harnessing/sre_harnessing/harness.py --with-skill bound-shopify-blast --once \"Shopify incident. Stay on aws-shopify-merchants-prod / eks-shopify-merchants-prod. Do not rollback or page FOREX.\"",
+    "idempotency-replay": "../../../run.sh enterprise_it_harnessing/sre_harnessing/harness.py --with-skill idempotency-replay --once \"Duplicate Shopify webhooks. Observe shopify-idempotency and webhook-ingress. Freeze ingress before any Redis failover. Ask Redis harness for the cache.\""
+  }
+}

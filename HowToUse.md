@@ -7,13 +7,13 @@ export ANTHROPIC_API_KEY=...
 export CLOUD_PROVIDER=aws   # optional: aws | azure | gcp
 ```
 
-`--interactive` is optional. Leave it off to print and exit. Add it to keep the session.
+`repl` opens a session. On a playbook, `--interactive` is optional: omit it to print and exit; add it to keep that session.
 
-| If you are | Open |
-| --- | --- |
-| SRE | [HowToUse_SRE.md](HowToUse_SRE.md) |
-| DB | [HowToUse_DB.md](HowToUse_DB.md) |
-| Kubernetes | [HowToUse_K8s.md](HowToUse_K8s.md) |
-| Redis | [HowToUse_Redis.md](HowToUse_Redis.md) |
-| Kafka / Event Bus | [HowToUse_Kafka.md](HowToUse_Kafka.md) |
-| ELK / Search | [HowToUse_ELK.md](HowToUse_ELK.md) |
+| If you are | Catalog / playbooks | Jobs (15, skill + hooks) |
+| --- | --- | --- |
+| SRE | [HowToUse_SRE.md](HowToUse_SRE.md) · `./harness-sre.sh` | [HowToUse_SRE_Jobs.md](HowToUse_SRE_Jobs.md) · `./harness-sre-job.sh` |
+| DB | [HowToUse_DB.md](HowToUse_DB.md) · `./harness-db.sh` | [HowToUse_DB_Jobs.md](HowToUse_DB_Jobs.md) · `./harness-db-job.sh` |
+| Kubernetes | [HowToUse_K8s.md](HowToUse_K8s.md) · `./harness-k8s.sh` | [HowToUse_K8s_Jobs.md](HowToUse_K8s_Jobs.md) · `./harness-k8s-job.sh` |
+| Redis | [HowToUse_Redis.md](HowToUse_Redis.md) · `./harness-redis.sh` | [HowToUse_Redis_Jobs.md](HowToUse_Redis_Jobs.md) · `./harness-redis-job.sh` |
+| Kafka / Event Bus | [HowToUse_Kafka.md](HowToUse_Kafka.md) · `./harness-kafka.sh` | [HowToUse_Kafka_Jobs.md](HowToUse_Kafka_Jobs.md) · `./harness-kafka-job.sh` |
+| ELK / Search | [HowToUse_ELK.md](HowToUse_ELK.md) · `./harness-elk.sh` | [HowToUse_ELK_Jobs.md](HowToUse_ELK_Jobs.md) · `./harness-elk-job.sh` |

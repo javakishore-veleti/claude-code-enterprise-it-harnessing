@@ -1,0 +1,21 @@
+{
+  "name": "enterprise-redis-jobs",
+  "private": true,
+  "scripts": {
+    "fx-book-lag": "../../../run.sh enterprise_it_harnessing/redis_harnessing/harness.py --with-skill fx-book-lag --once \"redis_info elasticache-forex-quotes section=replication. Stale book if lag > 2s.\"",
+    "fx-book-failover": "../../../run.sh enterprise_it_harnessing/redis_harnessing/harness.py --with-skill fx-book-failover --once \"Propose redis_failover elasticache-forex-quotes. Matching-engine stale-book risk. Approval required.\"",
+    "cart-eviction": "../../../run.sh enterprise_it_harnessing/redis_harnessing/harness.py --with-skill cart-eviction --once \"Load eviction. Cart memory pressure. Pause checkout if evicting cart:*.\"",
+    "cart-failover-pause": "../../../run.sh enterprise_it_harnessing/redis_harnessing/harness.py --with-skill cart-failover-pause --once \"Propose redis_failover azurecache-ecom-cart after pausing checkout-orchestrator. Approval required.\"",
+    "shopify-idemp-freeze": "../../../run.sh enterprise_it_harnessing/redis_harnessing/harness.py --with-skill shopify-idemp-freeze --once \"redis_info elasticache-shopify-idempotency. Freeze webhook-ingress before any failover.\"",
+    "shopify-idemp-failover": "../../../run.sh enterprise_it_harnessing/redis_harnessing/harness.py --with-skill shopify-idemp-failover --once \"Propose redis_failover after freezing webhook-ingress. Approval required.\"",
+    "risk-limits-memory": "../../../run.sh enterprise_it_harnessing/redis_harnessing/harness.py --with-skill risk-limits-memory --once \"redis_info elasticache-forex-risk section=memory.\"",
+    "quote-cache-hot": "../../../run.sh enterprise_it_harnessing/redis_harnessing/harness.py --with-skill quote-cache-hot --once \"redis_info azurecache-ecom-quote. Hot quote:* keys.\"",
+    "fulfillment-lock-pileup": "../../../run.sh enterprise_it_harnessing/redis_harnessing/harness.py --with-skill fulfillment-lock-pileup --once \"redis_info memorystore-fulfillment section=clients. Allocation locks.\"",
+    "session-clients": "../../../run.sh enterprise_it_harnessing/redis_harnessing/harness.py --with-skill session-clients --once \"redis_info elasticache-profile-session section=clients.\"",
+    "support-sla-clock": "../../../run.sh enterprise_it_harnessing/redis_harnessing/harness.py --with-skill support-sla-clock --once \"redis_info azurecache-support. SLA clocks.\"",
+    "advisor-presence": "../../../run.sh enterprise_it_harnessing/redis_harnessing/harness.py --with-skill advisor-presence --once \"redis_info azurecache-advisor.\"",
+    "slowlog-fx": "../../../run.sh enterprise_it_harnessing/redis_harnessing/harness.py --with-skill slowlog-fx --once \"redis_slowlog elasticache-forex-quotes. Load eviction if needed.\"",
+    "slowlog-cart": "../../../run.sh enterprise_it_harnessing/redis_harnessing/harness.py --with-skill slowlog-cart --once \"redis_slowlog azurecache-ecom-cart.\"",
+    "slowlog-idemp": "../../../run.sh enterprise_it_harnessing/redis_harnessing/harness.py --with-skill slowlog-idemp --once \"redis_slowlog elasticache-shopify-idempotency.\""
+  }
+}

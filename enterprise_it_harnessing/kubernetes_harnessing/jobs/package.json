@@ -1,0 +1,21 @@
+{
+  "name": "enterprise-k8s-jobs",
+  "private": true,
+  "scripts": {
+    "crashloop-matching": "../../../run.sh enterprise_it_harnessing/kubernetes_harnessing/harness.py --with-skill crashloop-matching --once \"kube_describe fx-matching-engine. Load crashloop. Bound to eks-forex-markets-prod.\"",
+    "crashloop-hmac": "../../../run.sh enterprise_it_harnessing/kubernetes_harnessing/harness.py --with-skill crashloop-hmac --once \"kube_describe shopify-webhook-ingress. HMAC pod bad. Bound to eks-shopify-merchants-prod.\"",
+    "oom-checkout": "../../../run.sh enterprise_it_harnessing/kubernetes_harnessing/harness.py --with-skill oom-checkout --once \"kube_describe checkout-orchestrator. Summarize OOM. Bound to aks-ecom-retail-prod.\"",
+    "imagepull-shopify": "../../../run.sh enterprise_it_harnessing/kubernetes_harnessing/harness.py --with-skill imagepull-shopify --once \"kube_get / kube_describe shopify-webhook-retry ImagePullBackOff. Bound to shopify-merchants.\"",
+    "pending-fulfillment": "../../../run.sh enterprise_it_harnessing/kubernetes_harnessing/harness.py --with-skill pending-fulfillment --once \"kube_get pods business_unit=fulfillment. Report Pending / unschedulable.\"",
+    "creds-eks-forex": "../../../run.sh enterprise_it_harnessing/kubernetes_harnessing/harness.py --with-skill creds-eks-forex --once \"kube_refresh_credentials forex-markets (EKS). Approval required.\"",
+    "creds-aks-retail": "../../../run.sh enterprise_it_harnessing/kubernetes_harnessing/harness.py --with-skill creds-aks-retail --once \"kube_refresh_credentials ecommerce-retail (AKS). Approval required.\"",
+    "creds-gke-fulfillment": "../../../run.sh enterprise_it_harnessing/kubernetes_harnessing/harness.py --with-skill creds-gke-fulfillment --once \"kube_refresh_credentials fulfillment (GKE). Approval required.\"",
+    "restart-webhook-retry": "../../../run.sh enterprise_it_harnessing/kubernetes_harnessing/harness.py --with-skill restart-webhook-retry --once \"Propose kube_rollout_restart shopify-webhook-retry. Approval required.\"",
+    "restart-session-mgr": "../../../run.sh enterprise_it_harnessing/kubernetes_harnessing/harness.py --with-skill restart-session-mgr --once \"Propose kube_rollout_restart fx-session-manager. Avoid matching-engine peak. Approval required.\"",
+    "logs-matching-rejects": "../../../run.sh enterprise_it_harnessing/kubernetes_harnessing/harness.py --with-skill logs-matching-rejects --once \"kube_logs fx-matching-engine tail=200. Summarize rejects.\"",
+    "logs-hmac": "../../../run.sh enterprise_it_harnessing/kubernetes_harnessing/harness.py --with-skill logs-hmac --once \"kube_logs shopify-webhook-ingress. Summarize hmac_failed.\"",
+    "logs-as400": "../../../run.sh enterprise_it_harnessing/kubernetes_harnessing/harness.py --with-skill logs-as400 --once \"kube_logs shopify-legacy-bridge. SOAP/AS400 timeouts.\"",
+    "pods-settlement-cls": "../../../run.sh enterprise_it_harnessing/kubernetes_harnessing/harness.py --with-skill pods-settlement-cls --once \"kube_get pods business_unit=forex-settlement. CLS / risk / netting.\"",
+    "describe-orders-api": "../../../run.sh enterprise_it_harnessing/kubernetes_harnessing/harness.py --with-skill describe-orders-api --once \"kube_describe service=orders-api. Retail e-com.\""
+  }
+}

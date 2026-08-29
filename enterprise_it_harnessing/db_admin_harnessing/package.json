@@ -5,6 +5,7 @@
     "repl": "../../run.sh enterprise_it_harnessing/db_admin_harnessing/harness.py",
     "identity": "../../run.sh enterprise_it_harnessing/db_admin_harnessing/harness.py --tool cloud_identity",
     "skills": "../../run.sh enterprise_it_harnessing/db_admin_harnessing/harness.py --tool list_skills",
+    "load-skill": "../../run.sh enterprise_it_harnessing/db_admin_harnessing/harness.py --tool load_skill",
     "list-units": "../../run.sh enterprise_it_harnessing/db_admin_harnessing/harness.py --tool list_business_units",
     "list-databases": "../../run.sh enterprise_it_harnessing/db_admin_harnessing/harness.py --tool list_databases",
     "list-forex-dbs": "../../run.sh enterprise_it_harnessing/db_admin_harnessing/harness.py --tool list_databases --bu forex-markets",

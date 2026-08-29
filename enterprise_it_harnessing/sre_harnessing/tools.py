@@ -5,11 +5,110 @@ from __future__ import annotations
 import json
 from typing import Any
 
-from enterprise_it_harnessing.catalog import SERVICES
+from enterprise_it_harnessing.catalog import BUSINESS_UNITS, SERVICES
 from enterprise_it_harnessing.shared.cli import run_argv
 from enterprise_it_harnessing.shared.providers import aws, azure, gcp
 
 MUTATING = {"rollback_deploy", "page_oncall"}
+
+# What SRE needs from list-units: Sev2 names, pager, next command — not a generic org chart.
+_SRE_BY_UNIT: dict[str, dict[str, Any]] = {
+    "forex-markets": {
+        "sev2": ["fx-matching-engine", "fx-fix-gateway"],
+        "slo": "reject-rate, FIX session drops",
+        "observe": "./harness-sre.sh observe-fx-matching",
+        "incident": "./harness-sre.sh incident-forex-matching",
+    },
+    "forex-settlement": {
+        "sev2": ["fx-cls-adapter", "fx-risk-limits"],
+        "slo": "CLS drain, limit-check latency",
+        "observe": "./harness-sre.sh list-forex-settlement",
+        "incident": "./harness-sre.sh incident-forex-matching",
+    },
+    "ecommerce-retail": {
+        "sev2": ["checkout-orchestrator", "orders-api", "payments-adapter"],
+        "slo": "checkout saga, order create",
+        "observe": "./harness-sre.sh observe-checkout",
+        "incident": "./harness-sre.sh incident-orders-saga",
+    },
+    "ecommerce-quote": {
+        "sev2": ["quote-api", "quote-to-order"],
+        "slo": "quote accept → order",
+        "observe": "./harness-sre.sh list-ecommerce-quote",
+        "incident": "./harness-sre.sh incident-orders-saga",
+    },
+    "fulfillment": {
+        "sev2": ["allocation-engine", "tracking-api"],
+        "slo": "allocate → ship",
+        "observe": "./harness-sre.sh list-fulfillment",
+        "incident": "./harness-sre.sh incident-orders-saga",
+    },
+    "customer-profile": {
+        "sev2": ["identity-service", "consent-ledger"],
+        "slo": "login, consent writes",
+        "observe": "./harness-sre.sh list-customer-profile",
+        "incident": "./harness-sre.sh incident-orders-saga",
+    },
+    "customer-support": {
+        "sev2": ["ticket-api", "sla-watchdog"],
+        "slo": "ticket create, SLA breach",
+        "observe": "./harness-sre.sh observe-ticket-api",
+        "incident": "./harness-sre.sh incident-orders-saga",
+    },
+    "customer-advisor": {
+        "sev2": ["advisor-workspace"],
+        "slo": "advisor desktop up",
+        "observe": "./harness-sre.sh list-customer-advisor",
+        "incident": "./harness-sre.sh incident-orders-saga",
+    },
+    "product-research": {
+        "sev2": [],
+        "slo": "ingest lag (not customer-facing Sev2)",
+        "observe": "./harness-sre.sh list-product-research",
+        "incident": "./harness-sre.sh list-product-research",
+    },
+    "shopify-merchants": {
+        "sev2": ["shopify-webhook-ingress", "shopify-legacy-bridge"],
+        "slo": "HMAC failures, SOAP / AS400 sync",
+        "observe": "./harness-sre.sh observe-shopify-webhooks",
+        "incident": "./harness-sre.sh incident-shopify-hmac",
+    },
+}
+
+
+def list_sre_units(_: dict[str, Any]) -> str:
+    rows = []
+    for slug, unit in BUSINESS_UNITS.items():
+        sre = _SRE_BY_UNIT[slug]
+        service_count = sum(1 for s in SERVICES.values() if s["business_unit"] == slug)
+        rows.append(
+            {
+                "slug": slug,
+                "pager": f"{slug}-sre",
+                "sev2": sre["sev2"],
+                "slo": sre["slo"],
+                "observe": sre["observe"],
+                "incident": sre["incident"],
+                "account": unit["account"],
+                "cluster": unit["cluster"],
+                "cloud": unit["cloud"],
+                "elk": unit["elk"],
+                "services": service_count,
+                "blast_radius": f"{unit['account']} only — do not page or rollback another BU",
+            }
+        )
+    return json.dumps(
+        {
+            "value": (
+                "SRE uses this to pick the right pager, Sev2 name, and observe command "
+                "before touching a cluster. Accounts are dedicated; a Shopify HMAC page "
+                "must not land on FOREX matching."
+            ),
+            "business_units": rows,
+            "total_services": len(SERVICES),
+        },
+        indent=2,
+    )
 
 
 def _svc(name: str) -> dict[str, Any] | None:
@@ -83,6 +182,11 @@ def page_oncall(inp: dict[str, Any]) -> str:
 
 TOOLS = [
     {
+        "name": "list_sre_units",
+        "description": "SRE estate map: Sev2 services, pager, SLO, next observe/incident command, dedicated account blast radius.",
+        "input_schema": {"type": "object", "properties": {}},
+    },
+    {
         "name": "observe_health",
         "description": "Health/alarms for a catalogued microservice (e.g. fx-matching-engine, shopify-webhook-ingress, orders-api). Resolves its BU cloud account automatically.",
         "input_schema": {
@@ -128,6 +232,7 @@ TOOLS = [
 ]
 
 DISPATCH = {
+    "list_sre_units": list_sre_units,
     "observe_health": observe_health,
     "fetch_logs": fetch_logs,
     "rollback_deploy": rollback_deploy,

@@ -1,15 +1,14 @@
 # How To Use — SRE
 
-`--interactive` is optional. Omit it to print and exit.
+`repl` opens a session. Playbooks print and exit unless you add `--interactive`.
 
 | Command | Output | When to use |
 | --- | --- | --- |
 | `./harness-sre.sh` | npm script list | See every SRE command |
-| `./harness-sre.sh repl` | Cloud identity JSON | Confirm who you are; no session |
-| `./harness-sre.sh repl --interactive` | `sre >>` prompt | Empty SRE session |
+| `./harness-sre.sh repl` | `sre >>` prompt | Empty SRE session |
 | `./harness-sre.sh identity` | Cloud identity JSON | Same dump, no model |
 | `./harness-sre.sh skills` | incident-response, deploy-rollback | See SRE runbooks |
-| `./harness-sre.sh list-units` | 10 BUs, accounts, clusters | Estate map |
+| `./harness-sre.sh list-units` | Per BU: Sev2 names, pager, SLO, next `observe` / `incident`, dedicated account | First page of an incident — which pager and cluster, so you do not roll back Shopify for a FOREX reject |
 | `./harness-sre.sh list-forex-markets` | 10 FOREX markets services | FOREX markets inventory |
 | `./harness-sre.sh list-forex-settlement` | Risk, CLS, regulatory services | FOREX settlement inventory |
 | `./harness-sre.sh list-ecommerce-retail` | Catalog, cart, orders, checkout | Retail e-com inventory |

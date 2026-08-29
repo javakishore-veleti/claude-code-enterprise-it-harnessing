@@ -87,14 +87,14 @@ Enterprise IT Harnessing is the control plane around the model, not another chat
 
 [HowToUse.md](HowToUse.md) — pick your role, then run the commands.
 
-| If you are | Commands |
-| --- | --- |
-| SRE | [HowToUse_SRE.md](HowToUse_SRE.md) |
-| DB | [HowToUse_DB.md](HowToUse_DB.md) |
-| Kubernetes | [HowToUse_K8s.md](HowToUse_K8s.md) |
-| Redis | [HowToUse_Redis.md](HowToUse_Redis.md) |
-| Kafka / Event Bus | [HowToUse_Kafka.md](HowToUse_Kafka.md) |
-| ELK / Search | [HowToUse_ELK.md](HowToUse_ELK.md) |
+| If you are | Catalog / playbooks | Jobs |
+| --- | --- | --- |
+| SRE | [HowToUse_SRE.md](HowToUse_SRE.md) | [HowToUse_SRE_Jobs.md](HowToUse_SRE_Jobs.md) · `./harness-sre-job.sh` |
+| DB | [HowToUse_DB.md](HowToUse_DB.md) | [HowToUse_DB_Jobs.md](HowToUse_DB_Jobs.md) · `./harness-db-job.sh` |
+| Kubernetes | [HowToUse_K8s.md](HowToUse_K8s.md) | [HowToUse_K8s_Jobs.md](HowToUse_K8s_Jobs.md) · `./harness-k8s-job.sh` |
+| Redis | [HowToUse_Redis.md](HowToUse_Redis.md) | [HowToUse_Redis_Jobs.md](HowToUse_Redis_Jobs.md) · `./harness-redis-job.sh` |
+| Kafka / Event Bus | [HowToUse_Kafka.md](HowToUse_Kafka.md) | [HowToUse_Kafka_Jobs.md](HowToUse_Kafka_Jobs.md) · `./harness-kafka-job.sh` |
+| ELK / Search | [HowToUse_ELK.md](HowToUse_ELK.md) | [HowToUse_ELK_Jobs.md](HowToUse_ELK_Jobs.md) · `./harness-elk-job.sh` |
 
 ## Strategic diagram (SVP of Engineering)
 
@@ -330,7 +330,7 @@ A playbook without flags runs one model turn and exits (`--once`). That starts a
 ./harness-elk.sh search-shopify-webhooks --interactive
 ```
 
-`--interactive` is optional. Without it the command prints and exits. With it the same session stays open after that output.
+`./harness-sre.sh repl` opens a session. On a named playbook, `--interactive` is optional: omit it to print and exit; add it to keep that session.
 
 To add a tool, permission, skill, playbook, or a new role, see [How to extend a profile](enterprise_it_harnessing/README.md#how-to-extend-a-profile).
 
@@ -366,7 +366,7 @@ export CLOUD_PROVIDER=aws             # optional: aws | azure | gcp (else auto-d
 ./harness-kafka.sh topics-shopify-merchants
 ./harness-redis.sh caches-shopify
 
-# 3) Empty session — --interactive is optional; without it, print identity and exit
+# 3) Empty session
 ./harness-sre.sh repl --interactive
 ./harness-db.sh repl --interactive
 ./harness-k8s.sh repl --interactive

@@ -1,12 +1,11 @@
 # How To Use — Kubernetes
 
-`--interactive` is optional. Omit it to print and exit.
+`repl` opens a session. Playbooks print and exit unless you add `--interactive`.
 
 | Command | Output | When to use |
 | --- | --- | --- |
 | `./harness-k8s.sh` | npm script list | See every K8s command |
-| `./harness-k8s.sh repl` | Cloud identity JSON | Confirm who you are; no session |
-| `./harness-k8s.sh repl --interactive` | `k8s >>` prompt | Empty cluster session |
+| `./harness-k8s.sh repl` | `k8s >>` prompt | Empty cluster session |
 | `./harness-k8s.sh identity` | Cloud identity JSON | Same dump, no model |
 | `./harness-k8s.sh skills` | cluster-context, crashloop | See K8s runbooks |
 | `./harness-k8s.sh list-units` | BUs → cluster names | Which kubeconfig |

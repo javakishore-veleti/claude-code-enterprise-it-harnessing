@@ -1,12 +1,11 @@
 # How To Use — ELK / Search
 
-`--interactive` is optional. Omit it to print and exit.
+`repl` opens a session. Playbooks print and exit unless you add `--interactive`.
 
 | Command | Output | When to use |
 | --- | --- | --- |
 | `./harness-elk.sh` | npm script list | See every ELK command |
-| `./harness-elk.sh repl` | Cloud identity JSON | Confirm who you are; no session |
-| `./harness-elk.sh repl --interactive` | `elk >>` prompt | Empty search session |
+| `./harness-elk.sh repl` | `elk >>` prompt | Empty search session |
 | `./harness-elk.sh identity` | Cloud identity JSON | Same dump, no model |
 | `./harness-elk.sh skills` | elasticsearch-query, grafana-alerts | See search runbooks |
 | `./harness-elk.sh list-units` | BUs → ES / Grafana names | Which stack |

@@ -1,0 +1,21 @@
+{
+  "name": "enterprise-db-jobs",
+  "private": true,
+  "scripts": {
+    "trades-replica-lag": "../../../run.sh enterprise_it_harnessing/db_admin_harnessing/harness.py --with-skill trades-replica-lag --once \"replication_lag rds-fx-trades-prod. Sev2 if > 5s. Trade capture / FIX / audit.\"",
+    "risk-failover-pause-cls": "../../../run.sh enterprise_it_harnessing/db_admin_harnessing/harness.py --with-skill risk-failover-pause-cls --once \"Propose failover rds-fx-risk-prod. Pause fx-cls-adapter first. Approval required.\"",
+    "orders-snapshot-checkout": "../../../run.sh enterprise_it_harnessing/db_admin_harnessing/harness.py --with-skill orders-snapshot-checkout --once \"Load backup-restore. Propose create_snapshot azsql-orders-prod before checkout deploy. Approval required.\"",
+    "shopify-sync-drain": "../../../run.sh enterprise_it_harnessing/db_admin_harnessing/harness.py --with-skill shopify-sync-drain --once \"Drain shopify-webhook-ingress, then propose failover rds-shopify-sync-prod. Approval required.\"",
+    "consent-ledger-check": "../../../run.sh enterprise_it_harnessing/db_admin_harnessing/harness.py --with-skill consent-ledger-check --once \"describe_instance rds-profile-prod including consent-ledger. No DROP/TRUNCATE.\"",
+    "quotes-blocking": "../../../run.sh enterprise_it_harnessing/db_admin_harnessing/harness.py --with-skill quotes-blocking --once \"describe_instance azsql-quotes-prod. Look for blocking on quote-to-order. No kill without approval.\"",
+    "fulfillment-slow-query": "../../../run.sh enterprise_it_harnessing/db_admin_harnessing/harness.py --with-skill fulfillment-slow-query --once \"describe_instance cloudsql-fulfillment-prod. Allocation / WMS / tracking.\"",
+    "advisor-pii-access": "../../../run.sh enterprise_it_harnessing/db_admin_harnessing/harness.py --with-skill advisor-pii-access --once \"describe_instance azsql-advisor-prod (compliance notes). Do not dump note bodies.\"",
+    "support-ticket-db-lag": "../../../run.sh enterprise_it_harnessing/db_admin_harnessing/harness.py --with-skill support-ticket-db-lag --once \"replication_lag azsql-support-prod. Ticket / SLA store.\"",
+    "research-restore-lab": "../../../run.sh enterprise_it_harnessing/db_admin_harnessing/harness.py --with-skill research-restore-lab --once \"Load backup-restore. Research only. Propose restore path for cloudsql-research-prod. FOREX/Shopify restore denied here.\"",
+    "profile-backup-verify": "../../../run.sh enterprise_it_harnessing/db_admin_harnessing/harness.py --with-skill profile-backup-verify --once \"list_backups rds-profile-prod. Verify consent-ledger is in the snapshot set.\"",
+    "trades-pre-fix-snapshot": "../../../run.sh enterprise_it_harnessing/db_admin_harnessing/harness.py --with-skill trades-pre-fix-snapshot --once \"Propose create_snapshot rds-fx-trades-prod before FIX release. Approval required.\"",
+    "orders-failover": "../../../run.sh enterprise_it_harnessing/db_admin_harnessing/harness.py --with-skill orders-failover --once \"Propose failover azsql-orders-prod. Pause checkout-orchestrator first. Approval required.\"",
+    "shopify-inbox-bloat": "../../../run.sh enterprise_it_harnessing/db_admin_harnessing/harness.py --with-skill shopify-inbox-bloat --once \"describe_instance rds-shopify-sync-prod. Inbox / mapping growth. No DELETE of webhook rows.\"",
+    "netting-lock": "../../../run.sh enterprise_it_harnessing/db_admin_harnessing/harness.py --with-skill netting-lock --once \"describe_instance rds-fx-risk-prod (limits, netting, CLS). Report lock notes. No failover in this job.\""
+  }
+}

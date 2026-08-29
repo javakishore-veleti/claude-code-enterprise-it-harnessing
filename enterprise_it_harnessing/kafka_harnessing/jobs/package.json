@@ -1,0 +1,21 @@
+{
+  "name": "enterprise-kafka-jobs",
+  "private": true,
+  "scripts": {
+    "lag-matching": "../../../run.sh enterprise_it_harnessing/kafka_harnessing/harness.py --with-skill lag-matching --once \"kafka_consumer_lag group=fx-matching-engine topic=fx.orders.routed.\"",
+    "lag-stp": "../../../run.sh enterprise_it_harnessing/kafka_harnessing/harness.py --with-skill lag-stp --once \"kafka_consumer_lag group=fx-stp-adapter topic=fx.trades.captured.\"",
+    "lag-checkout-no-rewind": "../../../run.sh enterprise_it_harnessing/kafka_harnessing/harness.py --with-skill lag-checkout-no-rewind --once \"kafka_consumer_lag group=payments-adapter topic=ecom.checkout.saga. Do not rewind.\"",
+    "lag-shopify-orders": "../../../run.sh enterprise_it_harnessing/kafka_harnessing/harness.py --with-skill lag-shopify-orders --once \"kafka_consumer_lag group=shopify-order-sync topic=shopify.webhooks.orders.\"",
+    "lag-shopify-products": "../../../run.sh enterprise_it_harnessing/kafka_harnessing/harness.py --with-skill lag-shopify-products --once \"kafka_consumer_lag group=shopify-product-sync topic=shopify.webhooks.products.\"",
+    "lag-legacy-outbound": "../../../run.sh enterprise_it_harnessing/kafka_harnessing/harness.py --with-skill lag-legacy-outbound --once \"kafka_consumer_lag group=shopify-fulfillment-push topic=shopify.legacy.outbound.\"",
+    "describe-fx-trades": "../../../run.sh enterprise_it_harnessing/kafka_harnessing/harness.py --with-skill describe-fx-trades --once \"kafka_describe_topic fx.trades.captured on msk-forex-markets.\"",
+    "describe-checkout-saga": "../../../run.sh enterprise_it_harnessing/kafka_harnessing/harness.py --with-skill describe-checkout-saga --once \"kafka_describe_topic ecom.checkout.saga.\"",
+    "ur-partitions-forex": "../../../run.sh enterprise_it_harnessing/kafka_harnessing/harness.py --with-skill ur-partitions-forex --once \"kafka_describe_topic fx.orders.routed. Report under-replicated partitions.\"",
+    "poison-shopify-hmac": "../../../run.sh enterprise_it_harnessing/kafka_harnessing/harness.py --with-skill poison-shopify-hmac --once \"Describe shopify.webhooks.orders. Do not skip-offset without approval. Bound to shopify-merchants.\"",
+    "create-research-topic": "../../../run.sh enterprise_it_harnessing/kafka_harnessing/harness.py --with-skill create-research-topic --once \"Propose kafka_create_topic research.samples.lab on product-research. FOREX/Shopify creates denied. Approval required.\"",
+    "lag-orders-workflow": "../../../run.sh enterprise_it_harnessing/kafka_harnessing/harness.py --with-skill lag-orders-workflow --once \"kafka_consumer_lag group=orders-workflow topic=ecom.orders.created.\"",
+    "describe-settlement": "../../../run.sh enterprise_it_harnessing/kafka_harnessing/harness.py --with-skill describe-settlement --once \"kafka_describe_topic fx.settlement.instructions on msk-forex-settlement.\"",
+    "lag-fx-orders": "../../../run.sh enterprise_it_harnessing/kafka_harnessing/harness.py --with-skill lag-fx-orders --once \"kafka_describe_topic fx.orders.routed then consumer_lag fx-matching-engine.\"",
+    "shopify-retry-pileup": "../../../run.sh enterprise_it_harnessing/kafka_harnessing/harness.py --with-skill shopify-retry-pileup --once \"consumer_lag shopify-order-sync on shopify.webhooks.orders. Correlate HMAC retries. Do not rewind.\""
+  }
+}

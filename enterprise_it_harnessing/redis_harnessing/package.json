@@ -5,6 +5,7 @@
     "repl": "../../run.sh enterprise_it_harnessing/redis_harnessing/harness.py",
     "identity": "../../run.sh enterprise_it_harnessing/redis_harnessing/harness.py --tool cloud_identity",
     "skills": "../../run.sh enterprise_it_harnessing/redis_harnessing/harness.py --tool list_skills",
+    "load-skill": "../../run.sh enterprise_it_harnessing/redis_harnessing/harness.py --tool load_skill",
     "list-units": "../../run.sh enterprise_it_harnessing/redis_harnessing/harness.py --tool list_business_units",
     "list-caches": "../../run.sh enterprise_it_harnessing/redis_harnessing/harness.py --tool list_redis_caches",
     "caches-forex-markets": "../../run.sh enterprise_it_harnessing/redis_harnessing/harness.py --tool list_redis_caches --bu forex-markets",

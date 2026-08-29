@@ -1,12 +1,11 @@
 # How To Use — Kafka / Event Bus
 
-`--interactive` is optional. Omit it to print and exit.
+`repl` opens a session. Playbooks print and exit unless you add `--interactive`.
 
 | Command | Output | When to use |
 | --- | --- | --- |
 | `./harness-kafka.sh` | npm script list | See every Kafka command |
-| `./harness-kafka.sh repl` | Cloud identity JSON | Confirm who you are; no session |
-| `./harness-kafka.sh repl --interactive` | `kafka >>` prompt | Empty bus session |
+| `./harness-kafka.sh repl` | `kafka >>` prompt | Empty bus session |
 | `./harness-kafka.sh identity` | Cloud identity JSON | Same dump, no model |
 | `./harness-kafka.sh skills` | topic-lifecycle, consumer-lag | See bus runbooks |
 | `./harness-kafka.sh list-units` | BUs → bus names | Which MSK / Event Hubs / Pub/Sub |

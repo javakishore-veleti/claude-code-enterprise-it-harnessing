@@ -40,7 +40,20 @@ The git repository is that harness. It is not a monorepo of one hundred microser
 ./harness-elk.sh search-shopify-webhooks
 ```
 
-Catalog dumps (`list-units`, `list-topics`) do not call a model. Playbooks do. Cloud (AWS, Azure, GCP) only changes identity and CLI argv.
+Those six files stay the catalog / playbook launchers. **Jobs** are a second launcher per role — `*-job.sh` — fifteen industry functions each. Claude gets the skill injected (`--with-skill`). Hooks stay in that role’s `permissions.yaml`. Existing `./harness-sre.sh` commands are unchanged.
+
+| Job launcher | What it does | Example |
+| --- | --- | --- |
+| [`./harness-sre-job.sh`](https://github.com/javakishore-veleti/claude-code-enterprise-it-harnessing/blob/main/HowToUse_SRE_Jobs.md) | 15 SRE jobs: matching rejects, FIX drops, CLS halt, checkout saga, HMAC storm, AS/400 timeout, ticket SLA, quote-to-order, fulfillment stall, consent writes, matching rollback, FOREX page, Shopify blast radius, idempotency replay | `./harness-sre-job.sh matching-reject-spike` |
+| [`./harness-db-job.sh`](https://github.com/javakishore-veleti/claude-code-enterprise-it-harnessing/blob/main/HowToUse_DB_Jobs.md) | 15 DBA jobs: trades lag, CLS-paused risk failover, orders snapshot, Shopify sync drain, consent ledger, quote locks, fulfillment slow query, advisor PII, ticket lag, research restore, profile backups, FIX-window snapshot, orders failover, inbox bloat, netting locks | `./harness-db-job.sh risk-failover-pause-cls` |
+| [`./harness-k8s-job.sh`](https://github.com/javakishore-veleti/claude-code-enterprise-it-harnessing/blob/main/HowToUse_K8s_Jobs.md) | 15 cluster jobs: CrashLoop matching / HMAC, checkout OOM, Shopify ImagePull, fulfillment Pending, EKS/AKS/GKE creds, webhook-retry and session-manager restart, reject / HMAC / AS400 logs, settlement pods, orders-api describe | `./harness-k8s-job.sh crashloop-matching` |
+| [`./harness-redis-job.sh`](https://github.com/javakishore-veleti/claude-code-enterprise-it-harnessing/blob/main/HowToUse_Redis_Jobs.md) | 15 cache jobs: FX book lag / failover, cart eviction / failover, Shopify idempotency freeze / failover, risk-limits memory, quote hot keys, fulfillment locks, sessions, SLA clocks, advisor presence, SLOWLOG on FX / cart / idemp | `./harness-redis-job.sh fx-book-lag` |
+| [`./harness-kafka-job.sh`](https://github.com/javakishore-veleti/claude-code-enterprise-it-harnessing/blob/main/HowToUse_Kafka_Jobs.md) | 15 bus jobs: matching / STP / checkout (no rewind) / Shopify / legacy lag, FOREX and saga describe, under-replicated partitions, HMAC poison pill, research topic create, orders-workflow lag, settlement describe | `./harness-kafka-job.sh lag-checkout-no-rewind` |
+| [`./harness-elk-job.sh`](https://github.com/javakishore-veleti/claude-code-enterprise-it-harnessing/blob/main/HowToUse_ELK_Jobs.md) | 15 search jobs: matching rejects, FIX disconnect, HMAC, saga_failed, AS/400, SLA, carrier timeout, FOREX/Shopify ES health, FOREX alerts, HMAC stay firing, silence orders only, FOREX/Shopify ingest pipelines, FOREX dashboards | `./harness-elk-job.sh search-hmac-failed` |
+
+Full job tables: [SRE](https://github.com/javakishore-veleti/claude-code-enterprise-it-harnessing/blob/main/HowToUse_SRE_Jobs.md) · [DB](https://github.com/javakishore-veleti/claude-code-enterprise-it-harnessing/blob/main/HowToUse_DB_Jobs.md) · [K8s](https://github.com/javakishore-veleti/claude-code-enterprise-it-harnessing/blob/main/HowToUse_K8s_Jobs.md) · [Redis](https://github.com/javakishore-veleti/claude-code-enterprise-it-harnessing/blob/main/HowToUse_Redis_Jobs.md) · [Kafka](https://github.com/javakishore-veleti/claude-code-enterprise-it-harnessing/blob/main/HowToUse_Kafka_Jobs.md) · [ELK](https://github.com/javakishore-veleti/claude-code-enterprise-it-harnessing/blob/main/HowToUse_ELK_Jobs.md). Repo: [claude-code-enterprise-it-harnessing](https://github.com/javakishore-veleti/claude-code-enterprise-it-harnessing).
+
+Catalog dumps (`list-units`, `list-topics`) do not call a model. Playbooks and jobs do. Cloud (AWS, Azure, GCP) only changes identity and CLI argv.
 
 The default loop in the repo is Claude. The harness is the product: the catalog, the permission files, the leases, and the six launchers. Those stay if the client is replaced.
 
@@ -52,11 +65,12 @@ From the repository root, after setting `ANTHROPIC_API_KEY` (and optionally `CLO
 - Dump the live estate without calling a model: `list-units`, `list-databases`, `list-topics`, `list-caches`, `resolve-*`.
 - Open an interactive session for one role: `./harness-sre.sh repl --interactive` (same pattern for db, k8s, redis, kafka, elk).
 - Run a named playbook against a production name: `observe-fx-matching`, `describe-fx-trades`, `pods-shopify-merchants`, `lag-shopify-orders`, `info-shopify-idemp`, `search-shopify-webhooks`.
+- Run an industry **job** (skill + hooks): `./harness-sre-job.sh matching-reject-spike`, `./harness-db-job.sh risk-failover-pause-cls`, and the other four `*-job.sh` launchers (15 jobs each).
 - Read that role’s `permissions.yaml` to see what is denied, allowed, or asked before a tool runs.
 - Pin AWS, Azure, or GCP; identity and CLI argv change, the tool list does not.
 - Add a capability by registering one typed tool and, if it mutates, a deny/ask rule and a lease. No second orchestration graph.
 
-How to use (commands): [HowToUse.md](../HowToUse.md) · [SRE](../HowToUse_SRE.md) · [DB](../HowToUse_DB.md) · [K8s](../HowToUse_K8s.md) · [Redis](../HowToUse_Redis.md) · [Kafka](../HowToUse_Kafka.md) · [ELK](../HowToUse_ELK.md). Repo: [claude-code-enterprise-it-harnessing](https://github.com/javakishore-veleti/claude-code-enterprise-it-harnessing).
+How to use (commands): [HowToUse.md](../HowToUse.md) · [SRE](../HowToUse_SRE.md) · [DB](../HowToUse_DB.md) · [K8s](../HowToUse_K8s.md) · [Redis](../HowToUse_Redis.md) · [Kafka](../HowToUse_Kafka.md) · [ELK](../HowToUse_ELK.md). Jobs: [SRE](../HowToUse_SRE_Jobs.md) · [DB](../HowToUse_DB_Jobs.md) · [K8s](../HowToUse_K8s_Jobs.md) · [Redis](../HowToUse_Redis_Jobs.md) · [Kafka](../HowToUse_Kafka_Jobs.md) · [ELK](../HowToUse_ELK_Jobs.md). Repo: [claude-code-enterprise-it-harnessing](https://github.com/javakishore-veleti/claude-code-enterprise-it-harnessing).
 
 ## Value of Enterprise IT Harnessing
 
