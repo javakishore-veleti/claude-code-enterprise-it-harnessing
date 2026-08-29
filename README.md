@@ -61,8 +61,8 @@ flowchart TB
 
   subgraph Platform["Enterprise IT Harnessing Platform"]
     Model["One Claude decision loop"]
-    Catalog["Named catalog ~100 services<br/>fx-matching-engine · orders-api · shopify-webhook-ingress"]
-    Profiles["Six operator surfaces"]
+    Catalog["Named catalog ~100 microservices<br/>fx-matching-engine · orders-api · shopify-webhook-ingress"]
+    Profiles["Six operator surfaces<br/>SRE · Event Bus · Search · Kubernetes · Redis · DB"]
     Gov["Governance: permissions.yaml · isolation leases · audit events"]
   end
 
@@ -123,7 +123,7 @@ flowchart TB
 
 ## Introduction
 
-This repository is an **Enterprise IT Harnessing Platform**. One Claude decision loop. Six operator surfaces — SRE, database admin, Kubernetes, Redis, Kafka, and ELK / Grafana. A named catalog of about **100 microservices** across **10 business units** that run FOREX bank middleware, e-commerce middleware, and Shopify headless merchant integration.
+This repository is an **Enterprise IT Harnessing Platform**. One Claude decision loop. Six operator surfaces — SRE, Event Bus (Kafka), Search (ELK), Kubernetes, Redis, and DB. A named catalog of about **100 microservices** across **10 business units** that run FOREX bank middleware, e-commerce middleware, and Shopify headless merchant integration.
 
 The model never hard-codes “this is an EKS outage” or “this is a stuck checkout saga.” It only sees tools and a system prompt. Each profile swaps the **tool list**, **skill files**, **permission rules**, and **named resources**. Cloud (AWS, Azure, GCP) only changes identity and CLI argv. An AWS Kafka admin and a GCP Cloud SQL admin share the loop and the permission engine; they do not share the same tool list.
 

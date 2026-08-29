@@ -40,8 +40,8 @@ flowchart TB
 
   subgraph Platform["Enterprise IT Harnessing Platform"]
     Model["One Claude decision loop"]
-    Catalog["Named catalog ~100 services<br/>fx-matching-engine · orders-api · shopify-webhook-ingress"]
-    Profiles["Six operator surfaces"]
+    Catalog["Named catalog ~100 microservices<br/>fx-matching-engine · orders-api · shopify-webhook-ingress"]
+    Profiles["Six operator surfaces<br/>SRE · Event Bus · Search · Kubernetes · Redis · DB"]
     Gov["Governance: permissions.yaml · isolation leases · audit events"]
   end
 
