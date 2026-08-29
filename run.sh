@@ -43,7 +43,11 @@ fi
 
 uv sync
 
-# shellcheck disable=SC1091
-source "$VENV/bin/activate"
+# Use the venv interpreter by path. `exec python` fails when `python` is not
+# on PATH (common on macOS; interactive shells often only alias python=python3).
+if [[ ! -x "$VENV/bin/python" ]]; then
+  echo "error: $VENV/bin/python is missing after uv sync" >&2
+  exit 1
+fi
 
-exec python "$PYFILE" "$@"
+exec "$VENV/bin/python" "$PYFILE" "$@"
