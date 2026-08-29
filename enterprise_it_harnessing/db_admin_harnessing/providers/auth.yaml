@@ -1,0 +1,11 @@
+aws:
+  services: [RDS, Aurora, DynamoDB]
+  identity: aws sts get-caller-identity
+azure:
+  services: [Azure SQL, Cosmos DB]
+  identity: az account show
+  extra: resource_group is required on most commands
+gcp:
+  services: [Cloud SQL, Spanner, AlloyDB]
+  identity: gcloud config get-value project
+common: Snapshot, describe, failover, and backup listing are the same tasks on every cloud.

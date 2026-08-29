@@ -24,6 +24,11 @@
     "s20": "./run.sh s20_cache_optimization.py",
     "s21": "./run.sh s21_mcp_runtime.py",
     "s22": "./run.sh s22_production_mailbox.py",
-    "s23": "./run.sh s23_worktree_advanced.py"
+    "s23": "./run.sh s23_worktree_advanced.py",
+    "harness:sre": "./run.sh enterprise_it_harnessing/sre_harnessing/harness.py",
+    "harness:db": "./run.sh enterprise_it_harnessing/db_admin_harnessing/harness.py",
+    "harness:k8s": "./run.sh enterprise_it_harnessing/kubernetes_harnessing/harness.py",
+    "harness:redis": "./run.sh enterprise_it_harnessing/redis_harnessing/harness.py",
+    "harness:kafka": "./run.sh enterprise_it_harnessing/kafka_harnessing/harness.py"
   }
 }

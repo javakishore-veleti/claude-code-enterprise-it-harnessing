@@ -1,0 +1,11 @@
+always_deny:
+  - pattern: "FLUSHALL|FLUSHDB|DEBUG SEGFAULT|CONFIG SET requirepass"
+    reason: "Destructive or lockout Redis commands are denied"
+
+always_allow:
+  - pattern: "redis_info|redis_slowlog|redis_describe_cloud|cloud_identity|list_skills|load_skill"
+    reason: "Read-only Redis inspection is allowed"
+
+ask_user:
+  - pattern: "redis_failover|CLUSTER FAILOVER|REPLICAOF"
+    reason: "Replication topology changes require an operator"

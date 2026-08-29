@@ -1,0 +1,8 @@
+# Common SRE task graph (s03/s07). Cloud-agnostic; identity selects the CLI.
+incident:
+  - detect: Confirm blast radius and error budget impact
+  - contain: Stop the bleeding (feature flag, traffic shift, or rollback)
+  - diagnose: Correlate logs, metrics, and last change
+  - communicate: Update the incident channel; page only if severity warrants
+  - recover: Restore SLO and verify
+  - review: Write a short timeline before the session ends

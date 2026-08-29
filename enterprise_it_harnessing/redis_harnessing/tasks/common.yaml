@@ -1,0 +1,9 @@
+eviction-storm:
+  - info-memory: redis_info section=memory
+  - slowlog: redis_slowlog
+  - describe: redis_describe_cloud if managed
+  - decide: raise maxmemory, change policy, or shed writers — never FLUSHALL
+failover:
+  - info-repl: redis_info section=replication
+  - failover: redis_failover after approval
+  - verify: role=master on the intended node

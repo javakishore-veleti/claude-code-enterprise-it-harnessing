@@ -1,0 +1,15 @@
+always_deny:
+  - pattern: "kubectl delete (ns|namespace|pv|pvc|node)"
+    reason: "Namespace, volume, and node deletion is denied"
+  - pattern: "kubectl drain .*(prod|production)"
+    reason: "Production node drains are denied from this profile"
+
+always_allow:
+  - pattern: "kube_get|kube_describe|kube_logs|cloud_identity|list_skills|load_skill"
+    reason: "Read-only cluster inspection is allowed"
+
+ask_user:
+  - pattern: "kube_refresh_credentials|kube_rollout_restart"
+    reason: "Credential writes and restarts require confirmation"
+  - pattern: "kubectl (apply|delete|scale|drain|cordon|taint)"
+    reason: "Cluster mutations require an operator"

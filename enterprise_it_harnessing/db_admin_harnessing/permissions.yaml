@@ -1,0 +1,15 @@
+always_deny:
+  - pattern: "DROP DATABASE|DROP SCHEMA|TRUNCATE |FLUSHALL"
+    reason: "Irreversible data destruction is denied"
+  - pattern: "delete-db-instance|az sql db delete|gcloud sql instances delete"
+    reason: "Instance deletion is denied from this harness"
+
+always_allow:
+  - pattern: "describe_instance|list_backups|cloud_identity|list_skills|load_skill"
+    reason: "Read-only catalog operations are allowed"
+
+ask_user:
+  - pattern: "create_snapshot|failover_instance"
+    reason: "Data-plane mutations require an operator"
+  - pattern: "modify-db-instance|az sql server update|gcloud sql instances patch"
+    reason: "Parameter or network changes require confirmation"

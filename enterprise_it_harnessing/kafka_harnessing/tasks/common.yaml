@@ -1,0 +1,9 @@
+lag-incident:
+  - list: kafka_list_topics or cluster inventory
+  - describe: kafka_describe_topic for the hot topic
+  - lag: kafka_consumer_lag for the stuck group
+  - decide: scale consumers, skip poison offsets, or pause producers — not delete
+new-topic:
+  - name: Confirm retention, partitions, and replication
+  - create: kafka_create_topic after approval
+  - describe: verify ISR

@@ -1,0 +1,11 @@
+self_hosted:
+  env: REDIS_URL
+aws_elasticache:
+  identity: aws sts get-caller-identity
+azure_cache:
+  identity: az account show
+  extra: resource_group
+gcp_memorystore:
+  identity: gcloud config get-value project
+  extra: region
+common: INFO, SLOWLOG, and failover are the same tasks. Cloud describe is optional.

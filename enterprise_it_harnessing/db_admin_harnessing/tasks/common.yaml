@@ -1,0 +1,12 @@
+maintenance:
+  - snapshot: Create or confirm a recent restore point
+  - drain: Pause writers or shift traffic if the change is disruptive
+  - change: Apply the parameter, version, or replica change
+  - verify: Connections, replication lag, and a canary query
+  - release: Resume traffic and release the isolation lease
+failover:
+  - confirm-primary: Describe instance and replica lag
+  - snapshot: Prefer a snapshot if RPO allows the delay
+  - failover: Promote only after approval
+  - cutover-dns: Update clients or endpoints
+  - verify: Writes land on the new primary

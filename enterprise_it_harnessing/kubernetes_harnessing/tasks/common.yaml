@@ -1,0 +1,10 @@
+crashloop:
+  - context: Confirm kube-context / cluster (on-prem, EKS, AKS, GKE)
+  - get: kube_get pods in the namespace
+  - describe: kube_describe the crashing pod
+  - logs: kube_logs --tail 200
+  - decide: Restart only if the operator wants a bounce, not a config fix
+credential-refresh:
+  - identity: cloud_identity
+  - refresh: kube_refresh_credentials for the named cluster
+  - verify: kube_get nodes --context

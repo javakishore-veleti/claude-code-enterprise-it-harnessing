@@ -1,0 +1,11 @@
+self_hosted:
+  extra: bootstrap server (localhost:9092 or SASL endpoint)
+aws_msk:
+  identity: aws sts get-caller-identity
+  list: aws kafka list-clusters
+azure_eventhubs:
+  identity: az account show
+  extra: resource_group
+gcp_pubsub:
+  identity: gcloud config get-value project
+common: list, describe, lag, create. Delete is denied. Auth and listing CLIs differ.

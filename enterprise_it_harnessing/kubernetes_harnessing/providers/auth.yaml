@@ -1,0 +1,11 @@
+on_prem:
+  auth: existing kubeconfig / OIDC plugin
+  note: CLOUD_PROVIDER unset or none
+aws_eks:
+  auth: aws eks update-kubeconfig (profile, IRSA, or access keys)
+azure_aks:
+  auth: az aks get-credentials
+  extra: resource_group
+gcp_gke:
+  auth: gcloud container clusters get-credentials
+common_tasks: get, describe, logs, rollout. Only credential refresh is cloud-specific.

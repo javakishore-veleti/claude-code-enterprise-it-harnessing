@@ -23,6 +23,7 @@
   - [Phase 2: Knowledge & Context Management](#phase-2-knowledge--context-management)
   - [Phase 3: Async Execution & Multi-Agent Teams](#phase-3-async-execution--multi-agent-teams)
 - [Session guide](#session-guide)
+- [Enterprise IT harnessing](enterprise_it_harnessing/README.md)
 
 ## Introduction
 
@@ -39,6 +40,8 @@ An SRE, a database administrator, a Kafka admin, a Kubernetes cluster admin, or 
 | **Redis admin (self-hosted, ElastiCache, Azure Cache, Memorystore)** | Redis mailbox session (s22) as a starting client; compact context for large `INFO` dumps | Tools for `INFO`, slowlog, replica lag, failover, and ACL. Skills for eviction storms, hot keys, and cluster slot migration. Permissions that block `FLUSHALL` in production |
 
 The model stays the decision-maker. Your harness decides what it is allowed to touch. An AWS Kafka admin and a GCP Cloud SQL admin can share this loop and this permission engine; they should not share the same tool list. Start here, then replace `bash`/`read`/`write` with the smallest set of cloud-native operations that role actually needs.
+
+Those profiles live in [`enterprise_it_harnessing/`](enterprise_it_harnessing/README.md). Run them with `npm run harness:sre`, `harness:db`, `harness:k8s`, `harness:redis`, or `harness:kafka`.
 
 ## What is Harness Engineering?
 Harness engineering is the discipline of building the environment that surrounds an AI model, not the model itself. The model reasons and decides. The harness executes, constrains, and connects. A well-designed harness gives the model precisely the tools it needs, nothing more, and governs exactly what it is allowed to do with them.

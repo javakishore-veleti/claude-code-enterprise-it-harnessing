@@ -1,0 +1,14 @@
+# Authentication differs. Tasks do not.
+aws:
+  env: [AWS_PROFILE, AWS_REGION, AWS_ACCESS_KEY_ID]
+  identity: aws sts get-caller-identity
+  notes: IRSA or instance role is preferred in EKS.
+azure:
+  env: [AZURE_SUBSCRIPTION_ID, ARM_SUBSCRIPTION_ID]
+  identity: az account show
+  notes: Use az login or managed identity.
+gcp:
+  env: [GOOGLE_CLOUD_PROJECT, GOOGLE_APPLICATION_CREDENTIALS, CLOUDSDK_CORE_PROJECT]
+  identity: gcloud auth application-default print-access-token
+  notes: Workload Identity on GKE is preferred over keys.
+override: Set CLOUD_PROVIDER=aws|azure|gcp to skip auto-detect.
