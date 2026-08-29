@@ -32,6 +32,7 @@ from pathlib import Path  # Object-oriented filesystem paths
 from typing import Dict, List, Tuple, Optional, Any  # Type hinting support
 
 from harness_log import get_logger
+from harness_usage import add_usage, empty_totals, print_usage
 
 log = get_logger("core")
 
@@ -575,7 +576,8 @@ def stream_loop(
     tools: List[Dict[str, Any]],
     dispatch: Dict,
     system: Optional[str] = None,
-    extra_kwargs: Optional[Dict[str, Any]] = None
+    extra_kwargs: Optional[Dict[str, Any]] = None,
+    report_usage: bool = False,
 ):
     """
     The main conversation loop that streams model output and handles tool orchestration.
@@ -591,7 +593,8 @@ def stream_loop(
     system = system or DEFAULT_SYSTEM
     # Initialize extra params as empty dict if None
     extra_kwargs = extra_kwargs or {}
-    
+    totals = empty_totals()
+
     while True:
         log.debug("model turn starting")
 
@@ -611,9 +614,12 @@ def stream_loop(
         sys.stdout.write("\n")
         sys.stdout.flush()
         messages.append({"role": "assistant", "content": response.content})
+        add_usage(totals, getattr(response, "usage", None))
 
         log.debug("stop_reason=%s", response.stop_reason)
         if response.stop_reason != "tool_use":
+            if report_usage:
+                print_usage(MODEL, totals)
             return response
             
         # Execute tool calls and gather results

@@ -28,7 +28,11 @@ _REPORT_FORMAT = (
     "## What it found\n"
     "The measured values. Lead with numbers. Do not recap policy if a number exists.\n"
     "## Final output\n"
-    "Severity and the next action. Three lines or fewer."
+    "- bullet: severity\n"
+    "- bullet: next action\n"
+    "- bullet: any constraint (no failover, approval, etc.)\n"
+    "**Summary:** one sentence.\n"
+    "Do not invent token counts. The harness prints ## Tokens after your answer."
 )
 
 
@@ -110,7 +114,13 @@ def run_harness(
                 f"{_REPORT_FORMAT}"
             )
         history.append({"role": "user", "content": once})
-        stream_loop(messages=history, tools=tools, dispatch=dispatch, system=persona)
+        stream_loop(
+            messages=history,
+            tools=tools,
+            dispatch=dispatch,
+            system=persona,
+            report_usage=True,
+        )
         if not args.interactive:
             return
         _repl(prompt, history, tools, dispatch, persona)
@@ -164,7 +174,13 @@ def _repl(
             log.info("Goodbye.")
             return
         history.append({"role": "user", "content": query})
-        stream_loop(messages=history, tools=tools, dispatch=dispatch, system=persona)
+        stream_loop(
+            messages=history,
+            tools=tools,
+            dispatch=dispatch,
+            system=persona,
+            report_usage=True,
+        )
 
 
 def _tool_payload(args: argparse.Namespace) -> dict[str, Any]:

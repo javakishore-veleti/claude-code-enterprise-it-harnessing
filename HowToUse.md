@@ -14,7 +14,8 @@ Bare `./harness-*.sh` / `./harness-*-job.sh` lists **command names only**. Answe
 1. **Input** — what you asked
 2. **What it is doing** — skill and tools
 3. **What it found** — measured values
-4. **Final output** — severity and next action
+4. **Final output** — bullets, then a one-line **Summary**
+5. **Tokens** — model from `MODEL_ID` (default `claude-sonnet-5`), counts from the API, cost from root [`model_costs.json`](model_costs.json)
 
 | If you are | Catalog / playbooks | Jobs (15, skill + hooks) |
 | --- | --- | --- |
