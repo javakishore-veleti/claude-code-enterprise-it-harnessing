@@ -9,6 +9,21 @@
     "s05": "./run.sh s05_skill_loading.py",
     "s06": "./run.sh s06_context_compact.py",
     "s07": "./run.sh s07_task_system.py",
-    "s08": "./run.sh s08_background_tasks.py"
+    "s08": "./run.sh s08_background_tasks.py",
+    "s09": "./run.sh s09_agent_teams.py",
+    "s10": "./run.sh s10_team_protocols.py",
+    "s11": "./run.sh s11_autonomous_agents.py",
+    "s12": "./run.sh s12_worktree_task_isolation.py",
+    "s13": "./run.sh s13_streaming.py",
+    "s14": "./run.sh s14_tools_extended.py",
+    "s15": "./run.sh s15_permissions.py",
+    "s16": "./run.sh s16_event_bus.py",
+    "s17": "./run.sh s17_session_management.py",
+    "s18": "./run.sh s18_parallel_tools.py",
+    "s19": "./run.sh s19_interrupts.py",
+    "s20": "./run.sh s20_cache_optimization.py",
+    "s21": "./run.sh s21_mcp_runtime.py",
+    "s22": "./run.sh s22_production_mailbox.py",
+    "s23": "./run.sh s23_worktree_advanced.py"
   }
 }
