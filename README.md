@@ -1,10 +1,10 @@
-# claude-code-from-scratch
+# claude-code-enterprise-it-harnessing
 
-[![GitHub stars](https://img.shields.io/github/stars/javakishore-veleti/claude-code-from-scratch)](https://github.com/javakishore-veleti/claude-code-from-scratch/stargazers)
-[![GitHub forks](https://img.shields.io/github/forks/javakishore-veleti/claude-code-from-scratch)](https://github.com/javakishore-veleti/claude-code-from-scratch/network/members)
-[![GitHub issues](https://img.shields.io/github/issues/javakishore-veleti/claude-code-from-scratch)](https://github.com/javakishore-veleti/claude-code-from-scratch/issues)
-[![GitHub last commit](https://img.shields.io/github/last-commit/javakishore-veleti/claude-code-from-scratch)](https://github.com/javakishore-veleti/claude-code-from-scratch/commits/main)
-[![License](https://img.shields.io/github/license/javakishore-veleti/claude-code-from-scratch)](LICENSE)
+[![GitHub stars](https://img.shields.io/github/stars/javakishore-veleti/claude-code-enterprise-it-harnessing)](https://github.com/javakishore-veleti/claude-code-enterprise-it-harnessing/stargazers)
+[![GitHub forks](https://img.shields.io/github/forks/javakishore-veleti/claude-code-enterprise-it-harnessing)](https://github.com/javakishore-veleti/claude-code-enterprise-it-harnessing/network/members)
+[![GitHub issues](https://img.shields.io/github/issues/javakishore-veleti/claude-code-enterprise-it-harnessing)](https://github.com/javakishore-veleti/claude-code-enterprise-it-harnessing/issues)
+[![GitHub last commit](https://img.shields.io/github/last-commit/javakishore-veleti/claude-code-enterprise-it-harnessing)](https://github.com/javakishore-veleti/claude-code-enterprise-it-harnessing/commits/main)
+[![License](https://img.shields.io/github/license/javakishore-veleti/claude-code-enterprise-it-harnessing)](LICENSE)
 
 [![Python](https://img.shields.io/badge/python-3.13+-blue.svg)](pyproject.toml)
 [![uv](https://img.shields.io/badge/uv-ready-de5fe9.svg)](https://docs.astral.sh/uv/)
