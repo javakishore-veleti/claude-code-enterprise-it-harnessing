@@ -7,6 +7,8 @@
     "s03": "./run.sh s03_todo_write.py",
     "s04": "./run.sh s04_subagent.py",
     "s05": "./run.sh s05_skill_loading.py",
-    "s06": "./run.sh s06_context_compact.py"
+    "s06": "./run.sh s06_context_compact.py",
+    "s07": "./run.sh s07_task_system.py",
+    "s08": "./run.sh s08_background_tasks.py"
   }
 }

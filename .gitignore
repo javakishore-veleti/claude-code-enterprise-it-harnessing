@@ -219,3 +219,6 @@ __marimo__/
 
 # Node (npm scripts only; no JS runtime deps)
 node_modules/
+
+# Agent task graph state (runtime/session data, not source)
+.agent_tasks.json
