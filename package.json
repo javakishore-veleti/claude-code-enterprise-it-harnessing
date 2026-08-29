@@ -6,6 +6,7 @@
     "s02": "./run.sh s02_tool_use.py",
     "s03": "./run.sh s03_todo_write.py",
     "s04": "./run.sh s04_subagent.py",
-    "s05": "./run.sh s05_skill_loading.py"
+    "s05": "./run.sh s05_skill_loading.py",
+    "s06": "./run.sh s06_context_compact.py"
   }
 }
