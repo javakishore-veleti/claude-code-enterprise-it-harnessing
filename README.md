@@ -16,9 +16,10 @@
 
 ## Table of Contents
 
+- [Introduction](#introduction)
+- [Purpose, objective, value, and business impact](#purpose-objective-value-and-business-impact)
 - [Strategic diagram](#strategic-diagram-svp-of-engineering)
 - [Enterprise architecture](#enterprise-architecture--domains-summing-to-100-microservices)
-- [Introduction](#introduction)
 - [The estate](#the-estate)
 - [Operator profiles](#operator-profiles)
 - [Platform capabilities](#platform-capabilities)
@@ -33,6 +34,33 @@
 - [Session guide](#session-guide)
 - [Enterprise IT harnessing](enterprise_it_harnessing/README.md)
 - [Full diagram set](docs/platform-diagrams.md)
+
+## Introduction
+
+This repository is an **Enterprise IT Harnessing Platform**. One decision loop. Six operator surfaces — SRE, Event Bus (Kafka), Search (ELK), Kubernetes, Redis, and DB. A named catalog of about **100 microservices** across **10 business units** that run FOREX bank middleware, e-commerce middleware, and Shopify headless merchant integration.
+
+The model never hard-codes “this is an EKS outage” or “this is a stuck checkout saga.” It only sees tools and a system prompt. Each profile swaps the **tool list**, **skill files**, **permission rules**, and **named resources**. Cloud (AWS, Azure, GCP) only changes identity and CLI argv. An AWS Kafka admin and a GCP Cloud SQL admin share the loop and the permission engine; they do not share the same tool list.
+
+Operators do not get a generic `bash` session against production. They resolve `fx-matching-engine`, `shopify-webhook-ingress`, `rds-fx-trades-prod`, and `elasticache-shopify-idempotency` — not `service-1`. Mutations that are customer-facing require an operator. Irreversible wipes are denied. Two agents cannot mutate the same cluster, topic, or cache at once.
+
+The reference loop in this repo is Claude Code. The harness is not locked to it. Swap the client and the same catalog, permissions, leases, and launchers still govern production — LangGraph, OpenAI Agents, Amazon Bedrock, Gemini, or a local model can sit where Claude sits today, because the model is only the decision-maker.
+
+The learning sessions later in this README reconstruct the Claude Code primitives underneath. The product you run day to day is [`enterprise_it_harnessing/`](enterprise_it_harnessing/README.md). From the **repository root**, every operator profile is a `./harness-*.sh` launcher — see [How to launch](#how-to-launch-from-the-repository-root).
+
+[Strategic diagram (SVP)](#strategic-diagram-svp-of-engineering) · [Purpose, objective, value, and business impact](#purpose-objective-value-and-business-impact) · [Full diagram set](docs/platform-diagrams.md)
+
+## Purpose, objective, value, and business impact
+
+Enterprise IT Harnessing is the control plane around the model, not another chatbot on a shared admin shell. This repo ships a Claude Code loop so the platform is runnable on day one. The **purpose, objective, value, and impact** below are properties of the harness — they survive if you replace Claude with another framework.
+
+| | What it means for this estate |
+| --- | --- |
+| **Purpose** | Give each operator role a **named, permissioned surface** over the same 100+ microservices — FOREX matching / FIX / CLS, checkout and fulfillment, Shopify HMAC and legacy bridge — without handing anyone a generic `bash` on production. |
+| **Objective** | One loop, six profiles (SRE, Event Bus, Search, Kubernetes, Redis, DB), a catalog that resolves real names, and a guard that **denies**, **allows**, or **asks** before every tool. Cloud identity is argv. Mutations take an isolation lease. |
+| **Value** | Operators work the way they already think: `./harness-sre.sh observe-fx-matching`, not “ask the model to kubectl.” Skills load on demand. Catalog dumps do not spend tokens. Playbooks do. The same harness runs on AWS, Azure, and GCP. |
+| **Business impact** | Faster, **repeatable MTTR** on named SLOs. Dual-control for rollback, failover, silence, and ACL change. Irreversible wipes (`FLUSHALL`, `DROP DATABASE`, namespace delete) cannot be “reasoned through.” Two agents cannot mutate the same cluster, topic, or cache at once. Blast radius stays inside the business unit that owns the account. |
+
+**Framework note.** Claude Code is the default decision engine because this repo reconstructs that harness. Customizing to another framework means replacing the streaming client and keeping everything else: `permissions.yaml`, isolation leases, the 10-BU catalog, on-demand skills, MCP, and the root `./harness-*.sh` launchers. Do not port the deny rules into prompt text. They belong in the harness.
 
 ## Strategic diagram (SVP of Engineering)
 
@@ -120,16 +148,6 @@ flowchart TB
 | **Enterprise** | **10 BUs** | | **100+** |
 
 **[Architecture (EM / Chief Architect)](#architecture-for-engineering-managers-and-chief-architects)** · **[Role diagrams](#role-specific-diagrams)** · **[Full diagram set](docs/platform-diagrams.md)**
-
-## Introduction
-
-This repository is an **Enterprise IT Harnessing Platform**. One Claude decision loop. Six operator surfaces — SRE, Event Bus (Kafka), Search (ELK), Kubernetes, Redis, and DB. A named catalog of about **100 microservices** across **10 business units** that run FOREX bank middleware, e-commerce middleware, and Shopify headless merchant integration.
-
-The model never hard-codes “this is an EKS outage” or “this is a stuck checkout saga.” It only sees tools and a system prompt. Each profile swaps the **tool list**, **skill files**, **permission rules**, and **named resources**. Cloud (AWS, Azure, GCP) only changes identity and CLI argv. An AWS Kafka admin and a GCP Cloud SQL admin share the loop and the permission engine; they do not share the same tool list.
-
-Operators do not get a generic `bash` session against production. They resolve `fx-matching-engine`, `shopify-webhook-ingress`, `rds-fx-trades-prod`, and `elasticache-shopify-idempotency` — not `service-1`. Mutations that are customer-facing require an operator. Irreversible wipes are denied. Two agents cannot mutate the same cluster, topic, or cache at once.
-
-The learning sessions later in this README reconstruct the Claude Code primitives underneath. The product you run day to day is [`enterprise_it_harnessing/`](enterprise_it_harnessing/README.md). From the **repository root**, every operator profile is a `./harness-*.sh` launcher — see [How to launch](#how-to-launch-from-the-repository-root).
 
 ## The estate
 
