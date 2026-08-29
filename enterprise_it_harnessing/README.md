@@ -1,5 +1,7 @@
 # Enterprise IT harnessing
 
+Audience diagrams: [SVP strategic](../docs/platform-diagrams.md#strategic-diagram-svp-of-engineering) · [EM / Chief Architect](../docs/platform-diagrams.md#architecture-engineering-manager--chief-architect) · [role-specific](../docs/platform-diagrams.md#role-specific-diagrams)
+
 This package is the operator surface for a **single enterprise** that runs about **100 microservices** across **10 business units**. Each unit owns a dedicated cloud account and its own Kubernetes, Kafka/Event Hubs/Pub/Sub, Redis, Elasticsearch, and Grafana stack.
 
 The model does not change. Each profile (`sre_harnessing`, `db_admin_harnessing`, `kubernetes_harnessing`, `redis_harnessing`, `kafka_harnessing`, `elk_harnessing`) swaps **tools**, **skills**, **permissions**, and **named catalog resources**. Cloud (AWS, Azure, GCP) only changes identity and CLI argv.

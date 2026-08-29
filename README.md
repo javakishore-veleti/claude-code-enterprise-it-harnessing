@@ -12,11 +12,18 @@
 [![MCP](https://img.shields.io/badge/MCP-1.0+-4f46e5.svg)](https://modelcontextprotocol.io/)
 [![Redis](https://img.shields.io/badge/Redis-5.0+-dc382d.svg)](https://redis.io/)
 [![PyYAML](https://img.shields.io/badge/PyYAML-6.0+-cb171e.svg)](https://pyyaml.org/)
-[![npm scripts](https://img.shields.io/badge/npm-s01--s23-cb3837.svg)](package.json)
+[![npm scripts](https://img.shields.io/badge/npm-SRE_DB_K8s_Redis_Kafka_ELK-cb3837.svg)](package.json)
 
 ## Table of Contents
 
+- [Strategic diagram](#strategic-diagram-svp-of-engineering)
 - [Introduction](#introduction)
+- [The estate](#the-estate)
+- [Operator profiles](#operator-profiles)
+- [Platform capabilities](#platform-capabilities)
+- [Architecture for Engineering Managers and Chief Architects](#architecture-for-engineering-managers-and-chief-architects)
+- [Role-specific diagrams](#role-specific-diagrams)
+- [How to launch](#how-to-launch)
 - [What is Harness Engineering?](#what-is-harness-engineering)
 - [How Claude Code Uses Harness Engineering?](#how-claude-code-uses-harness-engineering)
   - [Phase 1: The Core Agent Loop](#phase-1-the-core-agent-loop)
@@ -24,25 +31,181 @@
   - [Phase 3: Async Execution & Multi-Agent Teams](#phase-3-async-execution--multi-agent-teams)
 - [Session guide](#session-guide)
 - [Enterprise IT harnessing](enterprise_it_harnessing/README.md)
+- [Full diagram set](docs/platform-diagrams.md)
+
+## Strategic diagram (SVP of Engineering)
+
+[Full diagram set — SVP, Engineering Manager / Chief Architect, and every operator role](docs/platform-diagrams.md)
+
+```mermaid
+flowchart TB
+  subgraph Outcomes["What leadership gets"]
+    O1["Faster, consistent MTTR on named production services"]
+    O2["Dual-control for customer-facing mutations"]
+    O3["Role-scoped blast radius — not a shared admin shell"]
+  end
+
+  subgraph Estate["The estate we actually run"]
+    FX["FOREX bank middleware<br/>matching · FIX · CLS · regulatory"]
+    EC["E-commerce middleware<br/>catalog · quote · orders · fulfillment · customer"]
+    SH["Shopify headless merchants<br/>HMAC webhooks · idempotency · legacy / AS400"]
+  end
+
+  subgraph Units["10 business units · dedicated accounts"]
+    U1["forex-markets · forex-settlement"]
+    U2["ecommerce-retail · ecommerce-quote · fulfillment"]
+    U3["customer-profile · support · advisor · research"]
+    U4["shopify-merchants"]
+  end
+
+  subgraph Platform["Enterprise IT Harnessing Platform"]
+    Model["One Claude decision loop"]
+    Catalog["Named catalog ~100 services<br/>fx-matching-engine · orders-api · shopify-webhook-ingress"]
+    Profiles["Six operator surfaces"]
+    Gov["Governance: permissions.yaml · isolation leases · audit events"]
+  end
+
+  FX --> Units
+  EC --> Units
+  SH --> Units
+  Units --> Catalog
+  Catalog --> Model
+  Model --> Profiles
+  Profiles --> Gov
+  Gov --> Outcomes
+```
+
+**[Architecture (EM / Chief Architect)](#architecture-for-engineering-managers-and-chief-architects)** · **[Role diagrams](#role-specific-diagrams)** · **[Full diagram set](docs/platform-diagrams.md)**
 
 ## Introduction
 
-This repository is intentionally generic. It reconstructs a Claude Code-style **coding** harness: one loop, typed tools, permissions, skills, context compression, and optional teams. That generality is the point. The model never hard-codes “this is a Django bug” or “this is an EKS outage.” It only sees tools and a system prompt. Swap the tools, the skill files, and the permission rules, and the same foundation becomes a specialist harness for the people who actually run production.
+This repository is an **Enterprise IT Harnessing Platform**. One Claude decision loop. Six operator surfaces — SRE, database admin, Kubernetes, Redis, Kafka, and ELK / Grafana. A named catalog of about **100 microservices** across **10 business units** that run FOREX bank middleware, e-commerce middleware, and Shopify headless merchant integration.
 
-An SRE, a database administrator, a Kafka admin, a Kubernetes cluster admin, or a Redis admin does not need a different agent framework. They need a different **tool surface** on top of this one. The sessions in this repo already give you the primitives: bash and file tools (s01–s02), planning (s03, s07), isolated exploration (s04, s12, s23), on-demand runbooks as skills (s05), durable context (s06, s17), background jobs (s08), teams and protocols (s09–s11, s22), governance (s15–s16), and MCP so real cloud CLIs and servers can plug in (s21).
+The model never hard-codes “this is an EKS outage” or “this is a stuck checkout saga.” It only sees tools and a system prompt. Each profile swaps the **tool list**, **skill files**, **permission rules**, and **named resources**. Cloud (AWS, Azure, GCP) only changes identity and CLI argv. An AWS Kafka admin and a GCP Cloud SQL admin share the loop and the permission engine; they do not share the same tool list.
 
-| Role | What you keep from this repo | What you add as your harness |
+Operators do not get a generic `bash` session against production. They resolve `fx-matching-engine`, `shopify-webhook-ingress`, `rds-fx-trades-prod`, and `elasticache-shopify-idempotency` — not `service-1`. Mutations that are customer-facing require an operator. Irreversible wipes are denied. Two agents cannot mutate the same cluster, topic, or cache at once.
+
+The learning sessions later in this README reconstruct the Claude Code primitives underneath. The product you run day to day is [`enterprise_it_harnessing/`](enterprise_it_harnessing/README.md).
+
+## The estate
+
+Three product domains share the same harnessing folders. Each business unit owns a dedicated cloud account and its own Kubernetes, Kafka / Event Hubs / Pub/Sub, Redis, Elasticsearch, and Grafana stack.
+
+| Domain | What it is | Typical services |
 | --- | --- | --- |
-| **SRE** | Perception-action loop, todo/task graph, interrupts, event bus, sessions | Tools for paging, metrics, logs, and deploy rollback; skills that encode incident runbooks; permissions that allow `kubectl get` / `aws cloudwatch` but require approval for `kubectl delete` or production scale-down |
-| **DB admin (AWS, Azure, GCP)** | Dispatch map, reversible writes, permissions, MCP | Tools wrapped around RDS, Aurora, DynamoDB, Azure SQL, Cosmos DB, Cloud SQL, Spanner, and AlloyDB: snapshot, failover, parameter-group change, slow-query explain. Skills for backup/restore and engine-specific runbooks. Never expose raw `DROP` without a deny rule |
-| **Kafka / MSK admin** | Background tasks for long rebalances, team protocols for dual-control | Tools for topics, ACLs, consumer groups, and MSK/Event Hubs/Pub/Sub equivalents; skills for partition reassignment and poison-pill consumer recovery |
-| **Kubernetes admin (on-prem, EKS, AKS, GKE)** | Worktree isolation as a metaphor for cluster/context isolation; subagents for noisy `kubectl` output | Tools scoped to a kubeconfig/context: `get`, `describe`, drain, rollout. Separate permission profiles per cluster (dev vs prod, on-prem vs EKS vs AKS vs GKE). Skills for node-not-ready, CrashLoopBackOff, and certificate rotation |
-| **Redis admin (self-hosted, ElastiCache, Azure Cache, Memorystore)** | Redis mailbox session (s22) as a starting client; compact context for large `INFO` dumps | Tools for `INFO`, slowlog, replica lag, failover, and ACL. Skills for eviction storms, hot keys, and cluster slot migration. Permissions that block `FLUSHALL` in production |
-| **ELK / Grafana** | Event bus and compact context for noisy search hits | Elasticsearch aliases (`forex-trades`, `shopify-webhooks`, `orders`) and Grafana folders per business unit; silences require approval |
+| **FOREX trade-processing middleware (banks)** | Price, match, route, capture, FIX, STP, then risk / netting / CLS / regulatory | `fx-matching-engine`, `fx-fix-gateway`, `fx-cls-adapter`, `fx-regulatory-report` |
+| **E-commerce middleware (microservices)** | Product catalog, quote, orders, shipping, fulfillment, customer profile, support, advisor, product research | `catalog-api`, `quote-api`, `orders-api`, `checkout-orchestrator`, `tracking-api`, `ticket-api`, `advisor-workspace` |
+| **Shopify headless merchants** | Shopify data into legacy and on-prem systems; HMAC webhooks; idempotency; SOAP / AS/400 bridge | `shopify-webhook-ingress`, `shopify-order-sync`, `shopify-legacy-bridge`, `shopify-idempotency` |
 
-The model stays the decision-maker. Your harness decides what it is allowed to touch. An AWS Kafka admin and a GCP Cloud SQL admin can share this loop and this permission engine; they should not share the same tool list. Start here, then replace `bash`/`read`/`write` with the smallest set of cloud-native operations that role actually needs.
+Call `list_business_units`, `list_services`, or `resolve_service` before guessing an account or cluster. The full BU table lives in [`enterprise_it_harnessing/README.md`](enterprise_it_harnessing/README.md).
 
-Those profiles live in [`enterprise_it_harnessing/`](enterprise_it_harnessing/README.md) (FOREX bank middleware, e-commerce microservices, Shopify headless merchants — 10 BUs, ~100 services). Launch from the repo root with `./harness-sre.sh`, `./harness-db.sh`, `./harness-k8s.sh`, `./harness-redis.sh`, `./harness-kafka.sh`, or `./harness-elk.sh` (each forwards to that profile’s `package.json`, 25+ named commands). `npm run harness:sre` (and `db` / `k8s` / `redis` / `kafka` / `elk`) opens the interactive session.
+## Operator profiles
+
+| Role | What the harness is allowed to do | What stays denied or dual-control | Launcher |
+| --- | --- | --- | --- |
+| **SRE** | Observe named SLOs, fetch logs, run incident loops for matching-engine / checkout / Shopify HMAC | Rollback and paging require an operator; namespace wipe is denied | [`./harness-sre.sh`](harness-sre.sh) · [sre.md](enterprise_it_harnessing/sre.md) |
+| **DB admin (AWS, Azure, GCP)** | Describe instances, explain slow queries, list snapshots across RDS, Aurora, Azure SQL, Cloud SQL, Spanner | Failover / restore require approval; `DROP DATABASE` is denied | [`./harness-db.sh`](harness-db.sh) · [db.md](enterprise_it_harnessing/db.md) |
+| **Kubernetes (EKS, AKS, GKE, on-prem)** | `get` / `describe` / `logs` scoped to the BU kubeconfig | Drain, scale, and rollout undo require approval; namespace / PV delete is denied | [`./harness-k8s.sh`](harness-k8s.sh) · [k8s.md](enterprise_it_harnessing/k8s.md) |
+| **Redis (ElastiCache, Azure Cache, Memorystore)** | `INFO`, slowlog, replica lag, eviction / hot-key skills | Failover and ACL changes require approval; `FLUSHALL` is denied | [`./harness-redis.sh`](harness-redis.sh) · [redis.md](enterprise_it_harnessing/redis.md) |
+| **Kafka / MSK / Event Hubs / Pub/Sub** | Topic describe, consumer lag, poison-pill recovery | ACL and partition reassignment require approval | [`./harness-kafka.sh`](harness-kafka.sh) · [kafka.md](enterprise_it_harnessing/kafka.md) |
+| **ELK / Grafana** | Search named aliases (`forex-trades`, `shopify-webhooks`, `orders`); list alerts | Silences require approval; index wipe is denied | [`./harness-elk.sh`](harness-elk.sh) · [elk.md](enterprise_it_harnessing/elk.md) |
+
+## Platform capabilities
+
+- **Named estate catalog** — 10 BUs, ~100 services, dedicated accounts and clusters. Tools resolve real names, not placeholders.
+- **Declarative permissions** — `always_deny` / `always_allow` / `ask_user` in each profile’s `permissions.yaml`. Safety is a pre-execution layer, not a model instruction.
+- **Isolation leases** — mutating tools take an exclusive lease on the target (cluster, instance, topic, cache). Dirty or already-leased targets fail closed. Leases live under `.harness_isolation/`.
+- **Cloud identity** — AWS, Azure, or GCP is resolved once (`CLOUD_PROVIDER` or auto-detect). The same tool list runs against `aws` / `az` / `gcloud` argv.
+- **On-demand skills** — runbooks (`incident-response`, `backup-restore`, `eviction`, `consumer-lag`) load when the model asks, not on every turn.
+- **Catalog vs playbook** — `list-units` / `resolve-*` use `--tool` and do **not** call the model. `observe-*` / `incident-*` / `failover-*` use `--once` and do.
+- **Audit event bus** — every tool call emits `pre_tool_use` / `post_tool_use` before and after the guard.
+- **MCP** — real cloud CLIs and servers plug in without a second agent framework.
+- **25+ named commands per profile** — each `package.json` is an operator console, not a demo script.
+
+## Architecture for Engineering Managers and Chief Architects
+
+[Full architecture diagram and control-plane contract](docs/platform-diagrams.md#architecture-engineering-manager--chief-architect)
+
+```mermaid
+flowchart TB
+  subgraph Launch["Launch plane"]
+    SH["Root launchers harness-*.sh · npm run harness:*"]
+  end
+
+  subgraph Profile["Role profile — the only extension point"]
+    Tools["Typed tools"]
+    Skills["On-demand skills"]
+    Perms["permissions.yaml"]
+    Tasks["Named playbooks"]
+  end
+
+  subgraph Kernel["Shared kernel"]
+    Runner["Streaming runner"]
+    Guard["Permission guard"]
+    Lease["Isolation leases"]
+    Ident["Cloud identity"]
+    Bus["Event bus / audit"]
+    Cat["Service catalog"]
+  end
+
+  subgraph World["The world the model may touch"]
+    Cloud["aws · az · gcloud · kubectl · MCP"]
+    Data["Named clusters, topics, caches, indexes"]
+    Model["Claude — decisions only"]
+  end
+
+  SH --> Profile
+  Profile --> Kernel
+  Kernel --> Model
+  Guard --> Cloud
+  Lease --> Data
+  Cat --> Data
+```
+
+The platform is a harness, not an agent framework. Adding a capability means registering one typed tool and, if it mutates, a deny/ask rule and a lease. It does not mean a new orchestration graph.
+
+## Role-specific diagrams
+
+[Per-role allow / ask / deny diagrams](docs/platform-diagrams.md#role-specific-diagrams)
+
+```mermaid
+flowchart LR
+  subgraph Profiles["Same loop · different blast radius"]
+    SRE["SRE"]
+    DBA["DBA"]
+    K8S["Kubernetes"]
+    RDS["Redis"]
+    KFK["Kafka"]
+    ELK["ELK + Grafana"]
+  end
+```
+
+Each role keeps the catalog and the guard. The **smallest** tool set that role needs is what gets registered.
+
+## How to launch
+
+```bash
+export ANTHROPIC_API_KEY=...
+# optional: pin identity; otherwise auto-detect
+export CLOUD_PROVIDER=aws   # or azure or gcp
+
+./harness-sre.sh                 # list SRE commands
+./harness-sre.sh repl            # interactive SRE session
+./harness-sre.sh observe-fx-matching
+
+./harness-db.sh describe-fx-trades
+./harness-k8s.sh pods-shopify-merchants
+./harness-kafka.sh lag-shopify-orders
+./harness-redis.sh info-shopify-idemp
+./harness-elk.sh search-shopify-webhooks
+```
+
+Same thing via npm at the repo root:
+
+```bash
+npm run harness:sre -- observe-fx-matching
+npm run harness:elk -- search-forex-trades
+```
 
 ## What is Harness Engineering?
 Harness engineering is the discipline of building the environment that surrounds an AI model, not the model itself. The model reasons and decides. The harness executes, constrains, and connects. A well-designed harness gives the model precisely the tools it needs, nothing more, and governs exactly what it is allowed to do with them.
