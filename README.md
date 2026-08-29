@@ -1,5 +1,14 @@
 # claude-code-from-scratch
 
+[![GitHub stars](https://img.shields.io/github/stars/javakishore-veleti/claude-code-from-scratch)](https://github.com/javakishore-veleti/claude-code-from-scratch/stargazers)
+[![GitHub forks](https://img.shields.io/github/forks/javakishore-veleti/claude-code-from-scratch)](https://github.com/javakishore-veleti/claude-code-from-scratch/network/members)
+[![GitHub issues](https://img.shields.io/github/issues/javakishore-veleti/claude-code-from-scratch)](https://github.com/javakishore-veleti/claude-code-from-scratch/issues)
+[![GitHub last commit](https://img.shields.io/github/last-commit/javakishore-veleti/claude-code-from-scratch)](https://github.com/javakishore-veleti/claude-code-from-scratch/commits/main)
+[![License](https://img.shields.io/github/license/javakishore-veleti/claude-code-from-scratch)](LICENSE)
+[![Python](https://img.shields.io/badge/python-3.13+-blue.svg)](pyproject.toml)
+[![uv](https://img.shields.io/badge/uv-ready-de5fe9.svg)](https://docs.astral.sh/uv/)
+[![Sessions](https://img.shields.io/badge/sessions-s01--s23-informational)](package.json)
+
 ## What is Harness Engineering?
 Harness engineering is the discipline of building the environment that surrounds an AI model, not the model itself. The model reasons and decides. The harness executes, constrains, and connects. A well-designed harness gives the model precisely the tools it needs, nothing more, and governs exactly what it is allowed to do with them.
 
