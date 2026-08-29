@@ -1,4 +1,4 @@
-"""Professional REPL: stream loop (s01/s13), skills (s05), cache prefix (s20), identity (auth)."""
+"""Professional REPL: streaming loop, on-demand skills, cached system prefix, cloud identity."""
 
 from __future__ import annotations
 

@@ -1,7 +1,7 @@
 """Resource isolation: dirty-check, conflict-detect, stale-prune.
 
-Applies the s12/s23 safety ideas to operational targets (cluster, instance,
-topic, cache) instead of git worktrees. Parallel mutations on the same target
+Applies exclusive leases to operational targets (cluster, instance,
+topic, cache). Parallel mutations on the same target
 are refused until the lease is released or pruned.
 """
 

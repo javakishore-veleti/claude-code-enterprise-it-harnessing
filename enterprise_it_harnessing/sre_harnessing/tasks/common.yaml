@@ -1,4 +1,4 @@
-# Common SRE task graph (s03/s07). Cloud-agnostic; identity selects the CLI.
+# Common SRE task graph. Cloud-agnostic; identity selects the CLI.
 incident:
   - detect: Confirm blast radius and error budget impact
   - contain: Stop the bleeding (feature flag, traffic shift, or rollback)

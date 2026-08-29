@@ -1,1 +1,1 @@
-"""Production harness customizations built on the s01–s23 primitives."""
+"""Enterprise IT harness profiles for SRE, DBA, Kubernetes, Redis, and Kafka."""

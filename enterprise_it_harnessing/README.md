@@ -1,24 +1,8 @@
 # Enterprise IT harnessing
 
-Production profiles on top of the s01–s23 loop. The learning sessions stay in the repo root. This folder is what you run when the operator is an SRE, DBA, Kubernetes admin, Redis admin, or Kafka admin.
+This folder is what you run when the operator is an SRE, DBA, Kubernetes admin, Redis admin, or Kafka admin.
 
 The model is unchanged. Each profile swaps **tools**, **skills**, **permissions**, and **auth**. Cloud (AWS, Azure, GCP) almost never gets its own task list — only a different way to prove identity and a different CLI argv for the same semantic operation.
-
-## Ideas taken from the sessions (not copied)
-
-| Session | Primitive kept here |
-| --- | --- |
-| s01 / s13 | Perception-action loop via `core.stream_loop` |
-| s02 / s14 | Dispatch map of typed tools; prefer them over raw bash |
-| s03 / s07 | Task graphs in `tasks/common.yaml` |
-| s04 | Noisy logs stay summarized; parent context stays clean |
-| s05 | `list_skills` / `load_skill` against each profile's `skills/` |
-| s08 | Long cloud CLIs time out instead of hanging the loop |
-| s12 / s23 | Isolation leases: dirty-check, conflict, stale-prune — on **resources**, not git worktrees |
-| s15 | Per-profile `permissions.yaml` |
-| s16 | Audit events on every tool |
-| s20 | Ephemeral prompt cache on system + last tool |
-| s21 / s22 | Ready for MCP servers and Redis mailboxes; not required to start |
 
 ## Run
 

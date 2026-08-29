@@ -1,4 +1,4 @@
-"""Minimal event bus for audit hooks (s16)."""
+"""Minimal event bus for audit hooks."""
 
 from __future__ import annotations
 

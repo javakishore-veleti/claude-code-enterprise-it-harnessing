@@ -1,4 +1,4 @@
-"""Safe argv execution. Prefer typed tools over raw bash (s14)."""
+"""Safe argv execution. Prefer typed tools over raw bash."""
 
 from __future__ import annotations
 

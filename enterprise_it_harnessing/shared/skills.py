@@ -1,4 +1,4 @@
-"""On-demand skill loading (s05). Skills live next to each domain harness."""
+"""On-demand skill loading. Skills live next to each domain harness."""
 
 from __future__ import annotations
 

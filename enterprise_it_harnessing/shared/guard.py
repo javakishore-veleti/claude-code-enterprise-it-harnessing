@@ -1,4 +1,4 @@
-"""Guarded dispatch (s15) plus isolation leases (s12/s23) and audit events (s16)."""
+"""Guarded dispatch with isolation leases and audit events."""
 
 from __future__ import annotations
 

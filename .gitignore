@@ -223,5 +223,5 @@ node_modules/
 # Agent task graph state (runtime/session data, not source)
 .agent_tasks.json
 
-# Production harness isolation leases (s12/s23 ideas applied to ops targets)
+# Production harness isolation leases
 .harness_isolation/
