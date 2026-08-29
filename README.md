@@ -22,6 +22,7 @@
   - [Current Enterprise IT State](#current-enterprise-it-state)
   - [What the `enterprise_it_harnessing` folder is](#what-the-enterprise_it_harnessing-folder-is)
 - [Purpose, objective, value, and business impact](#purpose-objective-value-and-business-impact)
+- [How To Use](#how-to-use)
 - [Strategic diagram](#strategic-diagram-svp-of-engineering)
 - [Enterprise architecture](#enterprise-architecture--domains-summing-to-100-microservices)
 - [The estate](#the-estate)
@@ -67,7 +68,7 @@ This repository does **not** contain 100 microservice codebases. Those applicati
 
 [`enterprise_it_harnessing/`](enterprise_it_harnessing/README.md) is the **actual product of this git repository**. It is what Enterprise IT Harnessing should always be: six role-scoped operator surfaces (SRE, Event Bus, Search, Kubernetes, Redis, DB) over a live production estate, with declarative permissions, isolation leases, and root launchers (`./harness-sre.sh` and the rest). The `s01`–`s23` scripts stay at the root as the teaching layer. Day-to-day operators start here — see [How to launch](#how-to-launch-from-the-repository-root).
 
-[Strategic diagram (SVP)](#strategic-diagram-svp-of-engineering) · [Purpose, objective, value, and business impact](#purpose-objective-value-and-business-impact) · [Full diagram set](docs/platform-diagrams.md)
+[Strategic diagram (SVP)](#strategic-diagram-svp-of-engineering) · [Purpose, objective, value, and business impact](#purpose-objective-value-and-business-impact) · [How To Use](#how-to-use) · [Full diagram set](docs/platform-diagrams.md)
 
 ## Purpose, objective, value, and business impact
 
@@ -81,6 +82,19 @@ Enterprise IT Harnessing is the control plane around the model, not another chat
 | **Business impact** | Faster, **repeatable MTTR** on named SLOs. Dual-control for rollback, failover, silence, and ACL change. Irreversible wipes (`FLUSHALL`, `DROP DATABASE`, namespace delete) cannot be “reasoned through.” Two agents cannot mutate the same cluster, topic, or cache at once. Blast radius stays inside the business unit that owns the account. |
 
 **Framework note.** Claude Code is the default decision engine because this repo reconstructs that harness. Customizing to another framework means replacing the streaming client and keeping everything else: `permissions.yaml`, isolation leases, the 10-BU catalog, on-demand skills, MCP, and the root `./harness-*.sh` launchers. Do not port the deny rules into prompt text. They belong in the harness.
+
+## How To Use
+
+[HowToUse.md](HowToUse.md) — pick your role, then run the commands.
+
+| If you are | Commands |
+| --- | --- |
+| SRE | [HowToUse_SRE.md](HowToUse_SRE.md) |
+| DB | [HowToUse_DB.md](HowToUse_DB.md) |
+| Kubernetes | [HowToUse_K8s.md](HowToUse_K8s.md) |
+| Redis | [HowToUse_Redis.md](HowToUse_Redis.md) |
+| Kafka / Event Bus | [HowToUse_Kafka.md](HowToUse_Kafka.md) |
+| ELK / Search | [HowToUse_ELK.md](HowToUse_ELK.md) |
 
 ## Strategic diagram (SVP of Engineering)
 

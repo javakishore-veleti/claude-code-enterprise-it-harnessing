@@ -56,7 +56,7 @@ From the repository root, after setting `ANTHROPIC_API_KEY` (and optionally `CLO
 - Pin AWS, Azure, or GCP; identity and CLI argv change, the tool list does not.
 - Add a capability by registering one typed tool and, if it mutates, a deny/ask rule and a lease. No second orchestration graph.
 
-Command tables: [sre](../enterprise_it_harnessing/sre.md) · [db](../enterprise_it_harnessing/db.md) · [k8s](../enterprise_it_harnessing/k8s.md) · [redis](../enterprise_it_harnessing/redis.md) · [kafka](../enterprise_it_harnessing/kafka.md) · [elk](../enterprise_it_harnessing/elk.md). Repo: [claude-code-enterprise-it-harnessing](https://github.com/javakishore-veleti/claude-code-enterprise-it-harnessing).
+How to use (commands): [HowToUse.md](../HowToUse.md) · [SRE](../HowToUse_SRE.md) · [DB](../HowToUse_DB.md) · [K8s](../HowToUse_K8s.md) · [Redis](../HowToUse_Redis.md) · [Kafka](../HowToUse_Kafka.md) · [ELK](../HowToUse_ELK.md). Repo: [claude-code-enterprise-it-harnessing](https://github.com/javakishore-veleti/claude-code-enterprise-it-harnessing).
 
 ## Value of Enterprise IT Harnessing
 
