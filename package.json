@@ -4,6 +4,7 @@
   "scripts": {
     "s01": "./run.sh s01_perception_action_loop.py",
     "s02": "./run.sh s02_tool_use.py",
-    "s03": "./run.sh s03_todo_write.py"
+    "s03": "./run.sh s03_todo_write.py",
+    "s04": "./run.sh s04_subagent.py"
   }
 }
