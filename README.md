@@ -19,6 +19,7 @@
 - [Introduction](#introduction)
   - [Enterprise context](#enterprise-context)
   - [Current Enterprise IT State](#current-enterprise-it-state)
+  - [What the `enterprise_it_harnessing` folder is](#what-the-enterprise_it_harnessing-folder-is)
 - [Purpose, objective, value, and business impact](#purpose-objective-value-and-business-impact)
 - [Strategic diagram](#strategic-diagram-svp-of-engineering)
 - [Enterprise architecture](#enterprise-architecture--domains-summing-to-100-microservices)
@@ -49,7 +50,11 @@ The Enterprise IT team is in the business of supporting the domains that are dep
 
 This repository does **not** contain 100 microservice codebases. Those applications already run in production. The current Enterprise IT estate this harness is built against is **10 business units** on dedicated cloud accounts, operating FOREX bank middleware, e-commerce middleware, and Shopify headless merchant integration — on the order of **100 microservices** deployed outside this repo. Operators resolve production names such as `fx-matching-engine`, `orders-api`, and `shopify-webhook-ingress` so the model works the estate the company already runs, not a fictional `service-1`.
 
-The learning sessions later in this README reconstruct the Claude Code primitives underneath. The product you run day to day is [`enterprise_it_harnessing/`](enterprise_it_harnessing/README.md). From the **repository root**, every operator profile is a `./harness-*.sh` launcher — see [How to launch](#how-to-launch-from-the-repository-root).
+> **NOTE.** The Claude Code Python scripts at the root of this repo (`s01_…` through `s23_…`) are **foundational harnessing capabilities** — hello-world through advanced (skills, permissions, teams, MCP, worktrees). They teach the loop. They are not the product.
+
+### What the `enterprise_it_harnessing` folder is
+
+[`enterprise_it_harnessing/`](enterprise_it_harnessing/README.md) is the **actual product of this git repository**. It is what Enterprise IT harnessing should always be: six role-scoped operator surfaces (SRE, Event Bus, Search, Kubernetes, Redis, DB) over a live production estate, with declarative permissions, isolation leases, and root launchers (`./harness-sre.sh` and the rest). The `s01`–`s23` scripts stay at the root as the teaching layer. Day-to-day operators start here — see [How to launch](#how-to-launch-from-the-repository-root).
 
 [Strategic diagram (SVP)](#strategic-diagram-svp-of-engineering) · [Purpose, objective, value, and business impact](#purpose-objective-value-and-business-impact) · [Full diagram set](docs/platform-diagrams.md)
 
