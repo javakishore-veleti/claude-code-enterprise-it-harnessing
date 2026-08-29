@@ -49,12 +49,6 @@ The Enterprise IT team is in the business of supporting the domains that are dep
 
 This repository does **not** contain 100 microservice codebases. Those applications already run in production. The current Enterprise IT estate this harness is built against is **10 business units** on dedicated cloud accounts, operating FOREX bank middleware, e-commerce middleware, and Shopify headless merchant integration — on the order of **100 microservices** deployed outside this repo. Operators resolve production names such as `fx-matching-engine`, `orders-api`, and `shopify-webhook-ingress` so the model works the estate the company already runs, not a fictional `service-1`.
 
-The model never hard-codes “this is an EKS outage” or “this is a stuck checkout saga.” It only sees tools and a system prompt. Each profile swaps the **tool list**, **skill files**, **permission rules**, and **named resources**. Cloud (AWS, Azure, GCP) only changes identity and CLI argv. An AWS Kafka admin and a GCP Cloud SQL admin share the loop and the permission engine; they do not share the same tool list.
-
-Operators do not get a generic `bash` session against production. They resolve `fx-matching-engine`, `shopify-webhook-ingress`, `rds-fx-trades-prod`, and `elasticache-shopify-idempotency` — not `service-1`. Mutations that are customer-facing require an operator. Irreversible wipes are denied. Two agents cannot mutate the same cluster, topic, or cache at once.
-
-The reference loop in this repo is Claude Code. The harness is not locked to it. Swap the client and the same catalog, permissions, leases, and launchers still govern production — LangGraph, OpenAI Agents, Amazon Bedrock, Gemini, or a local model can sit where Claude sits today, because the model is only the decision-maker.
-
 The learning sessions later in this README reconstruct the Claude Code primitives underneath. The product you run day to day is [`enterprise_it_harnessing/`](enterprise_it_harnessing/README.md). From the **repository root**, every operator profile is a `./harness-*.sh` launcher — see [How to launch](#how-to-launch-from-the-repository-root).
 
 [Strategic diagram (SVP)](#strategic-diagram-svp-of-engineering) · [Purpose, objective, value, and business impact](#purpose-objective-value-and-business-impact) · [Full diagram set](docs/platform-diagrams.md)
