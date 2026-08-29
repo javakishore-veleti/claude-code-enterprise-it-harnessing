@@ -8,7 +8,7 @@ This blog is about **Enterprise IT Harnessing** capabilities.
 
 This post discusses my GitHub repo [claude-code-enterprise-it-harnessing](https://github.com/javakishore-veleti/claude-code-enterprise-it-harnessing) that implements those capabilities.
 
-This blog post considers an Enterprise IT team that supports FOREX back-office trade processing, e-commerce business middleware (quote through order, shipment, and fulfillment), and Shopify as a SaaS integration — on a mixed stack of Kubernetes, buses, Redis, databases, and search — and still needs **one unified harness** for observe, diagnose, fail over, roll back, search, and silence.
+This blog post considers an Enterprise <span style="color:#2563eb">IT team that supports</span> <span style="color:#dc2626">FOREX back-office trade processing</span>, <span style="color:#2563eb">e-Commerce business</span> middleware (quote through order, shipment, and fulfillment), and <span style="color:#2563eb">Shopify as a SaaS</span> integration — on a mixed stack of Kubernetes, buses, Redis, databases, and search — and still needs **one unified harness** for observe, diagnose, fail over, roll back, search, and silence.
 
 The domains do not share a single admin shell. They share dedicated cloud accounts, many stacks, and a rule that production changes stay inside a role.
 
