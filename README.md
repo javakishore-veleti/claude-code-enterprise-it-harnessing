@@ -5,9 +5,14 @@
 [![GitHub issues](https://img.shields.io/github/issues/javakishore-veleti/claude-code-from-scratch)](https://github.com/javakishore-veleti/claude-code-from-scratch/issues)
 [![GitHub last commit](https://img.shields.io/github/last-commit/javakishore-veleti/claude-code-from-scratch)](https://github.com/javakishore-veleti/claude-code-from-scratch/commits/main)
 [![License](https://img.shields.io/github/license/javakishore-veleti/claude-code-from-scratch)](LICENSE)
+
 [![Python](https://img.shields.io/badge/python-3.13+-blue.svg)](pyproject.toml)
 [![uv](https://img.shields.io/badge/uv-ready-de5fe9.svg)](https://docs.astral.sh/uv/)
-[![Sessions](https://img.shields.io/badge/sessions-s01--s23-informational)](package.json)
+[![Anthropic SDK](https://img.shields.io/badge/Anthropic_SDK-0.40+-d97706.svg)](https://github.com/anthropics/anthropic-sdk-python)
+[![MCP](https://img.shields.io/badge/MCP-1.0+-4f46e5.svg)](https://modelcontextprotocol.io/)
+[![Redis](https://img.shields.io/badge/Redis-5.0+-dc382d.svg)](https://redis.io/)
+[![PyYAML](https://img.shields.io/badge/PyYAML-6.0+-cb171e.svg)](https://pyyaml.org/)
+[![npm scripts](https://img.shields.io/badge/npm-s01--s23-cb3837.svg)](package.json)
 
 ## What is Harness Engineering?
 Harness engineering is the discipline of building the environment that surrounds an AI model, not the model itself. The model reasons and decides. The harness executes, constrains, and connects. A well-designed harness gives the model precisely the tools it needs, nothing more, and governs exactly what it is allowed to do with them.
