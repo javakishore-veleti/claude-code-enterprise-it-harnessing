@@ -1,5 +1,5 @@
 {
-  "name": "claude-code-from-scratch",
+  "name": "claude-code-enterprise-it-harnessing",
   "private": true,
   "scripts": {
     "s01": "./run.sh s01_perception_action_loop.py",
