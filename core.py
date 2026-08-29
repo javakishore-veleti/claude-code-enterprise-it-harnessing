@@ -24,11 +24,16 @@ Exports:
 # Import standard library modules
 import os  # Operating system interfaces
 import re  # Regular expression operations
+import sys
 import asyncio  # Asynchronous I/O framework
 import subprocess  # Subprocess management for shell commands
 import glob as _glob  # Unix style pathname pattern expansion
 from pathlib import Path  # Object-oriented filesystem paths
 from typing import Dict, List, Tuple, Optional, Any  # Type hinting support
+
+from harness_log import get_logger
+
+log = get_logger("core")
 
 # === Optional Dependencies for Enhanced User Experience ===
 
@@ -493,8 +498,7 @@ def check_permission(tool_name: str, input_str: str, rules: Optional[dict] = Non
     for rule in rules.get("always_deny", []):
         if re.search(rule["pattern"], input_str, re.IGNORECASE):
             reason = rule.get("reason", "blocked by policy")
-            # Print feedback in Red
-            print(f"\033[31m[DENIED] {reason}\033[0m")
+            log.warning("Denied: %s", reason)
             return False, f"Denied: {reason}"
 
     # Priority 2: Check if the input matches any 'always_allow' pattern
@@ -506,11 +510,8 @@ def check_permission(tool_name: str, input_str: str, rules: Optional[dict] = Non
     for rule in rules.get("ask_user", []):
         if re.search(rule["pattern"], input_str, re.IGNORECASE):
             reason = rule.get("reason", "requires user confirmation")
-            # Print feedback in Yellow
-            print(f"\n\033[33m[PERMISSION] {tool_name}: {input_str[:100]}")
-            print(f"  Reason: {reason}\033[0m")
+            log.warning("Permission required for %s: %s", tool_name, reason)
             try:
-                # Prompt user via terminal
                 ans = input("  Allow? [y/N] ").strip().lower()
             except (EOFError, KeyboardInterrupt):
                 ans = "n" # Default to 'no' on interrupt
@@ -542,26 +543,23 @@ def dispatch_tools(response_content: list, dispatch: dict) -> List[Dict[str, Any
         tool_name = block.name # Name of the tool requested
         tool_input = block.input # Params provided by the model
         tool_use_id = block.id # ID required for returning results
-        print(f"Tool name: {tool_name} tool_input: {tool_input} tool_use_id: {tool_use_id}")
-        handler = dispatch.get(tool_name) # Fetch handler from map
-        
-        # UI: Print the tool call in Yellow
+        log.debug("tool_use name=%s id=%s input=%s", tool_name, tool_use_id, tool_input)
+        handler = dispatch.get(tool_name)
         first_val = str(list(tool_input.values())[0])[:80] if tool_input else ""
-        print(f"\033[33m[{tool_name}] {first_val}...\033[0m")
+        log.debug("dispatch %s %s", tool_name, first_val)
 
         if handler:
             try:
                 # Call the mapped function with input dict
                 output = handler(tool_input)
             except Exception as e:
-                # Catch internal handler errors
+                log.exception("Tool %s failed", tool_name)
                 output = f"Error during tool execution: {e}"
         else:
-            # Handle cases where the model hallucinates a tool name
+            log.error("Unknown tool %s", tool_name)
             output = f"Error: Unknown tool '{tool_name}'"
-        
-        # Log a snippet of the tool's output to the terminal
-        print(str(output)[:300])
+
+        log.debug("tool_result %s: %s", tool_name, str(output)[:500])
         
         # Structure the result as required by the Anthropic API
         results.append({
@@ -595,10 +593,8 @@ def stream_loop(
     extra_kwargs = extra_kwargs or {}
     
     while True:
-        # Indicate the thinking phase in Cyan
-        print("\n\033[36m> Thinking...\033[0m")
-        
-        # Open a streaming connection to the Anthropic API
+        log.debug("model turn starting")
+
         with client.messages.stream(
             model=MODEL,
             system=system,
@@ -607,19 +603,16 @@ def stream_loop(
             max_tokens=8000,
             **extra_kwargs,
         ) as stream:
-            # Print text chunks as they arrive for a responsive UI
             for text in stream.text_stream:
-                print(text, end="", flush=True)
-            # Finalize the message once streaming is complete
+                sys.stdout.write(text)
+                sys.stdout.flush()
             response = stream.get_final_message()
-        
-        # Print a newline for visual separation
-        print()
-        # Record the assistant's message in the history
+
+        sys.stdout.write("\n")
+        sys.stdout.flush()
         messages.append({"role": "assistant", "content": response.content})
-        
-        # Break the loop if the model stopped for any reason other than calling tools
-        print(f"Stop reason: {response.stop_reason}")
+
+        log.debug("stop_reason=%s", response.stop_reason)
         if response.stop_reason != "tool_use":
             return response
             

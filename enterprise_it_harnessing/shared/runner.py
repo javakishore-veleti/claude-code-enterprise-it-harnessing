@@ -9,12 +9,15 @@ from pathlib import Path
 from typing import Any, Callable
 
 from core import EXTENDED_DISPATCH, EXTENDED_TOOLS, stream_loop
+from harness_log import enable_debug, get_logger
 
 from enterprise_it_harnessing.catalog import CATALOG_DISPATCH, CATALOG_TOOLS
 
 from .auth import CloudIdentity, resolve_identity
 from .guard import load_rules, wrap_dispatch
 from .skills import discover_skills, index_text, load_skill
+
+log = get_logger("runner")
 
 
 def run_harness(
@@ -32,6 +35,8 @@ def run_harness(
         sys.path.insert(0, str(root))
 
     args = _parse_args(name)
+    if args.debug:
+        enable_debug()
     identity = resolve_identity()
     skills_dir = domain_dir / "skills"
     skills = discover_skills(skills_dir)
@@ -65,36 +70,33 @@ def run_harness(
     if args.tool:
         payload = _tool_payload(args)
         if args.tool not in dispatch:
-            print(f"unknown tool: {args.tool}", file=sys.stderr)
-            print("available:", ", ".join(sorted(dispatch)), file=sys.stderr)
+            log.error("unknown tool: %s", args.tool)
+            log.error("available: %s", ", ".join(sorted(dispatch)))
             sys.exit(2)
-        print(dispatch[args.tool](payload))
+        sys.stdout.write(dispatch[args.tool](payload) + "\n")
         return
 
     persona = _system(system, identity, skills)
-    print(f"\033[90m{name} | provider={identity.provider} | principal={identity.principal or 'n/a'}\033[0m")
-    print("\033[90m  skills via list_skills / load_skill · mutations leased · policy from permissions.yaml\033[0m\n")
+    log.info("%s provider=%s principal=%s", name, identity.provider, identity.principal or "n/a")
 
     once = args.once or (" ".join(args.prompt) if args.prompt else "")
     if once:
         history: list[dict[str, Any]] = [{"role": "user", "content": once}]
         stream_loop(messages=history, tools=tools, dispatch=dispatch, system=persona)
-        print()
         return
 
     history = []
     while True:
         try:
-            query = input(f"\033[36m{prompt} >> \033[0m").strip()
+            query = input(f"{prompt} >> ").strip()
         except (EOFError, KeyboardInterrupt):
-            print("\nSession closed.")
+            log.info("Session closed.")
             return
         if not query or query.lower() in {"q", "exit", "quit"}:
-            print("Goodbye.")
+            log.info("Goodbye.")
             return
         history.append({"role": "user", "content": query})
         stream_loop(messages=history, tools=tools, dispatch=dispatch, system=persona)
-        print()
 
 
 def _parse_args(name: str) -> argparse.Namespace:
@@ -109,6 +111,7 @@ def _parse_args(name: str) -> argparse.Namespace:
     parser.add_argument("--target", help="cache/target for --tool")
     parser.add_argument("--topic", help="kafka topic for --tool")
     parser.add_argument("--domain", help="domain filter for --tool")
+    parser.add_argument("--debug", action="store_true", help="Log tool calls, audit events, and stop reasons")
     return parser.parse_args()
 
 

@@ -6,6 +6,10 @@ from collections import defaultdict
 from datetime import datetime, timezone
 from typing import Any, Callable
 
+from harness_log import get_logger
+
+log = get_logger("audit")
+
 
 class EventBus:
     def __init__(self) -> None:
@@ -28,4 +32,4 @@ class EventBus:
 def audit_to_stdout(event: str, **payload: Any) -> None:
     tool = payload.get("tool", "")
     target = str(payload.get("target", ""))[:80]
-    print(f"\033[90m  [audit] {event} {tool} {target}\033[0m")
+    log.debug("%s tool=%s target=%s", event, tool, target)
