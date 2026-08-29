@@ -3,7 +3,7 @@
 Use this profile when the incident is a **microservice SLO**: FOREX matching / FIX, checkout saga, Shopify HMAC webhooks, support tickets.
 
 Folder: `enterprise_it_harnessing/sre_harnessing/`  
-Launcher: `./harness-sre.sh <command>` from the repo root (forwards to that folder’s `package.json`).
+Launcher: `./harness-sre.sh <command>` from the repo root (forwards to that folder’s `package.json`). Append `--interactive` on a playbook to keep that session open.
 
 Ten BUs, dedicated accounts. Always `list-units` or `resolve-*` before paging or rolling back. FOREX matching-engine and Shopify HMAC ingress are Sev2 by default.
 

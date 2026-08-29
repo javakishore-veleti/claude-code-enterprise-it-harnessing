@@ -3,7 +3,7 @@
 Use this profile for the **named enterprise topics**. Each BU owns its bus: MSK (FOREX, customer, Shopify), Event Hubs (e-com, support, advisor), Pub/Sub (fulfillment, research).
 
 Folder: `enterprise_it_harnessing/kafka_harnessing/`  
-Launcher: `./harness-kafka.sh <command>` from the repo root.
+Launcher: `./harness-kafka.sh <command>` from the repo root. Append `--interactive` on a playbook to keep that session open.
 
 FOREX and Shopify **topic creates are denied** in this profile. Topic **delete** is always denied. Checkout-saga rewind is unsafe (double-charge).
 

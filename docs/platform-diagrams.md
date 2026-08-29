@@ -206,7 +206,7 @@ flowchart TB
 | Shared kernel | Guard, leases, identity, catalog, events, MCP | Domain runbooks or BU-specific resource names |
 | Catalog | 10 BUs, ~100 services, dedicated accounts/clusters | Guessed hostnames or “cluster-1” |
 
-Catalog dumps (`list-units`, `resolve-*`) use `--tool` and **do not** call the model. Playbooks (`observe-*`, `incident-*`, `failover-*`) use `--once` and do.
+Catalog dumps (`list-units`, `resolve-*`) use `--tool` and **do not** call the model. Playbooks (`observe-*`, `incident-*`, `failover-*`) use `--once` and do. Append `--interactive` on any `./harness-*.sh` playbook to keep that session.
 
 Mutations fail closed: a dirty or already-leased target is refused. Leases live under `.harness_isolation/` (gitignored).
 

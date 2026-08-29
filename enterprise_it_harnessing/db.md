@@ -3,7 +3,7 @@
 Use this profile for the **ten named production databases** (one primary per business unit). Engines differ (Aurora, Azure SQL, Cloud SQL); the loop does not: describe → backups → snapshot → lag → failover.
 
 Folder: `enterprise_it_harnessing/db_admin_harnessing/`  
-Launcher: `./harness-db.sh <command>` from the repo root.
+Launcher: `./harness-db.sh <command>` from the repo root. Append `--interactive` on a playbook to keep that session open.
 
 | Instance | Business unit | Engine | Owner services |
 | --- | --- | --- | --- |

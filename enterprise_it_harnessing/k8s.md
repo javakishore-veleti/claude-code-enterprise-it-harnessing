@@ -3,7 +3,7 @@
 Use this profile on the **ten dedicated clusters**. Namespace equals the business-unit slug. Pass `service=` or `business_unit=` so context is filled (EKS FOREX/Shopify, AKS e-com/support/advisor, GKE fulfillment/research).
 
 Folder: `enterprise_it_harnessing/kubernetes_harnessing/`  
-Launcher: `./harness-k8s.sh <command>` from the repo root.
+Launcher: `./harness-k8s.sh <command>` from the repo root. Append `--interactive` on a playbook to keep that session open.
 
 | Command | What it does | Cluster / namespace |
 | --- | --- | --- |

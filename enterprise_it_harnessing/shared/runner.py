@@ -80,12 +80,46 @@ def run_harness(
     log.info("%s provider=%s principal=%s", name, identity.provider, identity.principal or "n/a")
 
     once = args.once or (" ".join(args.prompt) if args.prompt else "")
+    history: list[dict[str, Any]] = []
     if once:
-        history: list[dict[str, Any]] = [{"role": "user", "content": once}]
+        history.append({"role": "user", "content": once})
         stream_loop(messages=history, tools=tools, dispatch=dispatch, system=persona)
-        return
+        if not args.interactive:
+            return
+        log.info("Session kept open. Follow up on this playbook, or q to quit.")
 
-    history = []
+    _repl(prompt, history, tools, dispatch, persona)
+
+
+def _parse_args(name: str) -> argparse.Namespace:
+    parser = argparse.ArgumentParser(prog=name, add_help=True)
+    parser.add_argument("prompt", nargs="*", help="One-shot operator prompt (skips the REPL)")
+    parser.add_argument("--once", "-q", dest="once", help="One-shot prompt (same as positional prompt)")
+    parser.add_argument(
+        "--interactive",
+        "-i",
+        action="store_true",
+        help="After a playbook (--once) turn, keep this session open as a REPL",
+    )
+    parser.add_argument("--tool", help="Run a typed tool without the model (catalog dumps, identity)")
+    parser.add_argument("--json", help="JSON object passed to --tool (optional; prefer --bu/--service flags)")
+    parser.add_argument("--bu", dest="business_unit", help="business_unit for --tool")
+    parser.add_argument("--service", help="service for --tool")
+    parser.add_argument("--instance", help="database instance for --tool")
+    parser.add_argument("--target", help="cache/target for --tool")
+    parser.add_argument("--topic", help="kafka topic for --tool")
+    parser.add_argument("--domain", help="domain filter for --tool")
+    parser.add_argument("--debug", action="store_true", help="Log tool calls, audit events, and stop reasons")
+    return parser.parse_args()
+
+
+def _repl(
+    prompt: str,
+    history: list[dict[str, Any]],
+    tools: list[dict[str, Any]],
+    dispatch: dict[str, Callable[[dict[str, Any]], str]],
+    persona: list[dict[str, Any]],
+) -> None:
     while True:
         try:
             query = input(f"{prompt} >> ").strip()
@@ -97,22 +131,6 @@ def run_harness(
             return
         history.append({"role": "user", "content": query})
         stream_loop(messages=history, tools=tools, dispatch=dispatch, system=persona)
-
-
-def _parse_args(name: str) -> argparse.Namespace:
-    parser = argparse.ArgumentParser(prog=name, add_help=True)
-    parser.add_argument("prompt", nargs="*", help="One-shot operator prompt (skips the REPL)")
-    parser.add_argument("--once", "-q", dest="once", help="One-shot prompt (same as positional prompt)")
-    parser.add_argument("--tool", help="Run a typed tool without the model (catalog dumps, identity)")
-    parser.add_argument("--json", help="JSON object passed to --tool (optional; prefer --bu/--service flags)")
-    parser.add_argument("--bu", dest="business_unit", help="business_unit for --tool")
-    parser.add_argument("--service", help="service for --tool")
-    parser.add_argument("--instance", help="database instance for --tool")
-    parser.add_argument("--target", help="cache/target for --tool")
-    parser.add_argument("--topic", help="kafka topic for --tool")
-    parser.add_argument("--domain", help="domain filter for --tool")
-    parser.add_argument("--debug", action="store_true", help="Log tool calls, audit events, and stop reasons")
-    return parser.parse_args()
 
 
 def _tool_payload(args: argparse.Namespace) -> dict[str, Any]:

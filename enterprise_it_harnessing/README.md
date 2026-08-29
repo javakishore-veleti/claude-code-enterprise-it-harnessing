@@ -47,17 +47,18 @@ export ANTHROPIC_API_KEY=...
 export CLOUD_PROVIDER=aws   # or azure or gcp
 
 ./harness-sre.sh                 # list SRE commands
-./harness-sre.sh repl            # interactive SRE session
+./harness-sre.sh repl            # empty interactive SRE session
 ./harness-sre.sh observe-fx-matching
+./harness-sre.sh observe-fx-matching --interactive   # playbook, then same session
 
-./harness-db.sh describe-fx-trades
-./harness-k8s.sh pods-shopify-merchants
-./harness-kafka.sh lag-shopify-orders
-./harness-redis.sh info-shopify-idemp
-./harness-elk.sh search-shopify-webhooks
+./harness-db.sh describe-fx-trades --interactive
+./harness-k8s.sh pods-shopify-merchants --interactive
+./harness-kafka.sh lag-shopify-orders --interactive
+./harness-redis.sh info-shopify-idemp --interactive
+./harness-elk.sh search-shopify-webhooks --interactive
 ```
 
-Catalog dumps (`list-units`, `list-topics`, `resolve-*`) use `--tool` and do **not** call the model. Playbooks (`observe-*`, `incident-*`, `failover-*`) use `--once` and do.
+Catalog dumps (`list-units`, `list-topics`, `resolve-*`) use `--tool` and do **not** call the model. Playbooks (`observe-*`, `incident-*`, `failover-*`) use `--once` and do. Append `--interactive` (`-i`) on any `./harness-*.sh` playbook to keep that session open instead of starting a new `repl`.
 
 Same thing via npm at the repo root:
 

@@ -3,6 +3,7 @@
 # Usage: ./harness-elk.sh              # list 25+ ELK/Grafana commands
 #        ./harness-elk.sh repl
 #        ./harness-elk.sh search-shopify-webhooks
+#        ./harness-elk.sh search-shopify-webhooks --interactive
 set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 exec "$ROOT/enterprise_it_harnessing/_invoke.sh" elk_harnessing "$@"

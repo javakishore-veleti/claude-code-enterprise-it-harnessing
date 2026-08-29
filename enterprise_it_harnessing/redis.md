@@ -3,7 +3,7 @@
 Use this profile for the **ten named caches**. `FLUSHALL` is denied. Failover of FX books, carts, or Shopify idempotency keys has extra drain notes in the tools themselves.
 
 Folder: `enterprise_it_harnessing/redis_harnessing/`  
-Launcher: `./harness-redis.sh <command>` from the repo root.
+Launcher: `./harness-redis.sh <command>` from the repo root. Append `--interactive` on a playbook to keep that session open.
 
 | Cache | Business unit | Hot keys / risk |
 | --- | --- | --- |

@@ -29,8 +29,9 @@ if [[ $# -eq 0 ]]; then
   echo
   npm --prefix "$PKG" run
   echo
-  echo "Run a script:  $(basename "$0" .sh) <script>"
+  echo "Run a script:  $(basename "$0" .sh) <script> [--interactive]"
   echo "Example:       $0 repl"
+  echo "Keep session:  $0 <playbook> --interactive"
   exit 0
 fi
 

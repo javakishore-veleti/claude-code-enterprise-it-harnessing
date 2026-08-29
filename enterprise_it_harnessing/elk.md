@@ -3,7 +3,7 @@
 Use this profile for **Elasticsearch stacks and Grafana folders** that sit beside the 10 business units. Indices are not generic `logs-*`; they are FOREX trades/FIX, orders/shipping, support tickets, and Shopify HMAC / legacy.
 
 Folder: `enterprise_it_harnessing/elk_harnessing/`  
-Launcher: `./harness-elk.sh <command>` from the repo root.
+Launcher: `./harness-elk.sh <command>` from the repo root. Append `--interactive` on a playbook to keep that session open.
 
 Set `ELASTICSEARCH_URL` and `GRAFANA_URL` when talking to a real stack. `--tool` catalog commands work without them.
 

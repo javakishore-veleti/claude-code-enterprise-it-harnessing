@@ -199,7 +199,7 @@ Call `list_business_units`, `list_services`, or `resolve_service` before guessin
 - **Isolation leases** — mutating tools take an exclusive lease on the target (cluster, instance, topic, cache). Dirty or already-leased targets fail closed. Leases live under `.harness_isolation/`.
 - **Cloud identity** — AWS, Azure, or GCP is resolved once (`CLOUD_PROVIDER` or auto-detect). The same tool list runs against `aws` / `az` / `gcloud` argv.
 - **On-demand skills** — runbooks (`incident-response`, `backup-restore`, `eviction`, `consumer-lag`) load when the model asks, not on every turn.
-- **Catalog vs playbook** — `list-units` / `resolve-*` use `--tool` and do **not** call the model. `observe-*` / `incident-*` / `failover-*` use `--once` and do.
+- **Catalog vs playbook** — `list-units` / `resolve-*` use `--tool` and do **not** call the model. `observe-*` / `incident-*` / `failover-*` use `--once` and do. Append `--interactive` (`-i`) to keep that playbook’s session open instead of starting a new `repl`.
 - **Audit event bus** — every tool call emits `pre_tool_use` / `post_tool_use` before and after the guard.
 - **MCP** — real cloud CLIs and servers plug in without a second agent framework.
 - **25+ named commands per profile** — each `package.json` is an operator console, not a demo script.
@@ -305,6 +305,19 @@ Each role keeps the catalog and the guard. The **smallest** tool set that role n
 
 All six operator launchers live at the **root of this repo**. Each `./harness-*.sh` forwards into that profile’s `package.json` (25+ named commands). The second token (`observe-fx-matching`, `describe-fx-trades`, …) is the playbook name in that file — not a second executable. You do not `cd` into `enterprise_it_harnessing/` to run them.
 
+A playbook without flags runs one model turn and exits (`--once`). That starts a **new session** every time. Pass `--interactive` (or `-i`) on any of the six launchers to run the playbook, then stay in the same conversation:
+
+```bash
+./harness-sre.sh observe-fx-matching --interactive
+./harness-db.sh describe-fx-trades --interactive
+./harness-k8s.sh pods-shopify-merchants --interactive
+./harness-redis.sh info-shopify-idemp --interactive
+./harness-kafka.sh lag-shopify-orders --interactive
+./harness-elk.sh search-shopify-webhooks --interactive
+```
+
+`./harness-sre.sh repl` is an empty interactive session. `--interactive` on a named playbook is the same REPL **after** that playbook’s first turn, so follow-ups do not open another session.
+
 To add a tool, permission, skill, playbook, or a new role, see [How to extend a profile](enterprise_it_harnessing/README.md#how-to-extend-a-profile).
 
 ```bash
@@ -339,7 +352,7 @@ export CLOUD_PROVIDER=aws             # optional: aws | azure | gcp (else auto-d
 ./harness-kafka.sh topics-shopify-merchants
 ./harness-redis.sh caches-shopify
 
-# 3) Interactive session for one role
+# 3) Interactive session for one role (empty — no playbook seed)
 ./harness-sre.sh repl
 ./harness-db.sh repl
 ./harness-k8s.sh repl
@@ -347,7 +360,7 @@ export CLOUD_PROVIDER=aws             # optional: aws | azure | gcp (else auto-d
 ./harness-kafka.sh repl
 ./harness-elk.sh repl
 
-# 4) Named playbooks across the 100+ service estate
+# 4) Named playbooks — one turn then exit (new session each run)
 ./harness-sre.sh observe-fx-matching
 ./harness-sre.sh incident-shopify-hmac
 ./harness-db.sh describe-fx-trades
@@ -360,6 +373,14 @@ export CLOUD_PROVIDER=aws             # optional: aws | azure | gcp (else auto-d
 ./harness-kafka.sh describe-checkout-saga
 ./harness-elk.sh search-shopify-webhooks
 ./harness-elk.sh search-forex-trades
+
+# 5) Same playbooks, keep the session (follow up without a new repl)
+./harness-sre.sh observe-fx-matching --interactive
+./harness-db.sh describe-fx-trades --interactive
+./harness-k8s.sh pods-shopify-merchants --interactive
+./harness-redis.sh info-shopify-idemp --interactive
+./harness-kafka.sh lag-shopify-orders --interactive
+./harness-elk.sh search-shopify-webhooks --interactive
 ```
 
 Same launchers via npm, still from the repository root:
