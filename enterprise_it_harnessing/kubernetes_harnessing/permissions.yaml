@@ -5,7 +5,7 @@ always_deny:
     reason: "Production node drains are denied from this profile"
 
 always_allow:
-  - pattern: "kube_get|kube_describe|kube_logs|cloud_identity|list_skills|load_skill"
+  - pattern: "kube_get|kube_describe|kube_logs|cloud_identity|list_skills|load_skill|list_business_units|list_services|resolve_service"
     reason: "Read-only cluster inspection is allowed"
 
 ask_user:

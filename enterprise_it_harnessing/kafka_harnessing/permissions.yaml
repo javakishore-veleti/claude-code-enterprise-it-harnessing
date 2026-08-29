@@ -3,7 +3,7 @@ always_deny:
     reason: "Topic deletion is denied"
 
 always_allow:
-  - pattern: "kafka_list_topics|kafka_describe_topic|kafka_consumer_lag|cloud_identity|list_skills|load_skill"
+  - pattern: "kafka_list_topics|kafka_describe_topic|kafka_consumer_lag|list_kafka_topics|cloud_identity|list_skills|load_skill|list_business_units|list_services|resolve_service"
     reason: "Read-only bus inspection is allowed"
 
 ask_user:

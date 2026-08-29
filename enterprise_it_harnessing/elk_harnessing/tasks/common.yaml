@@ -1,0 +1,8 @@
+# Observability task graph. Stack URL differs; the loop does not.
+observability:
+  - detect: Confirm the BU stack (es-forex-prod, es-ecom-prod, es-customer-prod, es-shopify-prod)
+  - bound: Resolve the microservice to its index alias before searching
+  - query: Keep size small; summarize, do not paste full hits
+  - dashboards: Open the BU Grafana folder, not a personal playground
+  - alert: Silence only with a reason; never HMAC or matching-engine without approval
+  - verify: Re-query after the change window

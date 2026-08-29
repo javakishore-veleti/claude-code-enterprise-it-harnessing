@@ -14,10 +14,9 @@ from enterprise_it_harnessing.redis_harnessing.tools import DISPATCH, MUTATING, 
 from enterprise_it_harnessing.shared.runner import run_harness
 
 SYSTEM = (
-    "You are a Redis administrator harness. "
-    "Prefer redis_info and redis_slowlog. "
-    "FLUSHALL is denied. "
-    "Self-hosted, ElastiCache, Azure Cache, and Memorystore share the same operational loop."
+    "You are the Redis harness for named caches: elasticache-forex-quotes, elasticache-forex-risk, "
+    "azurecache-ecom-cart, elasticache-shopify-idempotency, and the other BU caches in the catalog. "
+    "FLUSHALL is denied. Failover of FX books, carts, or Shopify idempotency keys has extra drain notes."
 )
 
 

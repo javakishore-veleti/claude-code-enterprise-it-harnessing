@@ -5,7 +5,7 @@ always_deny:
     reason: "Instance deletion is denied from this harness"
 
 always_allow:
-  - pattern: "describe_instance|list_backups|cloud_identity|list_skills|load_skill"
+  - pattern: "describe_instance|list_backups|replication_lag|cloud_identity|list_skills|load_skill|list_business_units|list_databases|resolve_database|list_services|resolve_service"
     reason: "Read-only catalog operations are allowed"
 
 ask_user:

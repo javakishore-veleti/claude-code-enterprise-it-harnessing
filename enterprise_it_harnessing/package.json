@@ -1,0 +1,18 @@
+{
+  "name": "enterprise-it-harnessing",
+  "private": true,
+  "scripts": {
+    "sre": "../harness-sre.sh",
+    "db": "../harness-db.sh",
+    "k8s": "../harness-k8s.sh",
+    "redis": "../harness-redis.sh",
+    "kafka": "../harness-kafka.sh",
+    "elk": "../harness-elk.sh",
+    "sre:repl": "../harness-sre.sh repl",
+    "db:repl": "../harness-db.sh repl",
+    "k8s:repl": "../harness-k8s.sh repl",
+    "redis:repl": "../harness-redis.sh repl",
+    "kafka:repl": "../harness-kafka.sh repl",
+    "elk:repl": "../harness-elk.sh repl"
+  }
+}

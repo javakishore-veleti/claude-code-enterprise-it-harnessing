@@ -3,7 +3,7 @@ always_deny:
     reason: "Destructive or lockout Redis commands are denied"
 
 always_allow:
-  - pattern: "redis_info|redis_slowlog|redis_describe_cloud|cloud_identity|list_skills|load_skill"
+  - pattern: "redis_info|redis_slowlog|redis_describe_cloud|list_redis_caches|cloud_identity|list_skills|load_skill|list_business_units|list_services|resolve_service"
     reason: "Read-only Redis inspection is allowed"
 
 ask_user:

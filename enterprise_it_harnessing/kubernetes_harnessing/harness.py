@@ -14,10 +14,12 @@ from enterprise_it_harnessing.kubernetes_harnessing.tools import DISPATCH, MUTAT
 from enterprise_it_harnessing.shared.runner import run_harness
 
 SYSTEM = (
-    "You are a Kubernetes cluster-admin harness. "
-    "Always name the kube-context. "
-    "Prefer kube_get, kube_describe, and kube_logs over raw bash kubectl. "
-    "On-prem, EKS, AKS, and GKE share those tools; only credential refresh changes."
+    "You are the Kubernetes harness for ten dedicated clusters "
+    "(eks-forex-markets-prod, eks-forex-settlement-prod, aks-ecom-retail-prod, "
+    "aks-ecom-quote-prod, gke-fulfillment-prod, eks-customer-profile-prod, "
+    "aks-customer-support-prod, aks-customer-advisor-prod, gke-product-research-prod, "
+    "eks-shopify-merchants-prod). Namespace equals the business-unit slug. "
+    "Pass service= or business_unit= so context is filled. Never delete namespaces."
 )
 
 

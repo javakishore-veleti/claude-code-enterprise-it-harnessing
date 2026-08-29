@@ -1,0 +1,14 @@
+# Authentication differs. Tasks do not.
+aws:
+  env: [AWS_PROFILE, AWS_REGION, ELASTICSEARCH_URL, GRAFANA_URL]
+  identity: aws sts get-caller-identity
+  notes: FOREX and Shopify ES stacks live in dedicated AWS accounts.
+azure:
+  env: [AZURE_SUBSCRIPTION_ID, ELASTICSEARCH_URL, GRAFANA_URL]
+  identity: az account show
+  notes: e-commerce and customer Grafana folders are Azure-hosted.
+gcp:
+  env: [GOOGLE_CLOUD_PROJECT, ELASTICSEARCH_URL, GRAFANA_URL]
+  identity: gcloud auth application-default print-access-token
+  notes: Fulfillment and product-research ship traces to the shared e-com ES.
+override: Set ELASTICSEARCH_URL and GRAFANA_URL. CLOUD_PROVIDER only selects identity.

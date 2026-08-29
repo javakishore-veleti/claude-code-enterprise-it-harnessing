@@ -1,0 +1,15 @@
+always_deny:
+  - pattern: "_delete_by_query|DELETE /.*indexes|indices.delete"
+    reason: "Index deletion and delete-by-query are denied"
+  - pattern: "grafana.*(delete|disable).*folder"
+    reason: "Grafana folder teardown is denied"
+
+always_allow:
+  - pattern: "es_cluster_health|es_search_index|grafana_list_dashboards|grafana_list_alerts"
+    reason: "Read-only observability is allowed"
+  - pattern: "list_business_units|list_services|resolve_service|cloud_identity|list_skills|load_skill"
+    reason: "Catalog and identity are allowed"
+
+ask_user:
+  - pattern: "grafana_silence_alert"
+    reason: "Silencing production alerts requires an operator"

@@ -14,10 +14,11 @@ from enterprise_it_harnessing.shared.runner import run_harness
 from enterprise_it_harnessing.sre_harnessing.tools import DISPATCH, MUTATING, TOOLS
 
 SYSTEM = (
-    "You are a production SRE harness operator. "
-    "You observe services, contain incidents, and only mutate after policy allows. "
-    "Load incident-response or deploy-rollback before acting on a live issue. "
-    "Cloud provider is an identity concern; the incident loop stays the same."
+    "You are the SRE harness for a 10-BU estate: FOREX bank trade-processing, "
+    "e-commerce catalog/quote/orders/fulfillment, customer profile/support/advisor, "
+    "product research, and Shopify headless merchant webhooks plus legacy/on-prem sync. "
+    "Resolve the microservice first. FOREX matching-engine and Shopify HMAC ingress are Sev2 by default. "
+    "Load incident-response or deploy-rollback before mutating. Cloud only changes identity and CLI argv."
 )
 
 

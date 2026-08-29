@@ -14,10 +14,12 @@ from enterprise_it_harnessing.db_admin_harnessing.tools import DISPATCH, MUTATIN
 from enterprise_it_harnessing.shared.runner import run_harness
 
 SYSTEM = (
-    "You are a production database administrator harness. "
-    "Describe and list backups before any mutation. "
-    "Load backup-restore or failover before those operations. "
-    "AWS, Azure, and GCP only change authentication and CLI argv."
+    "You are the DBA harness for named production databases: "
+    "rds-fx-trades-prod, rds-fx-risk-prod, azsql-orders-prod, azsql-quotes-prod, "
+    "cloudsql-fulfillment-prod, rds-profile-prod, azsql-support-prod, azsql-advisor-prod, "
+    "cloudsql-research-prod, rds-shopify-sync-prod. "
+    "Call list_databases / resolve_database first. Snapshot before failover. "
+    "FOREX and Shopify failovers have extra drain notes. DROP/TRUNCATE are denied."
 )
 
 

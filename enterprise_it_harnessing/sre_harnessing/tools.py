@@ -1,59 +1,102 @@
-"""SRE semantic tools. Observe first; mutate only with a lease and policy."""
+"""SRE tools scoped to a named enterprise microservice and its business unit."""
 
 from __future__ import annotations
 
+import json
 from typing import Any
 
-from enterprise_it_harnessing.shared.auth import detect_provider
+from enterprise_it_harnessing.catalog import SERVICES
 from enterprise_it_harnessing.shared.cli import run_argv
 from enterprise_it_harnessing.shared.providers import aws, azure, gcp
 
 MUTATING = {"rollback_deploy", "page_oncall"}
 
 
+def _svc(name: str) -> dict[str, Any] | None:
+    return SERVICES.get(name)
+
+
 def observe_health(inp: dict[str, Any]) -> str:
-    service = inp["service"]
-    provider = detect_provider()
-    if provider == "aws":
-        return run_argv(aws.cloudwatch_alarms(service))
-    if provider == "azure":
-        resource = inp.get("resource_id") or service
-        return run_argv(azure.monitor_metrics(resource))
-    if provider == "gcp":
-        return run_argv(gcp.monitoring_uptime(service))
-    return run_argv(["echo", f"no cloud provider; inspect local process/systemd for {service}"])
+    svc = _svc(inp["service"])
+    if not svc:
+        return json.dumps({"ok": False, "error": f"unknown service {inp['service']}"})
+    cloud = svc["cloud"]
+    if cloud == "aws":
+        raw = run_argv(aws.cloudwatch_alarms(svc["service"]))
+    elif cloud == "azure":
+        raw = run_argv(azure.monitor_metrics(inp.get("resource_id") or svc["service"]))
+    elif cloud == "gcp":
+        raw = run_argv(gcp.monitoring_uptime(svc["service"]))
+    else:
+        raw = run_argv(["echo", f"no probe for {svc['service']}"])
+    return json.dumps({"service": svc, "probe": json.loads(raw)}, default=str)
 
 
 def fetch_logs(inp: dict[str, Any]) -> str:
-    service = inp["service"]
-    since = inp.get("since", "1h")
-    return run_argv(["echo", f"fetch logs for {service} since {since} via your log backend"])
+    svc = _svc(inp["service"])
+    if not svc:
+        return json.dumps({"ok": False, "error": f"unknown service {inp['service']}"})
+    since = inp.get("since", "15m")
+    return json.dumps(
+        {
+            "ok": True,
+            "service": svc["service"],
+            "business_unit": svc["business_unit"],
+            "elk": svc["elk"],
+            "index_hint": f"{svc['domain']}-{svc['service']}-*",
+            "since": since,
+            "next": "Use the ELK harness es_search_index for the actual query.",
+        }
+    )
 
 
 def rollback_deploy(inp: dict[str, Any]) -> str:
-    return run_argv(["echo", f"rollback {inp['service']} to {inp.get('revision', 'previous')}"])
+    svc = _svc(inp["service"])
+    if not svc:
+        return json.dumps({"ok": False, "error": f"unknown service {inp['service']}"})
+    revision = inp.get("revision", "previous")
+    return json.dumps(
+        {
+            "ok": True,
+            "action": "rollback",
+            "service": svc["service"],
+            "cluster": svc["cluster"],
+            "account": svc["account"],
+            "revision": revision,
+            "note": "Operator approval required. Isolation lease is taken on the service name.",
+        }
+    )
 
 
 def page_oncall(inp: dict[str, Any]) -> str:
-    return run_argv(["echo", f"page {inp.get('severity', 'sev2')}: {inp['summary']}"])
+    svc = _svc(inp.get("service", "")) if inp.get("service") else None
+    return json.dumps(
+        {
+            "ok": True,
+            "severity": inp.get("severity", "sev2"),
+            "summary": inp["summary"],
+            "business_unit": (svc or {}).get("business_unit"),
+            "pager": f"{(svc or {}).get('business_unit', 'platform')}-sre",
+        }
+    )
 
 
 TOOLS = [
     {
         "name": "observe_health",
-        "description": "Read current health/alarms for a service. Provider CLI is selected from identity.",
+        "description": "Health/alarms for a catalogued microservice (e.g. fx-matching-engine, shopify-webhook-ingress, orders-api). Resolves its BU cloud account automatically.",
         "input_schema": {
             "type": "object",
             "properties": {
                 "service": {"type": "string"},
-                "resource_id": {"type": "string", "description": "Azure resource id when needed"},
+                "resource_id": {"type": "string"},
             },
             "required": ["service"],
         },
     },
     {
         "name": "fetch_logs",
-        "description": "Fetch recent logs for a service. Prefer this over raw bash curl to log stores.",
+        "description": "Point at the correct ELK index for a microservice. Does not dump raw logs into context.",
         "input_schema": {
             "type": "object",
             "properties": {"service": {"type": "string"}, "since": {"type": "string"}},
@@ -62,7 +105,7 @@ TOOLS = [
     },
     {
         "name": "rollback_deploy",
-        "description": "Roll a service back to a prior revision. Requires approval.",
+        "description": "Roll back a named microservice on its dedicated cluster. Requires approval.",
         "input_schema": {
             "type": "object",
             "properties": {"service": {"type": "string"}, "revision": {"type": "string"}},
@@ -71,10 +114,14 @@ TOOLS = [
     },
     {
         "name": "page_oncall",
-        "description": "Open an incident page. Requires approval.",
+        "description": "Page the BU SRE rotation (forex-markets-sre, shopify-merchants-sre, ...). Requires approval.",
         "input_schema": {
             "type": "object",
-            "properties": {"summary": {"type": "string"}, "severity": {"type": "string"}},
+            "properties": {
+                "summary": {"type": "string"},
+                "severity": {"type": "string"},
+                "service": {"type": "string"},
+            },
             "required": ["summary"],
         },
     },
